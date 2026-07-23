@@ -1,0 +1,552 @@
+/* ===================== DATA ===================== */
+const heroSlides = [
+  { img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1800&auto=format&fit=crop', title:'VILLA DAR ARZ', loc:{fr:'TANGER',en:'TANGIER',ar:'طنجة'} },
+  { img:'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1800&auto=format&fit=crop', title:'RIAD SOUANI', loc:{fr:'TANGER — KASBAH',en:'TANGIER — KASBAH',ar:'طنجة — القصبة'} },
+  { img:'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1800&auto=format&fit=crop', title:'RÉSIDENCE BAIE', loc:{fr:'MALABATA',en:'MALABATA',ar:'مالاباطا'} },
+  { img:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1800&auto=format&fit=crop', title:'DAR LIMANE', loc:{fr:'ASILAH',en:'ASILAH',ar:'أصيلة'} }
+];
+
+const projects = [
+  {
+    id:'villa-m', title:'VILLA M', year:'2023', surface:'480 m²',
+    loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
+    cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
+    metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    desc:{
+      fr:"Implantée sur les hauteurs de Tanger, la Villa M organise ses volumes autour d'une cour intérieure protégée du vent. Les façades en béton taloché et les brise-soleil en bois local filtrent une lumière franche, tandis que le plan libre du rez-de-chaussée ouvre largement sur la piscine et le jardin.",
+      en:"Set on the hills of Tangier, Villa M organises its volumes around an interior courtyard sheltered from the wind. Trowel-finished concrete façades and local timber brise-soleil filter the bright coastal light, while the open ground-floor plan extends widely onto the pool and garden.",
+      ar:"تقع فيلا M على مرتفعات طنجة، وتنظّم كتلها حول فناء داخلي محمي من الرياح. تعمل واجهات الخرسانة المصقولة وكاسرات الشمس الخشبية المحلية على تنقية الضوء الساطع، بينما ينفتح المخطط الحر للطابق الأرضي بشكل واسع على المسبح والحديقة."
+    },
+    hero:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'riad-souani', title:'RIAD SOUANI', year:'2022', surface:'310 m²',
+    loc:{fr:'Tanger — Kasbah',en:'Tangier — Kasbah',ar:'طنجة — القصبة'},
+    cat:{fr:'Réhabilitation — Patrimoine',en:'Rehabilitation — Heritage',ar:'ترميم — تراث'},
+    metier:{fr:'Architecture · Réhabilitation',en:'Architecture · Rehabilitation',ar:'العمارة · الترميم'},
+    desc:{
+      fr:"Restauration complète d'un riad du XIXe siècle dans la Kasbah, mené en collaboration avec des maalems locaux. Les enduits à la chaux, les zelliges d'origine et la charpente en cèdre ont été conservés ou refaits à l'identique, autour d'un patio central rouvert à la lumière du ciel.",
+      en:"Complete restoration of a 19th-century riad in the Kasbah, carried out with local master craftsmen. Lime plasters, original zellige tilework and cedar framing were preserved or rebuilt to match, around a central patio reopened to the sky.",
+      ar:"ترميم كامل لرياض يعود للقرن التاسع عشر داخل القصبة، بالتعاون مع معلمين محليين. تم الحفاظ على الطلاء الجيري والزليج الأصلي وهيكل خشب الأرز أو إعادة صنعها مطابقة للأصل، حول فناء مركزي أعيد فتحه على ضوء السماء."
+    },
+    hero:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524230572899-a752b3835840?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'residence-baie', title:'RÉSIDENCE BAIE', year:'2024', surface:'2 400 m²',
+    loc:{fr:'Malabata',en:'Malabata',ar:'مالاباطا'},
+    cat:{fr:'Résidentiel — Collectif',en:'Residential — Multi-unit',ar:'سكني — جماعي'},
+    metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    desc:{
+      fr:"Un ensemble résidentiel de 24 logements face à la baie de Tanger, pensé en terrasses successives pour préserver la vue de chaque unité. Les volumes blancs et les garde-corps en métal ajouré reprennent le vocabulaire balnéaire de la côte nord.",
+      en:"A residential complex of 24 units facing Tangier bay, arranged in successive terraces to preserve each unit's view. White volumes and perforated metal railings echo the seaside vocabulary of the northern coast.",
+      ar:"مجمع سكني يضم 24 وحدة يطل على خليج طنجة، صُمم على شكل مصاطب متتالية للحفاظ على إطلالة كل وحدة. تعكس الكتل البيضاء والدرابزين المعدني المخرّم مفردات العمارة الساحلية للشمال."
+    },
+    hero:'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'dar-limane', title:'DAR LIMANE', year:'2023', surface:'1 850 m²',
+    loc:{fr:'Asilah',en:'Asilah',ar:'أصيلة'},
+    cat:{fr:'Hospitality — Boutique-hôtel',en:'Hospitality — Boutique hotel',ar:'ضيافة — فندق بوتيك'},
+    metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
+    desc:{
+      fr:"Un boutique-hôtel de 18 chambres aux portes d'Asilah, organisé autour d'un jardin d'agrumes. La palette de matières — chaux, bois brûlé, terre cuite — installe une atmosphère sobre, en continuité avec l'architecture blanche de la médina voisine.",
+      en:"An 18-room boutique hotel at the gates of Asilah, arranged around a citrus garden. The material palette — lime, charred wood, terracotta — sets a quiet mood, continuing the white architecture of the nearby medina.",
+      ar:"فندق بوتيك يضم 18 غرفة عند مداخل أصيلة، ينتظم حول حديقة حمضيات. تُرسي لوحة المواد — الجير، الخشب المحروق، الطين المشوي — أجواءً هادئة تتناغم مع العمارة البيضاء للمدينة العتيقة المجاورة."
+    },
+    hero:'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524230572899-a752b3835840?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'villa-a', title:'VILLA A', year:'2021', surface:'520 m²',
+    loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
+    cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
+    metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    desc:{
+      fr:"Villa familiale organisée en L autour d'une piscine à débordement, avec un large auvent en porte-à-faux qui protège les baies vitrées du soleil de l'après-midi. Le bois vertical rythme la façade et adoucit l'échelle du volume principal.",
+      en:"An L-shaped family villa organised around an infinity pool, with a wide cantilevered canopy shielding the glazed façades from the afternoon sun. Vertical timber slats rhythm the façade and soften the scale of the main volume.",
+      ar:"فيلا عائلية على شكل حرف L تنتظم حول مسبح لا متناهي، مع مظلة بارزة عريضة تحمي الواجهات الزجاجية من شمس بعد الظهر. تُوقّع الألواح الخشبية العمودية إيقاع الواجهة وتُلطّف حجم الكتلة الرئيسية."
+    },
+    hero:'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'siege-alwifaq', title:'SIÈGE AL WIFAQ', year:'2020', surface:'3 100 m²',
+    loc:{fr:'Tétouan',en:'Tetouan',ar:'تطوان'},
+    cat:{fr:'Tertiaire — Bureaux',en:'Commercial — Offices',ar:'مكاتب — إداري'},
+    metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
+    desc:{
+      fr:"Siège administratif organisé sur cinq niveaux autour d'un atrium central végétalisé. La résille en aluminium perforé qui enveloppe le bâtiment filtre l'ensoleillement direct tout en générant un dessin d'ombres changeant au fil de la journée.",
+      en:"An administrative headquarters organised over five levels around a planted central atrium. The perforated aluminium screen wrapping the building filters direct sunlight while casting a shifting pattern of shadows through the day.",
+      ar:"مقر إداري ينتظم على خمسة طوابق حول فناء مركزي مزروع. تعمل الشبكة المعدنية المثقبة التي تلف المبنى على تصفية أشعة الشمس المباشرة مع رسم أنماط ظل متغيرة على مدار اليوم."
+    },
+    hero:'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1524230572899-a752b3835840?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'villa-h', title:'VILLA H', year:'2022', surface:'610 m²',
+    loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
+    cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
+    metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    desc:{
+      fr:"Villa d'angle sur un terrain en pente, dont les niveaux se décalent pour suivre la topographie. Un escalier extérieur en pierre relie le jardin haut à la terrasse basse, ouverte sur la baie.",
+      en:"A corner villa on a sloping plot, its levels stepping down to follow the topography. An outdoor stone stair links the upper garden to the lower terrace, open to the bay.",
+      ar:"فيلا زاوية على أرض منحدرة، تتدرج مستوياتها لتتبع الطبوغرافيا. يربط درج حجري خارجي الحديقة العلوية بالتراس السفلي المطل على الخليج."
+    },
+    hero:'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'immeuble-d', title:'IMMEUBLE RÉSIDENTIEL D', year:'2021', surface:'4 200 m²',
+    loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
+    cat:{fr:'Résidentiel — Collectif',en:'Residential — Multi-unit',ar:'سكني — جماعي'},
+    metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    desc:{
+      fr:"Immeuble de 32 appartements organisé autour d'un rez-de-chaussée planté, avec loggias filantes qui prolongent chaque logement vers l'extérieur.",
+      en:"A 32-unit apartment building organised around a planted ground floor, with continuous loggias extending each home outward.",
+      ar:"عمارة من 32 شقة تنتظم حول طابق أرضي مزروع، مع لوجيات ممتدة تُطيل كل مسكن نحو الخارج."
+    },
+    hero:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'complexe-kaa-assrass', title:'COMPLEXE RÉSIDENTIEL', year:'2024', surface:'6 800 m²',
+    loc:{fr:'Kaa Assrass',en:'Kaa Assrass',ar:'قاع السرس'},
+    cat:{fr:'Résidentiel — Lotissement',en:'Residential — Masterplan',ar:'سكني — تجزئة'},
+    metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    desc:{
+      fr:"Plan d'ensemble pour un lotissement de 40 villas, structuré autour d'une trame paysagère et d'un réseau de venelles piétonnes inspiré du parcellaire traditionnel.",
+      en:"A masterplan for a 40-villa development, structured around a landscaped grid and a network of pedestrian lanes inspired by traditional plot patterns.",
+      ar:"مخطط شامل لتجزئة من 40 فيلا، منظم حول شبكة مناظر طبيعية وشبكة من الأزقة المخصصة للمشاة مستوحاة من التقسيم العقاري التقليدي."
+    },
+    hero:'https://images.unsplash.com/photo-1524230572899-a752b3835840?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'centre-mre', title:"CENTRE D'ACCUEIL MRE", year:'2021', surface:'1 200 m²',
+    loc:{fr:'Béni Mellal',en:'Beni Mellal',ar:'بني ملال'},
+    cat:{fr:'Équipement',en:'Public Facility',ar:'تجهيز عمومي'},
+    metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    desc:{
+      fr:"Centre d'accueil pour les Marocains résidant à l'étranger, conçu comme un socle de pierre locale surmonté d'un volume en porte-à-faux qui marque l'entrée du site.",
+      en:"A welcome centre for Moroccans living abroad, conceived as a local-stone plinth topped by a cantilevered volume marking the site's entrance.",
+      ar:"مركز استقبال للجالية المغربية بالخارج، صُمم كقاعدة من الحجر المحلي يعلوها حجم بارز يحدد مدخل الموقع."
+    },
+    hero:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?q=80&w=900&auto=format&fit=crop'
+    ]
+  },
+  {
+    id:'acces-zone-industrielle', title:'ACCÈS ZONE INDUSTRIELLE', year:'2023', surface:'—',
+    loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
+    cat:{fr:'Industriel',en:'Industrial',ar:'صناعي'},
+    metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    desc:{
+      fr:"Bâtiment de contrôle d'accès pour une zone industrielle portuaire, pensé comme un repère simple et robuste, visible depuis les axes de circulation environnants.",
+      en:"An access-control building for a port-side industrial zone, conceived as a simple, robust landmark visible from the surrounding roads.",
+      ar:"مبنى لمراقبة الدخول إلى منطقة صناعية مينائية، صُمم كمعلم بسيط ومتين، مرئي من الطرق المحيطة."
+    },
+    hero:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1600&auto=format&fit=crop',
+    gallery:[
+      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524230572899-a752b3835840?q=80&w=900&auto=format&fit=crop'
+    ]
+  }
+];
+
+const sfItems = [
+  { sheet:'A-01', title:{fr:'ARCHITECTURE',en:'ARCHITECTURE',ar:'العمارة'},
+    desc:{fr:'Conception, mission complète, études de faisabilité et permis de construire pour projets résidentiels et hôteliers.',
+          en:'Design, full-service commissions, feasibility studies and building permits for residential and hospitality projects.',
+          ar:'التصميم، المهمة الكاملة، دراسات الجدوى ورخص البناء للمشاريع السكنية والفندقية.'} },
+  { sheet:'A-02', title:{fr:'RÉHABILITATION DU PATRIMOINE',en:'HERITAGE REHABILITATION',ar:'ترميم التراث'},
+    desc:{fr:"Restauration de riads et de bâtis anciens de la médina, dans le respect des matériaux et des techniques d'origine.",
+          en:'Restoration of riads and historic medina buildings, respecting original materials and construction techniques.',
+          ar:'ترميم الرياضات والمباني القديمة في المدينة العتيقة، مع احترام المواد والتقنيات الأصلية.'} },
+  { sheet:'A-03', title:{fr:'DESIGN INTÉRIEUR',en:'INTERIOR DESIGN',ar:'التصميم الداخلي'},
+    desc:{fr:"Aménagements intérieurs, choix des matières et atmosphères, au service de la qualité d'usage des espaces.",
+          en:'Interior fit-outs, material selection and atmosphere, serving the everyday quality of each space.',
+          ar:'التهيئات الداخلية، اختيار المواد والأجواء، في خدمة جودة استخدام الفضاءات.'} },
+  { sheet:'A-04', title:{fr:"MAÎTRISE D'ŒUVRE",en:'SITE SUPERVISION',ar:'إدارة الأشغال'},
+    desc:{fr:"Suivi de chantier, direction des travaux, dessins d'exécution jusqu'à la réception de l'ouvrage.",
+          en:'Site follow-up, works management and execution drawings through to final handover.',
+          ar:'متابعة الورش، إدارة الأشغال، مخططات التنفيذ حتى تسليم المشروع.'} }
+];
+
+/* ===================== TRANSLATIONS ===================== */
+const dict = {
+  fr:{
+    tagline:"Atelier d'architecture — Tanger, Maroc",
+    scrollCue:'DÉFILER POUR DÉCOUVRIR',
+    aboutHeading:'DES ESPACES SOBRES,<br>ANCRÉS ET<br>INTEMPORELS.',
+    aboutPara1:"L'Atelier Haytham Mribah conçoit une architecture attentive au site, à la lumière du détroit et aux usages réels de ceux qui habitent les lieux. Basé à Tanger, l'atelier intervient sur des projets résidentiels, hôteliers et de réhabilitation du patrimoine, au Maroc comme à l'international.",
+    aboutPara2:"Chaque projet part d'une lecture précise du contexte — climat, matière, topographie — pour aboutir à des espaces clairs, maîtrisés et construits pour durer.",
+    stat1:'PROJETS LIVRÉS', stat2:"ANNÉES D'EXERCICE", stat3:'VILLES AU MAROC', stat4:"PAYS D'INTERVENTION",
+    eyebrowPortfolio:'Portfolio',
+    projectsHeading:'PROJETS<br>SÉLECTIONNÉS',
+    projectsDesc:'Une sélection de réalisations récentes, entre résidences privées, programmes hôteliers et réhabilitations du patrimoine.',
+    viewTag:'VOIR LE PROJET',
+    viewAllBtn:'VOIR TOUS LES PROJETS',
+    viewLessBtn:'AFFICHER MOINS',
+    philosophyQuote:"« Construire à Tanger, c'est composer avec la lumière du détroit et la mémoire de la médina — jamais contre elles. »",
+    philosophyCite:'— HAYTHAM MRIBAH, FONDATEUR',
+    eyebrowCompetences:'Compétences',
+    sfHeading:'SAVOIR-FAIRE',
+    sfDesc:"De l'esquisse à la réception du chantier, une mission complète, précise et suivie.",
+    sfSheetLabel:'FEUILLE',
+    ctaEyebrow:'Un projet à Tanger ou ailleurs ?',
+    ctaHeading:'PARLONS-EN.',
+    ctaSub:'CONTACT@ATELIERHM.MA — TANGER, MAROC',
+    ctaBtn:'PRENDRE CONTACT',
+    footTag:'Atelier Haytham Mribah<br>Architecture, Patrimoine, Design.',
+    footAgency:'AGENCE',
+    footCity:'Tanger',
+    footAddr:'12, Avenue Mohammed VI<br>Résidence Amerchich, étage 3<br>90000 — Tanger, Maroc',
+    footContact:'CONTACT',
+    footPhone:'Tél. +212 539 00 00 00',
+    footInsta:'Instagram — @atelierhaythammribah',
+    footCopy:'© 2026 ATELIER HAYTHAM MRIBAH — TOUS DROITS RÉSERVÉS',
+    footLegal:'MENTIONS LÉGALES',
+    metaCat:'CATÉGORIE', metaYear:'ANNÉE', metaSurf:'SURFACE',
+    backToProjects:'RETOUR AUX PROJETS',
+    metaLieu:'LIEU', metaProgramme:'PROGRAMME', metaMetier:'MÉTIER', metaAnnee:'ANNÉE', metaSurface:'SURFACE',
+    otherProjectsHeading:'AUTRES PROJETS',
+    otherProjectsSub:'Continuer la navigation dans les projets.'
+  },
+  en:{
+    tagline:'Architecture studio — Tangier, Morocco',
+    scrollCue:'SCROLL TO DISCOVER',
+    aboutHeading:'QUIET SPACES,<br>GROUNDED AND<br>TIMELESS.',
+    aboutPara1:'Atelier Haytham Mribah designs architecture attentive to its site, to the light of the strait, and to the real habits of the people who use each place. Based in Tangier, the studio works on residential, hospitality and heritage-rehabilitation projects, in Morocco and abroad.',
+    aboutPara2:'Every project starts from a precise reading of context — climate, material, topography — to arrive at spaces that are clear, controlled and built to last.',
+    stat1:'PROJECTS DELIVERED', stat2:'YEARS IN PRACTICE', stat3:'CITIES IN MOROCCO', stat4:'COUNTRIES OF PRACTICE',
+    eyebrowPortfolio:'Portfolio',
+    projectsHeading:'SELECTED<br>PROJECTS',
+    projectsDesc:'A selection of recent work, spanning private residences, hospitality programmes and heritage rehabilitations.',
+    viewTag:'VIEW PROJECT',
+    viewAllBtn:'VIEW ALL PROJECTS',
+    viewLessBtn:'VIEW LESS',
+    philosophyQuote:'"Building in Tangier means working with the light of the strait and the memory of the medina — never against them."',
+    philosophyCite:'— HAYTHAM MRIBAH, FOUNDER',
+    eyebrowCompetences:'Expertise',
+    sfHeading:'EXPERTISE',
+    sfDesc:'From first sketch to final handover, a complete, precise and closely followed commission.',
+    sfSheetLabel:'SHEET',
+    ctaEyebrow:'A project in Tangier or elsewhere?',
+    ctaHeading:"LET'S TALK.",
+    ctaSub:'CONTACT@ATELIERHM.MA — TANGIER, MOROCCO',
+    ctaBtn:'GET IN TOUCH',
+    footTag:'Atelier Haytham Mribah<br>Architecture, Heritage, Design.',
+    footAgency:'STUDIO',
+    footCity:'Tangier',
+    footAddr:'12, Avenue Mohammed VI<br>Amerchich Residence, 3rd floor<br>90000 — Tangier, Morocco',
+    footContact:'CONTACT',
+    footPhone:'Tel. +212 539 00 00 00',
+    footInsta:'Instagram — @atelierhaythammribah',
+    footCopy:'© 2026 ATELIER HAYTHAM MRIBAH — ALL RIGHTS RESERVED',
+    footLegal:'LEGAL NOTICE',
+    metaCat:'CATEGORY', metaYear:'YEAR', metaSurf:'AREA',
+    backToProjects:'BACK TO PROJECTS',
+    metaLieu:'LOCATION', metaProgramme:'PROGRAMME', metaMetier:'DISCIPLINE', metaAnnee:'YEAR', metaSurface:'AREA',
+    otherProjectsHeading:'OTHER PROJECTS',
+    otherProjectsSub:'Continue exploring the portfolio.'
+  },
+  ar:{
+    tagline:'مكتب هندسة معمارية — طنجة، المغرب',
+    scrollCue:'مرّر للاكتشاف',
+    aboutHeading:'فضاءات هادئة،<br>راسخة وخالدة.',
+    aboutPara1:'يصمم أتيليه هيثم مريباح عمارة تراعي الموقع، وضوء المضيق، والاستخدام الحقيقي لمن يسكنون الأماكن. ومقره طنجة، يعمل الأتيليه على مشاريع سكنية وفندقية وترميم للتراث، داخل المغرب وخارجه.',
+    aboutPara2:'ينطلق كل مشروع من قراءة دقيقة للسياق — المناخ، المادة، الطبوغرافيا — للوصول إلى فضاءات واضحة، مضبوطة ومبنية لتدوم.',
+    stat1:'مشروعاً منجزاً', stat2:'سنوات من الممارسة', stat3:'مدن في المغرب', stat4:'دول التدخل',
+    eyebrowPortfolio:'أعمال مختارة',
+    projectsHeading:'مشاريع مختارة',
+    projectsDesc:'مجموعة مختارة من الأعمال الحديثة، بين مساكن خاصة وبرامج فندقية وترميمات تراثية.',
+    viewTag:'عرض المشروع',
+    viewAllBtn:'عرض جميع المشاريع',
+    viewLessBtn:'عرض أقل',
+    philosophyQuote:'«البناء في طنجة يعني التعامل مع ضوء المضيق وذاكرة المدينة العتيقة — لا العمل ضدهما أبداً.»',
+    philosophyCite:'— هيثم مريباح، المؤسس',
+    eyebrowCompetences:'الخبرات',
+    sfHeading:'الخبرات',
+    sfDesc:'من الرسم الأول إلى تسليم المشروع، مهمة كاملة ودقيقة ومتابَعة عن قرب.',
+    sfSheetLabel:'لوحة',
+    ctaEyebrow:'مشروع في طنجة أو في مكان آخر؟',
+    ctaHeading:'لنتحدث.',
+    ctaSub:'CONTACT@ATELIERHM.MA — طنجة، المغرب',
+    ctaBtn:'تواصل معنا',
+    footTag:'أتيليه هيثم مريباح<br>عمارة، تراث، تصميم.',
+    footAgency:'المكتب',
+    footCity:'طنجة',
+    footAddr:'12، شارع محمد السادس<br>إقامة أمرشيش، الطابق 3<br>90000 — طنجة، المغرب',
+    footContact:'اتصال',
+    footPhone:'هاتف. 00 00 00 539 212+',
+    footInsta:'إنستغرام — atelierhaythammribah@',
+    footCopy:'© 2026 أتيليه هيثم مريباح — جميع الحقوق محفوظة',
+    footLegal:'الإشعار القانوني',
+    metaCat:'الفئة', metaYear:'السنة', metaSurf:'المساحة',
+    backToProjects:'العودة إلى المشاريع',
+    metaLieu:'الموقع', metaProgramme:'البرنامج', metaMetier:'التخصص', metaAnnee:'السنة', metaSurface:'المساحة',
+    otherProjectsHeading:'مشاريع أخرى',
+    otherProjectsSub:'تابع استكشاف الأعمال.'
+  }
+};
+
+let currentLang = 'fr';
+let slideIndex = 0;
+let slideTimer = null;
+
+/* ===================== HERO MARK ANIMATION ===================== */
+const heroMark = document.querySelector('.hero-mark');
+requestAnimationFrame(()=>{
+  requestAnimationFrame(()=>{
+    heroMark.classList.add('loaded', 'filled');
+  });
+});
+
+/* ===================== RENDER: HERO SLIDER ===================== */
+const heroSliderEl = document.getElementById('heroSlider');
+function buildSlides(){
+  document.querySelectorAll('.slide').forEach(s=>s.remove());
+  heroSlides.forEach((s,i)=>{
+    const div = document.createElement('div');
+    div.className = 'slide' + (i===0 ? ' active' : '');
+    div.innerHTML = '<img src="'+s.img+'" alt="'+s.title+'"><div class="scrim"></div>';
+    heroSliderEl.prepend(div);
+  });
+}
+function renderSliderCaption(){
+  const s = heroSlides[slideIndex];
+  document.getElementById('sliderCaptionText').innerHTML =
+    '<span class="title">'+s.title+'</span><span>'+s.loc[currentLang]+'</span>';
+  document.querySelectorAll('#sliderDots button').forEach((d,i)=>d.classList.toggle('on', i===slideIndex));
+  document.querySelectorAll('.slide').forEach((el,i)=>el.classList.toggle('active', i===slideIndex));
+}
+function buildDots(){
+  const dotsEl = document.getElementById('sliderDots');
+  dotsEl.innerHTML='';
+  heroSlides.forEach((s,i)=>{
+    const b = document.createElement('button');
+    if(i===slideIndex) b.classList.add('on');
+    b.addEventListener('click', ()=>{ goToSlide(i); resetTimer(); });
+    dotsEl.appendChild(b);
+  });
+}
+function goToSlide(i){
+  slideIndex = (i + heroSlides.length) % heroSlides.length;
+  renderSliderCaption();
+}
+function resetTimer(){
+  clearInterval(slideTimer);
+  slideTimer = setInterval(()=>goToSlide(slideIndex+1), 5500);
+}
+document.getElementById('prevArrow').addEventListener('click', ()=>{ goToSlide(slideIndex-1); resetTimer(); });
+document.getElementById('nextArrow').addEventListener('click', ()=>{ goToSlide(slideIndex+1); resetTimer(); });
+heroSliderEl.addEventListener('mouseenter', ()=>clearInterval(slideTimer));
+heroSliderEl.addEventListener('mouseleave', resetTimer);
+
+/* ===================== RENDER: PROJECTS ===================== */
+const projectGrid = document.getElementById('projectGrid');
+const viewAllBtn = document.getElementById('viewAllBtn');
+const INITIAL_PROJECT_COUNT = 6;
+let projectsExpanded = false;
+
+function cardHTML(p){
+  return '<a class="card" data-id="'+p.id+'" href="#project/'+p.id+'">'+
+      '<div class="imgwrap"><img src="'+p.hero+'" alt="'+p.title+'"></div>'+
+      '<div class="scrim"></div>'+
+      '<div class="tag">'+dict[currentLang].viewTag+'</div>'+
+      '<div class="info">'+
+        '<div class="loc">'+p.loc[currentLang]+'</div>'+
+        '<div class="title">'+p.title+'</div>'+
+        '<div class="cat">'+p.cat[currentLang]+'</div>'+
+      '</div>'+
+    '</a>';
+}
+
+function renderProjects(){
+  const visible = projectsExpanded ? projects : projects.slice(0, INITIAL_PROJECT_COUNT);
+  projectGrid.innerHTML = visible.map(cardHTML).join('');
+
+  if(projects.length > INITIAL_PROJECT_COUNT){
+    viewAllBtn.style.display = 'inline-block';
+    viewAllBtn.textContent = projectsExpanded ? dict[currentLang].viewLessBtn : dict[currentLang].viewAllBtn;
+  } else {
+    viewAllBtn.style.display = 'none';
+  }
+}
+
+viewAllBtn.addEventListener('click', ()=>{
+  projectsExpanded = !projectsExpanded;
+  renderProjects();
+  if(!projectsExpanded){
+    document.getElementById('projects').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+
+/* ===================== RENDER: SAVOIR-FAIRE ===================== */
+const sfGrid = document.getElementById('sfGrid');
+function renderSF(){
+  sfGrid.innerHTML = sfItems.map(it=>(
+    '<div class="sf-item">'+
+      '<div class="sheet">'+dict[currentLang].sfSheetLabel+' '+it.sheet+'</div>'+
+      '<h3>'+it.title[currentLang]+'</h3>'+
+      '<p>'+it.desc[currentLang]+'</p>'+
+      '<div class="cross"></div>'+
+    '</div>'
+  )).join('');
+}
+
+/* ===================== PROJECT DETAIL PAGE + ROUTING ===================== */
+const homeView = document.getElementById('homeView');
+const projectView = document.getElementById('projectView');
+let currentProjectId = null;
+
+function otherProjectsFor(id){
+  const idx = projects.findIndex(p=>p.id===id);
+  const others = [];
+  for(let i=1; i<projects.length && others.length<2; i++){
+    others.push(projects[(idx+i) % projects.length]);
+  }
+  return others;
+}
+
+function renderProjectPage(id){
+  const p = projects.find(x=>x.id===id);
+  if(!p) return false;
+  currentProjectId = id;
+
+  document.getElementById('ppCat').textContent = p.cat[currentLang];
+  document.getElementById('ppTitle').textContent = p.title;
+  document.getElementById('ppLieu').textContent = p.loc[currentLang];
+  document.getElementById('ppProgramme').textContent = p.cat[currentLang];
+  document.getElementById('ppMetier').textContent = p.metier ? p.metier[currentLang] : '';
+  document.getElementById('ppAnnee').textContent = p.year;
+  document.getElementById('ppSurface').textContent = p.surface;
+  document.getElementById('ppHeroImg').src = p.hero;
+  document.getElementById('ppHeroImg').alt = p.title;
+  document.getElementById('ppDesc').textContent = p.desc[currentLang];
+  document.getElementById('ppGallery').innerHTML = p.gallery.map(g=>'<div><img src="'+g+'" alt="'+p.title+'"></div>').join('');
+
+  const others = otherProjectsFor(id);
+  document.getElementById('ppOtherGrid').innerHTML = others.map(cardHTML).join('');
+
+  document.title = p.title + ' — Atelier Haytham Mribah';
+  return true;
+}
+
+function showHome(){
+  homeView.style.display = '';
+  projectView.style.display = 'none';
+  document.title = "Atelier Haytham Mribah — Architecture, Tanger";
+  currentProjectId = null;
+}
+function showProjectView(id){
+  const ok = renderProjectPage(id);
+  if(!ok){ showHome(); return; }
+  homeView.style.display = 'none';
+  projectView.style.display = '';
+  window.scrollTo(0,0);
+}
+function routeFromHash(){
+  const m = location.hash.match(/^#project\/(.+)$/);
+  if(m){ showProjectView(decodeURIComponent(m[1])); }
+  else { showHome(); }
+}
+window.addEventListener('hashchange', routeFromHash);
+document.getElementById('ppBack').addEventListener('click', (e)=>{
+  e.preventDefault();
+  location.hash = '';
+});
+
+/* ===================== LANGUAGE ===================== */
+function applyStaticText(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(dict[currentLang][key] !== undefined) el.textContent = dict[currentLang][key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-html');
+    if(dict[currentLang][key] !== undefined) el.innerHTML = dict[currentLang][key];
+  });
+}
+function setLanguage(lang){
+  currentLang = lang;
+  document.body.classList.toggle('rtl', lang==='ar');
+  document.documentElement.setAttribute('dir', lang==='ar' ? 'rtl' : 'ltr');
+  document.documentElement.setAttribute('lang', lang);
+  document.querySelectorAll('#langNav button').forEach(b=>b.classList.toggle('active', b.getAttribute('data-lang')===lang));
+  applyStaticText();
+  renderSliderCaption();
+  renderProjects();
+  renderSF();
+  if(currentProjectId){ renderProjectPage(currentProjectId); }
+}
+document.querySelectorAll('#langNav button').forEach(b=>{
+  b.addEventListener('click', ()=>setLanguage(b.getAttribute('data-lang')));
+});
+
+/* ===================== INIT ===================== */
+buildSlides();
+buildDots();
+renderProjects();
+renderSF();
+setLanguage('fr');
+resetTimer();
+routeFromHash();
+
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, {threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
