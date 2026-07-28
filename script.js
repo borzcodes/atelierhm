@@ -1,3 +1,30 @@
+/* ===================== SECURITY HELPERS =====================
+   This is a static, backend-less site: no forms submit anywhere, no
+   API endpoints, no database. The two things that ARE real attack
+   surface on a page like this are (1) any value that ends up in
+   innerHTML, and (2) the URL hash, which is attacker-controlled
+   (a visitor can craft a link like #project/<anything>).
+   Both are handled below: every interpolated string is HTML-escaped
+   before insertion, and the hash is matched against a strict slug
+   pattern before ever being used to look anything up. */
+
+// Escape untrusted/dynamic text before it is concatenated into innerHTML.
+function escapeHTML(str){
+  return String(str).replace(/[&<>"']/g, (c) => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+// Only allow simple slugs (letters, numbers, hyphens) out of the URL hash.
+// Anything else is rejected outright instead of being passed along.
+const SAFE_SLUG = /^[a-z0-9-]{1,60}$/i;
+function sanitizeSlug(raw){
+  if(typeof raw !== 'string') return null;
+  const decoded = (() => { try { return decodeURIComponent(raw); } catch(e){ return null; } })();
+  if(decoded === null) return null;
+  return SAFE_SLUG.test(decoded) ? decoded : null;
+}
+
 /* ===================== DATA ===================== */
 const heroSlides = [
   { img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1800&auto=format&fit=crop', title:'VILLA DAR ARZ', loc:{fr:'TANGER',en:'TANGIER',ar:'طنجة'} },
@@ -8,20 +35,21 @@ const heroSlides = [
 
 const projects = [
   {
-    id:'villa-m', title:'VILLA M', year:'2023', surface:'480 m²',
-    loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
-    cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
-    metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    id:'hopital-tetouan', title:'HÔPITAL DE TÉTOUAN', year:'2024', surface:'22 000 m²',
+    loc:{fr:'Tétouan',en:'Tetouan',ar:'تطوان'},
+    cat:{fr:'Équipement — Santé',en:'Public Facility — Healthcare',ar:'تجهيز — صحة'},
+    metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    categories:['architecture','urbanisme'],
     desc:{
-      fr:"Implantée sur les hauteurs de Tanger, la Villa M organise ses volumes autour d'une cour intérieure protégée du vent. Les façades en béton taloché et les brise-soleil en bois local filtrent une lumière franche, tandis que le plan libre du rez-de-chaussée ouvre largement sur la piscine et le jardin.",
-      en:"Set on the hills of Tangier, Villa M organises its volumes around an interior courtyard sheltered from the wind. Trowel-finished concrete façades and local timber brise-soleil filter the bright coastal light, while the open ground-floor plan extends widely onto the pool and garden.",
-      ar:"تقع فيلا M على مرتفعات طنجة، وتنظّم كتلها حول فناء داخلي محمي من الرياح. تعمل واجهات الخرسانة المصقولة وكاسرات الشمس الخشبية المحلية على تنقية الضوء الساطع، بينما ينفتح المخطط الحر للطابق الأرضي بشكل واسع على المسبح والحديقة."
+      fr:"L'hôpital provincial de Tétouan déploie ses unités d'hospitalisation en peigne autour d'une trame de patios plantés, pensée pour apporter lumière naturelle et calme aux espaces de soin. À l'entrée, un large auvent en caillebotis de bois protège le parvis et distingue les flux piétons du dépose-minute et des ambulances. En fond de parcelle, le plateau médico-technique et la zone logistique s'organisent autour d'un axe de distribution unique, au bénéfice de la clarté des circulations comme de la maintenance du bâtiment.",
+      en:"The Tétouan provincial hospital arranges its hospitalisation wings in a comb layout around a grid of planted patios, designed to bring natural light and calm to the care spaces. At the entrance, a wide timber-slat canopy shelters the forecourt and separates pedestrian flows from the drop-off and ambulance bay. At the rear of the plot, the medical-technical platform and logistics zone are organised around a single distribution spine, benefiting both the clarity of circulation and the building's maintenance.",
+      ar:"يوزّع المستشفى الإقليمي بتطوان أجنحة الاستشفاء على شكل مشط حول شبكة من الأفنية المشجّرة، صُممت لإدخال الضوء الطبيعي والهدوء إلى فضاءات العناية. عند المدخل، تحمي مظلة خشبية عريضة الساحة الأمامية وتفصل حركة المشاة عن منطقة النزول وسيارات الإسعاف. في مؤخرة القطعة، ينتظم الطابق الطبي التقني ومنطقة اللوجستيك حول محور توزيع واحد، لفائدة وضوح التنقلات وصيانة المبنى."
     },
-    hero:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop',
+    hero:'images/hopital-tetouan-entrance.jpg',
     gallery:[
-      'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?q=80&w=900&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=900&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=900&auto=format&fit=crop'
+      'images/hopital-tetouan-aerial.jpg',
+      'images/hopital-tetouan-concept.png',
+      'images/hopital-tetouan-plan.png'
     ]
   },
   {
@@ -29,6 +57,7 @@ const projects = [
     loc:{fr:'Tanger — Kasbah',en:'Tangier — Kasbah',ar:'طنجة — القصبة'},
     cat:{fr:'Réhabilitation — Patrimoine',en:'Rehabilitation — Heritage',ar:'ترميم — تراث'},
     metier:{fr:'Architecture · Réhabilitation',en:'Architecture · Rehabilitation',ar:'العمارة · الترميم'},
+    categories:['architecture'],
     desc:{
       fr:"Restauration complète d'un riad du XIXe siècle dans la Kasbah, mené en collaboration avec des maalems locaux. Les enduits à la chaux, les zelliges d'origine et la charpente en cèdre ont été conservés ou refaits à l'identique, autour d'un patio central rouvert à la lumière du ciel.",
       en:"Complete restoration of a 19th-century riad in the Kasbah, carried out with local master craftsmen. Lime plasters, original zellige tilework and cedar framing were preserved or rebuilt to match, around a central patio reopened to the sky.",
@@ -46,6 +75,7 @@ const projects = [
     loc:{fr:'Malabata',en:'Malabata',ar:'مالاباطا'},
     cat:{fr:'Résidentiel — Collectif',en:'Residential — Multi-unit',ar:'سكني — جماعي'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    categories:['architecture','urbanisme'],
     desc:{
       fr:"Un ensemble résidentiel de 24 logements face à la baie de Tanger, pensé en terrasses successives pour préserver la vue de chaque unité. Les volumes blancs et les garde-corps en métal ajouré reprennent le vocabulaire balnéaire de la côte nord.",
       en:"A residential complex of 24 units facing Tangier bay, arranged in successive terraces to preserve each unit's view. White volumes and perforated metal railings echo the seaside vocabulary of the northern coast.",
@@ -63,6 +93,7 @@ const projects = [
     loc:{fr:'Asilah',en:'Asilah',ar:'أصيلة'},
     cat:{fr:'Hospitality — Boutique-hôtel',en:'Hospitality — Boutique hotel',ar:'ضيافة — فندق بوتيك'},
     metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
+    categories:['architecture','interior'],
     desc:{
       fr:"Un boutique-hôtel de 18 chambres aux portes d'Asilah, organisé autour d'un jardin d'agrumes. La palette de matières — chaux, bois brûlé, terre cuite — installe une atmosphère sobre, en continuité avec l'architecture blanche de la médina voisine.",
       en:"An 18-room boutique hotel at the gates of Asilah, arranged around a citrus garden. The material palette — lime, charred wood, terracotta — sets a quiet mood, continuing the white architecture of the nearby medina.",
@@ -80,6 +111,7 @@ const projects = [
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
     metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    categories:['architecture'],
     desc:{
       fr:"Villa familiale organisée en L autour d'une piscine à débordement, avec un large auvent en porte-à-faux qui protège les baies vitrées du soleil de l'après-midi. Le bois vertical rythme la façade et adoucit l'échelle du volume principal.",
       en:"An L-shaped family villa organised around an infinity pool, with a wide cantilevered canopy shielding the glazed façades from the afternoon sun. Vertical timber slats rhythm the façade and soften the scale of the main volume.",
@@ -97,6 +129,7 @@ const projects = [
     loc:{fr:'Tétouan',en:'Tetouan',ar:'تطوان'},
     cat:{fr:'Tertiaire — Bureaux',en:'Commercial — Offices',ar:'مكاتب — إداري'},
     metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
+    categories:['architecture','interior'],
     desc:{
       fr:"Siège administratif organisé sur cinq niveaux autour d'un atrium central végétalisé. La résille en aluminium perforé qui enveloppe le bâtiment filtre l'ensoleillement direct tout en générant un dessin d'ombres changeant au fil de la journée.",
       en:"An administrative headquarters organised over five levels around a planted central atrium. The perforated aluminium screen wrapping the building filters direct sunlight while casting a shifting pattern of shadows through the day.",
@@ -114,6 +147,7 @@ const projects = [
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
     metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    categories:['architecture'],
     desc:{
       fr:"Villa d'angle sur un terrain en pente, dont les niveaux se décalent pour suivre la topographie. Un escalier extérieur en pierre relie le jardin haut à la terrasse basse, ouverte sur la baie.",
       en:"A corner villa on a sloping plot, its levels stepping down to follow the topography. An outdoor stone stair links the upper garden to the lower terrace, open to the bay.",
@@ -131,6 +165,7 @@ const projects = [
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Résidentiel — Collectif',en:'Residential — Multi-unit',ar:'سكني — جماعي'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    categories:['architecture','urbanisme'],
     desc:{
       fr:"Immeuble de 32 appartements organisé autour d'un rez-de-chaussée planté, avec loggias filantes qui prolongent chaque logement vers l'extérieur.",
       en:"A 32-unit apartment building organised around a planted ground floor, with continuous loggias extending each home outward.",
@@ -148,6 +183,7 @@ const projects = [
     loc:{fr:'Kaa Assrass',en:'Kaa Assrass',ar:'قاع السرس'},
     cat:{fr:'Résidentiel — Lotissement',en:'Residential — Masterplan',ar:'سكني — تجزئة'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    categories:['architecture','urbanisme'],
     desc:{
       fr:"Plan d'ensemble pour un lotissement de 40 villas, structuré autour d'une trame paysagère et d'un réseau de venelles piétonnes inspiré du parcellaire traditionnel.",
       en:"A masterplan for a 40-villa development, structured around a landscaped grid and a network of pedestrian lanes inspired by traditional plot patterns.",
@@ -165,6 +201,7 @@ const projects = [
     loc:{fr:'Béni Mellal',en:'Beni Mellal',ar:'بني ملال'},
     cat:{fr:'Équipement',en:'Public Facility',ar:'تجهيز عمومي'},
     metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
+    categories:['architecture'],
     desc:{
       fr:"Centre d'accueil pour les Marocains résidant à l'étranger, conçu comme un socle de pierre locale surmonté d'un volume en porte-à-faux qui marque l'entrée du site.",
       en:"A welcome centre for Moroccans living abroad, conceived as a local-stone plinth topped by a cantilevered volume marking the site's entrance.",
@@ -182,6 +219,7 @@ const projects = [
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Industriel',en:'Industrial',ar:'صناعي'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
+    categories:['architecture','urbanisme'],
     desc:{
       fr:"Bâtiment de contrôle d'accès pour une zone industrielle portuaire, pensé comme un repère simple et robuste, visible depuis les axes de circulation environnants.",
       en:"An access-control building for a port-side industrial zone, conceived as a simple, robust landmark visible from the surrounding roads.",
@@ -229,6 +267,7 @@ const dict = {
     projectsDesc:'Une sélection de réalisations récentes, entre résidences privées, programmes hôteliers et réhabilitations du patrimoine.',
     viewTag:'VOIR LE PROJET',
     viewAllBtn:'VOIR TOUS LES PROJETS',
+    filterAll:'TOUS', filterArchitecture:'ARCHITECTURE', filterUrbanisme:'URBANISME', filterInterior:'DESIGN INTÉRIEUR',
     viewLessBtn:'AFFICHER MOINS',
     philosophyQuote:"« Construire à Tanger, c'est composer avec la lumière du détroit et la mémoire de la médina — jamais contre elles. »",
     philosophyCite:'— HAYTHAM MRIBAH, FONDATEUR',
@@ -267,6 +306,7 @@ const dict = {
     projectsDesc:'A selection of recent work, spanning private residences, hospitality programmes and heritage rehabilitations.',
     viewTag:'VIEW PROJECT',
     viewAllBtn:'VIEW ALL PROJECTS',
+    filterAll:'ALL', filterArchitecture:'ARCHITECTURE', filterUrbanisme:'URBAN PLANNING', filterInterior:'INTERIOR DESIGN',
     viewLessBtn:'VIEW LESS',
     philosophyQuote:'"Building in Tangier means working with the light of the strait and the memory of the medina — never against them."',
     philosophyCite:'— HAYTHAM MRIBAH, FOUNDER',
@@ -305,6 +345,7 @@ const dict = {
     projectsDesc:'مجموعة مختارة من الأعمال الحديثة، بين مساكن خاصة وبرامج فندقية وترميمات تراثية.',
     viewTag:'عرض المشروع',
     viewAllBtn:'عرض جميع المشاريع',
+    filterAll:'الكل', filterArchitecture:'العمارة', filterUrbanisme:'التعمير', filterInterior:'التصميم الداخلي',
     viewLessBtn:'عرض أقل',
     philosophyQuote:'«البناء في طنجة يعني التعامل مع ضوء المضيق وذاكرة المدينة العتيقة — لا العمل ضدهما أبداً.»',
     philosophyCite:'— هيثم مريباح، المؤسس',
@@ -352,14 +393,14 @@ function buildSlides(){
   heroSlides.forEach((s,i)=>{
     const div = document.createElement('div');
     div.className = 'slide' + (i===0 ? ' active' : '');
-    div.innerHTML = '<img src="'+s.img+'" alt="'+s.title+'"><div class="scrim"></div>';
+    div.innerHTML = '<img src="'+s.img+'" alt="'+escapeHTML(s.title)+'"><div class="scrim"></div>';
     heroSliderEl.prepend(div);
   });
 }
 function renderSliderCaption(){
   const s = heroSlides[slideIndex];
   document.getElementById('sliderCaptionText').innerHTML =
-    '<span class="title">'+s.title+'</span><span>'+s.loc[currentLang]+'</span>';
+    '<span class="title">'+escapeHTML(s.title)+'</span><span>'+escapeHTML(s.loc[currentLang])+'</span>';
   document.querySelectorAll('#sliderDots button').forEach((d,i)=>d.classList.toggle('on', i===slideIndex));
   document.querySelectorAll('.slide').forEach((el,i)=>el.classList.toggle('active', i===slideIndex));
 }
@@ -388,28 +429,58 @@ heroSliderEl.addEventListener('mouseleave', resetTimer);
 
 /* ===================== RENDER: PROJECTS ===================== */
 const projectGrid = document.getElementById('projectGrid');
+const projectFilters = document.getElementById('projectFilters');
 const viewAllBtn = document.getElementById('viewAllBtn');
 const INITIAL_PROJECT_COUNT = 6;
 let projectsExpanded = false;
+let activeFilter = 'all';
+const FILTER_KEYS = ['all', 'architecture', 'urbanisme', 'interior'];
 
 function cardHTML(p){
-  return '<a class="card" data-id="'+p.id+'" href="#project/'+p.id+'">'+
-      '<div class="imgwrap"><img src="'+p.hero+'" alt="'+p.title+'"></div>'+
+  return '<a class="card" data-id="'+escapeHTML(p.id)+'" href="#project/'+encodeURIComponent(p.id)+'">'+
+      '<div class="imgwrap"><img src="'+p.hero+'" alt="'+escapeHTML(p.title)+'"></div>'+
       '<div class="scrim"></div>'+
-      '<div class="tag">'+dict[currentLang].viewTag+'</div>'+
+      '<div class="tag">'+escapeHTML(dict[currentLang].viewTag)+'</div>'+
       '<div class="info">'+
-        '<div class="loc">'+p.loc[currentLang]+'</div>'+
-        '<div class="title">'+p.title+'</div>'+
-        '<div class="cat">'+p.cat[currentLang]+'</div>'+
+        '<div class="loc">'+escapeHTML(p.loc[currentLang])+'</div>'+
+        '<div class="title">'+escapeHTML(p.title)+'</div>'+
+        '<div class="cat">'+escapeHTML(p.cat[currentLang])+'</div>'+
       '</div>'+
     '</a>';
 }
 
+function filterLabelKey(key){
+  return { all:'filterAll', architecture:'filterArchitecture', urbanisme:'filterUrbanisme', interior:'filterInterior' }[key];
+}
+
+function renderFilters(){
+  projectFilters.innerHTML = FILTER_KEYS.map(key=>(
+    '<button data-filter="'+key+'" class="'+(key===activeFilter?'active':'')+'">'+
+      escapeHTML(dict[currentLang][filterLabelKey(key)])+
+    '</button>'
+  )).join('');
+  projectFilters.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.getAttribute('data-filter');
+      if(key === activeFilter) return;
+      activeFilter = key;
+      projectsExpanded = false;
+      renderFilters();
+      renderProjects();
+    });
+  });
+}
+
+function filteredProjects(){
+  return activeFilter === 'all' ? projects : projects.filter(p => p.categories && p.categories.includes(activeFilter));
+}
+
 function renderProjects(){
-  const visible = projectsExpanded ? projects : projects.slice(0, INITIAL_PROJECT_COUNT);
+  const all = filteredProjects();
+  const visible = projectsExpanded ? all : all.slice(0, INITIAL_PROJECT_COUNT);
   projectGrid.innerHTML = visible.map(cardHTML).join('');
 
-  if(projects.length > INITIAL_PROJECT_COUNT){
+  if(all.length > INITIAL_PROJECT_COUNT){
     viewAllBtn.style.display = 'inline-block';
     viewAllBtn.textContent = projectsExpanded ? dict[currentLang].viewLessBtn : dict[currentLang].viewAllBtn;
   } else {
@@ -430,9 +501,9 @@ const sfGrid = document.getElementById('sfGrid');
 function renderSF(){
   sfGrid.innerHTML = sfItems.map(it=>(
     '<div class="sf-item">'+
-      '<div class="sheet">'+dict[currentLang].sfSheetLabel+' '+it.sheet+'</div>'+
-      '<h3>'+it.title[currentLang]+'</h3>'+
-      '<p>'+it.desc[currentLang]+'</p>'+
+      '<div class="sheet">'+escapeHTML(dict[currentLang].sfSheetLabel)+' '+escapeHTML(it.sheet)+'</div>'+
+      '<h3>'+escapeHTML(it.title[currentLang])+'</h3>'+
+      '<p>'+escapeHTML(it.desc[currentLang])+'</p>'+
       '<div class="cross"></div>'+
     '</div>'
   )).join('');
@@ -467,7 +538,7 @@ function renderProjectPage(id){
   document.getElementById('ppHeroImg').src = p.hero;
   document.getElementById('ppHeroImg').alt = p.title;
   document.getElementById('ppDesc').textContent = p.desc[currentLang];
-  document.getElementById('ppGallery').innerHTML = p.gallery.map(g=>'<div><img src="'+g+'" alt="'+p.title+'"></div>').join('');
+  document.getElementById('ppGallery').innerHTML = p.gallery.map(g=>'<div><img src="'+g+'" alt="'+escapeHTML(p.title)+'"></div>').join('');
 
   const others = otherProjectsFor(id);
   document.getElementById('ppOtherGrid').innerHTML = others.map(cardHTML).join('');
@@ -486,12 +557,13 @@ function showProjectView(id){
   const ok = renderProjectPage(id);
   if(!ok){ showHome(); return; }
   homeView.style.display = 'none';
-  projectView.style.display = '';
+  projectView.style.display = 'block';
   window.scrollTo(0,0);
 }
 function routeFromHash(){
   const m = location.hash.match(/^#project\/(.+)$/);
-  if(m){ showProjectView(decodeURIComponent(m[1])); }
+  const slug = m ? sanitizeSlug(m[1]) : null;
+  if(slug){ showProjectView(slug); }
   else { showHome(); }
 }
 window.addEventListener('hashchange', routeFromHash);
@@ -519,6 +591,7 @@ function setLanguage(lang){
   document.querySelectorAll('#langNav button').forEach(b=>b.classList.toggle('active', b.getAttribute('data-lang')===lang));
   applyStaticText();
   renderSliderCaption();
+  renderFilters();
   renderProjects();
   renderSF();
   if(currentProjectId){ renderProjectPage(currentProjectId); }
@@ -530,6 +603,7 @@ document.querySelectorAll('#langNav button').forEach(b=>{
 /* ===================== INIT ===================== */
 buildSlides();
 buildDots();
+renderFilters();
 renderProjects();
 renderSF();
 setLanguage('fr');

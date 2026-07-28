@@ -371,6 +371,35 @@
   }
   body.rtl .projects-head p, body.rtl .sf-head p{text-align:left;}
 
+  .project-filters{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:36px;
+    margin-bottom:56px;
+    flex-wrap:wrap;
+  }
+  .project-filters button{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    padding:11px 22px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    color:var(--stone);
+    transition:all .25s ease;
+  }
+  .project-filters button:hover{
+    border-color:var(--ink);
+    color:var(--ink);
+  }
+  .project-filters button.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--limestone);
+  }
+
   .project-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -657,6 +686,20 @@
   .reveal.in{opacity:1;transform:translateY(0);}
 
   /* ===== PROJECT DETAIL PAGE ===== */
+  #projectView{ display:none; }
+  .center-flex{ justify-content:center; display:flex; }
+  .pp-top-section{ padding-top:150px; padding-bottom:0; }
+  .pp-desc-section{ padding-top:70px; }
+  .pp-related-section{ padding-top:0; }
+  #ppCat{ margin-top:30px; }
+  #ppTitle{
+    font-size:clamp(36px,6vw,88px);
+    font-weight:800;
+    line-height:0.98;
+    margin-bottom:50px;
+  }
+  .pp-other-grid{ grid-template-columns:repeat(2,1fr); }
+
   .pp-back{
     display:inline-flex;
     align-items:center;

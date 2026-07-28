@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Atelier Haytham Mribah — Architecture, Tanger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,6 +97,7 @@
       </div>
       <p data-i18n="projectsDesc"></p>
     </div>
+    <div class="project-filters reveal" id="projectFilters"></div>
   </div>
 
   <div class="project-grid reveal" id="projectGrid"></div>
@@ -132,7 +134,7 @@
 <!-- CTA -->
 <section class="cta">
   <div class="wrap">
-    <span class="eyebrow reveal" style="justify-content:center;display:flex;" data-i18n="ctaEyebrow"></span>
+    <span class="eyebrow reveal center-flex" data-i18n="ctaEyebrow"></span>
     <h2 class="reveal" data-i18n="ctaHeading"></h2>
     <p class="sub reveal" data-i18n="ctaSub"></p>
     <a href="mailto:contact@atelierhm.ma" class="btn reveal" data-i18n="ctaBtn"></a>
@@ -142,12 +144,12 @@
 <!-- /homeView -->
 
 <!-- PROJECT DETAIL VIEW -->
-<div id="projectView" style="display:none;">
-  <section style="padding-top:150px;padding-bottom:0;">
+<div id="projectView">
+  <section class="pp-top-section">
     <div class="wrap">
       <a href="#" id="ppBack" class="pp-back mono">← <span data-i18n="backToProjects">RETOUR AUX PROJETS</span></a>
-      <span class="eyebrow" id="ppCat" style="margin-top:30px;"></span>
-      <h1 class="display" id="ppTitle" style="font-size:clamp(36px,6vw,88px);font-weight:800;line-height:0.98;margin-bottom:50px;"></h1>
+      <span class="eyebrow" id="ppCat"></span>
+      <h1 class="display" id="ppTitle"></h1>
 
       <div class="pp-meta">
         <div class="pp-row"><span class="mono" data-i18n="metaLieu">LIEU</span><span id="ppLieu"></span></div>
@@ -161,14 +163,14 @@
 
   <div class="pp-hero"><img id="ppHeroImg" src="" alt=""></div>
 
-  <section style="padding-top:70px;">
+  <section class="pp-desc-section">
     <div class="wrap">
       <p class="pp-desc" id="ppDesc"></p>
       <div class="pp-gallery" id="ppGallery"></div>
     </div>
   </section>
 
-  <section style="padding-top:0;">
+  <section class="pp-related-section">
     <div class="wrap">
       <div class="projects-head">
         <div>
@@ -176,7 +178,7 @@
         </div>
         <p data-i18n="otherProjectsSub"></p>
       </div>
-      <div class="project-grid" id="ppOtherGrid" style="grid-template-columns:repeat(2,1fr);"></div>
+      <div class="project-grid pp-other-grid" id="ppOtherGrid"></div>
     </div>
   </section>
 </div>
@@ -211,8 +213,6 @@
 </footer>
 
 <script src="script.js"></script>
-<script defer src="/_vercel/insights/script.js"></script>
-
 
 </body>
 </html>
