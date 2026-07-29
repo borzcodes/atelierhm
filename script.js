@@ -45,11 +45,11 @@ const projects = [
       en:"The Tétouan provincial hospital arranges its hospitalisation wings in a comb layout around a grid of planted patios, designed to bring natural light and calm to the care spaces. At the entrance, a wide timber-slat canopy shelters the forecourt and separates pedestrian flows from the drop-off and ambulance bay. At the rear of the plot, the medical-technical platform and logistics zone are organised around a single distribution spine, benefiting both the clarity of circulation and the building's maintenance.",
       ar:"يوزّع المستشفى الإقليمي بتطوان أجنحة الاستشفاء على شكل مشط حول شبكة من الأفنية المشجّرة، صُممت لإدخال الضوء الطبيعي والهدوء إلى فضاءات العناية. عند المدخل، تحمي مظلة خشبية عريضة الساحة الأمامية وتفصل حركة المشاة عن منطقة النزول وسيارات الإسعاف. في مؤخرة القطعة، ينتظم الطابق الطبي التقني ومنطقة اللوجستيك حول محور توزيع واحد، لفائدة وضوح التنقلات وصيانة المبنى."
     },
-    hero:'images/hopital-tetouan-entrance.jpg',
+    hero:'assets/hopital-tetouan-entrance.jpg',
     gallery:[
-      'images/hopital-tetouan-aerial.jpg',
-      'images/hopital-tetouan-concept.png',
-      'images/hopital-tetouan-plan.png'
+      'assets/hopital-tetouan-aerial.jpg',
+      'assets/hopital-tetouan-concept.png',
+      'assets/hopital-tetouan-plan.png'
     ]
   },
   {
@@ -558,7 +558,7 @@ function showProjectView(id){
   if(!ok){ showHome(); return; }
   homeView.style.display = 'none';
   projectView.style.display = 'block';
-  window.scrollTo(0,0);
+  window.scrollTo({top:0, left:0, behavior:'instant'});
 }
 function routeFromHash(){
   const m = location.hash.match(/^#project\/(.+)$/);
