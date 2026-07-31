@@ -762,8 +762,16 @@
     gap:16px;
     margin-bottom:20px;
   }
-  .pp-gallery div{aspect-ratio:4/3;overflow:hidden;}
+  .pp-gallery div{
+    aspect-ratio:4/3;
+    overflow:hidden;
+    background:var(--limestone-2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
   .pp-gallery div:first-child{grid-column:1 / -1;aspect-ratio:16/8;}
+  .pp-gallery img{width:100%;height:100%;object-fit:contain;}
 
   @media (max-width:700px){
     .pp-row{flex-direction:column;gap:6px;}
