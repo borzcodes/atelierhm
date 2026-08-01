@@ -20,9 +20,19 @@
       <button data-lang="en">EN</button>
       <button data-lang="ar">AR</button>
     </nav>
-    <div class="burger" aria-label="menu"><span></span><span></span><span></span></div>
+    <button class="burger" id="burgerBtn" aria-label="menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </header>
+
+<div class="menu-overlay" id="menuOverlay">
+  <nav class="menu-links">
+    <a href="#top" data-i18n="menuHome">ACCUEIL</a>
+    <a href="#about" data-i18n="menuAgency">AGENCE</a>
+    <a href="#projects" data-i18n="menuProjects">PROJETS</a>
+    <a href="#savoir-faire" data-i18n="menuExpertise">EXPERTISE</a>
+    <a href="#contact" data-i18n="menuContact">CONTACT</a>
+  </nav>
+</div>
 
 <div id="homeView">
 <!-- HERO -->
@@ -79,10 +89,9 @@
   </div>
   <div class="wrap">
     <div class="stats reveal">
-      <div class="stat"><div class="num">80+</div><div class="lab" data-i18n="stat1">PROJETS LIVRÉS</div></div>
-      <div class="stat"><div class="num">12</div><div class="lab" data-i18n="stat2">ANNÉES D'EXERCICE</div></div>
+      <div class="stat"><div class="num">30+</div><div class="lab" data-i18n="stat1">PROJETS LIVRÉS</div></div>
+      <div class="stat"><div class="num">3</div><div class="lab" data-i18n="stat2">ANNÉES D'EXERCICE</div></div>
       <div class="stat"><div class="num">04</div><div class="lab" data-i18n="stat3">VILLES AU MAROC</div></div>
-      <div class="stat"><div class="num">03</div><div class="lab" data-i18n="stat4">PAYS D'INTERVENTION</div></div>
     </div>
   </div>
 </section>
@@ -109,9 +118,21 @@
 
 <!-- PHILOSOPHY -->
 <section class="philosophy">
-  <div class="wrap">
-    <blockquote class="reveal" data-i18n="philosophyQuote"></blockquote>
-    <cite data-i18n="philosophyCite"></cite>
+  <div class="wrap philosophy-grid">
+    <div class="philosophy-text">
+      <blockquote class="reveal" data-i18n="philosophyQuote"></blockquote>
+      <cite data-i18n="philosophyCite"></cite>
+    </div>
+    <div class="philosophy-portrait reveal">
+      <img src="assets/haytham-mribah-portrait.jpg" alt="Haytham Mribah, fondateur" id="founderPhoto">
+      <div class="portrait-placeholder" id="founderPlaceholder">
+        <svg viewBox="0 0 64 64" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="24" r="12" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M10 54c3-12 12-18 22-18s19 6 22 18" stroke="currentColor" stroke-width="1.4"/>
+        </svg>
+        <span class="mono" data-i18n="founderPhotoLabel">PHOTO DU FONDATEUR</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -132,7 +153,7 @@
 </section>
 
 <!-- CTA -->
-<section class="cta">
+<section class="cta" id="contact">
   <div class="wrap">
     <span class="eyebrow reveal center-flex" data-i18n="ctaEyebrow"></span>
     <h2 class="reveal" data-i18n="ctaHeading"></h2>

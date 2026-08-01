@@ -271,6 +271,8 @@ const dict = {
     viewLessBtn:'AFFICHER MOINS',
     philosophyQuote:"« Construire à Tanger, c'est composer avec la lumière du détroit et la mémoire de la médina — jamais contre elles. »",
     philosophyCite:'— HAYTHAM MRIBAH, FONDATEUR',
+    founderPhotoLabel:'PHOTO DU FONDATEUR',
+    menuHome:'ACCUEIL', menuAgency:'AGENCE', menuProjects:'PROJETS', menuExpertise:'EXPERTISE', menuContact:'CONTACT',
     eyebrowCompetences:'Compétences',
     sfHeading:'SAVOIR-FAIRE',
     sfDesc:"De l'esquisse à la réception du chantier, une mission complète, précise et suivie.",
@@ -310,6 +312,8 @@ const dict = {
     viewLessBtn:'VIEW LESS',
     philosophyQuote:'"Building in Tangier means working with the light of the strait and the memory of the medina — never against them."',
     philosophyCite:'— HAYTHAM MRIBAH, FOUNDER',
+    founderPhotoLabel:'FOUNDER PHOTO',
+    menuHome:'HOME', menuAgency:'STUDIO', menuProjects:'PROJECTS', menuExpertise:'EXPERTISE', menuContact:'CONTACT',
     eyebrowCompetences:'Expertise',
     sfHeading:'EXPERTISE',
     sfDesc:'From first sketch to final handover, a complete, precise and closely followed commission.',
@@ -349,6 +353,8 @@ const dict = {
     viewLessBtn:'عرض أقل',
     philosophyQuote:'«البناء في طنجة يعني التعامل مع ضوء المضيق وذاكرة المدينة العتيقة — لا العمل ضدهما أبداً.»',
     philosophyCite:'— هيثم مريباح، المؤسس',
+    founderPhotoLabel:'صورة المؤسس',
+    menuHome:'الرئيسية', menuAgency:'المكتب', menuProjects:'المشاريع', menuExpertise:'الخبرات', menuContact:'اتصال',
     eyebrowCompetences:'الخبرات',
     sfHeading:'الخبرات',
     sfDesc:'من الرسم الأول إلى تسليم المشروع، مهمة كاملة ودقيقة ومتابَعة عن قرب.',
@@ -377,6 +383,70 @@ const dict = {
 let currentLang = 'fr';
 let slideIndex = 0;
 let slideTimer = null;
+
+/* ===================== NAV MENU ===================== */
+const burgerBtn = document.getElementById('burgerBtn');
+const menuOverlay = document.getElementById('menuOverlay');
+
+function openMenu(){
+  menuOverlay.classList.add('open');
+  burgerBtn.classList.add('open');
+  burgerBtn.setAttribute('aria-expanded', 'true');
+  document.body.classList.add('no-scroll');
+}
+function closeMenu(){
+  menuOverlay.classList.remove('open');
+  burgerBtn.classList.remove('open');
+  burgerBtn.setAttribute('aria-expanded', 'false');
+  document.body.classList.remove('no-scroll');
+}
+burgerBtn.addEventListener('click', ()=>{
+  menuOverlay.classList.contains('open') ? closeMenu() : openMenu();
+});
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
+
+document.querySelectorAll('.menu-links a').forEach(link=>{
+  link.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const targetId = link.getAttribute('href').slice(1);
+    closeMenu();
+
+    const scrollToTarget = () => {
+      if(targetId === 'top'){
+        window.scrollTo({top:0, left:0, behavior:'smooth'});
+      } else {
+        const el = document.getElementById(targetId);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+      history.replaceState(null, '', '#'+targetId);
+    };
+
+    if(currentProjectId){
+      // Leaving a project page: go home first, then scroll once it's rendered.
+      showHome();
+      history.replaceState(null, '', location.pathname);
+      requestAnimationFrame(()=> requestAnimationFrame(scrollToTarget));
+    } else {
+      scrollToTarget();
+    }
+  });
+});
+
+/* ===================== FOUNDER PHOTO FALLBACK =====================
+   Shows the placeholder until assets/haytham-mribah-portrait.jpg
+   actually exists — swap in the real photo and this handles itself. */
+const founderPhoto = document.getElementById('founderPhoto');
+const founderPlaceholder = document.getElementById('founderPlaceholder');
+if(founderPhoto && founderPlaceholder){
+  const showPhoto = () => { founderPhoto.style.display = 'block'; founderPlaceholder.style.display = 'none'; };
+  const showPlaceholder = () => { founderPhoto.style.display = 'none'; founderPlaceholder.style.display = 'flex'; };
+  if(founderPhoto.complete){
+    founderPhoto.naturalWidth > 0 ? showPhoto() : showPlaceholder();
+  } else {
+    founderPhoto.addEventListener('load', showPhoto);
+    founderPhoto.addEventListener('error', showPlaceholder);
+  }
+}
 
 /* ===================== HERO MARK ANIMATION ===================== */
 const heroMark = document.querySelector('.hero-mark');

@@ -102,13 +102,51 @@
     width:34px;height:22px;
     position:relative;
     cursor:pointer;
+    background:none;
+    border:none;
+    padding:0;
   }
   .burger span{
     position:absolute;left:0;right:0;height:2px;background:var(--ink);
+    transition:transform .35s cubic-bezier(.65,0,.35,1), opacity .25s ease, top .25s ease;
   }
   .burger span:nth-child(1){top:0;}
   .burger span:nth-child(2){top:10px;width:70%;}
   .burger span:nth-child(3){top:20px;}
+  .burger.open span:nth-child(1){top:10px;transform:rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){top:10px;transform:rotate(-45deg);}
+
+  .menu-overlay{
+    position:fixed;inset:0;
+    z-index:200;
+    background:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  .menu-overlay.open{opacity:1;pointer-events:auto;}
+  .menu-links{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:26px;
+  }
+  .menu-links a{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    font-size:clamp(32px,6vw,64px);
+    letter-spacing:0.01em;
+    text-transform:uppercase;
+    color:var(--limestone);
+    opacity:0.55;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  body.rtl .menu-links a{font-family:'Noto Kufi Arabic',sans-serif;}
+  .menu-links a:hover{opacity:1;transform:translateY(-2px);}
 
   /* ===== HERO ===== */
   .hero{
@@ -321,13 +359,13 @@
 
   .stats{
     margin-top:80px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
+    display:inline-flex;
     border-top:1px solid var(--line);
     border-left:1px solid var(--line);
   }
   body.rtl .stats{border-left:none;border-right:1px solid var(--line);}
   .stat{
+    flex:0 0 auto;
     border-right:1px solid var(--line);
     border-bottom:1px solid var(--line);
     padding:34px 30px;
@@ -502,6 +540,13 @@
     transform:rotate(18deg);
   }
   .philosophy .wrap{position:relative;}
+  .philosophy-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:70px;
+    align-items:center;
+  }
+  body.rtl .philosophy-grid{direction:rtl;}
   .philosophy blockquote{
     font-family:'Big Shoulders Display',sans-serif;
     font-weight:600;
@@ -519,6 +564,38 @@
     font-size:12px;
     letter-spacing:0.14em;
     color:rgba(241,236,226,0.72);
+  }
+  .philosophy-portrait{
+    position:relative;
+    aspect-ratio:3/4;
+    border:1px solid rgba(241,236,226,0.22);
+  }
+  .philosophy-portrait img{
+    display:none;
+    width:100%;height:100%;
+    object-fit:cover;
+    filter:grayscale(0.4) contrast(1.05);
+  }
+  .portrait-placeholder{
+    position:absolute;inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    color:rgba(241,236,226,0.45);
+    border:1px dashed rgba(241,236,226,0.3);
+    margin:14px;
+  }
+  .portrait-placeholder span{
+    font-size:10.5px;
+    letter-spacing:0.14em;
+    text-align:center;
+    padding:0 20px;
+  }
+  @media (max-width:900px){
+    .philosophy-grid{grid-template-columns:1fr;gap:40px;}
+    .philosophy-portrait{max-width:320px;}
   }
 
   /* ===== SAVOIR-FAIRE ===== */
@@ -790,7 +867,6 @@
     header.scrolled{padding:14px 28px;}
     .hero{padding:120px 28px 60px;}
     .about-grid{grid-template-columns:1fr;gap:40px;}
-    .stats{grid-template-columns:repeat(2,1fr);}
     .project-grid{grid-template-columns:repeat(2,1fr);}
     .sf-grid{grid-template-columns:repeat(2,1fr);}
     .foot-grid{grid-template-columns:1fr;gap:40px;}
@@ -804,7 +880,6 @@
   @media (max-width:600px){
     .project-grid{grid-template-columns:1fr;}
     .sf-grid{grid-template-columns:1fr;}
-    .stats{grid-template-columns:1fr;}
     .foot-bottom{flex-direction:column;gap:10px;}
     .modal-gallery{grid-template-columns:1fr;}
     nav.langs{gap:10px;}
