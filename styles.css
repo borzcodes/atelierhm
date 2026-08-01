@@ -129,6 +129,26 @@
     transition:opacity .4s ease;
   }
   .menu-overlay.open{opacity:1;pointer-events:auto;}
+  .menu-close{
+    position:absolute;
+    top:28px;left:64px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--limestone);
+    opacity:0.7;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    transition:opacity .2s ease;
+  }
+  .menu-close:hover{opacity:1;}
+  body.rtl .menu-close{left:auto;right:64px;transform:scaleX(-1);}
+  body.rtl .menu-close span{display:inline-block;transform:scaleX(-1);}
+  @media (max-width:1000px){
+    .menu-close{top:22px;left:28px;}
+    body.rtl .menu-close{right:28px;}
+  }
   .menu-links{
     display:flex;
     flex-direction:column;

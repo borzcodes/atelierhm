@@ -1,3 +1,11 @@
+/* This site manages its own scroll position on navigation (see showHome/
+   showProjectView below). The browser's built-in automatic scroll
+   restoration on back/forward otherwise fights with that and wins
+   intermittently, landing at the wrong position. */
+if('scrollRestoration' in history){
+  history.scrollRestoration = 'manual';
+}
+
 /* ===================== SECURITY HELPERS =====================
    This is a static, backend-less site: no forms submit anywhere, no
    API endpoints, no database. The two things that ARE real attack
@@ -272,7 +280,7 @@ const dict = {
     philosophyQuote:"« Construire à Tanger, c'est composer avec la lumière du détroit et la mémoire de la médina — jamais contre elles. »",
     philosophyCite:'— HAYTHAM MRIBAH, FONDATEUR',
     founderPhotoLabel:'PHOTO DU FONDATEUR',
-    menuHome:'ACCUEIL', menuAgency:'AGENCE', menuProjects:'PROJETS', menuExpertise:'EXPERTISE', menuContact:'CONTACT',
+    menuHome:'ACCUEIL', menuAgency:'AGENCE', menuProjects:'PROJETS', menuExpertise:'EXPERTISE', menuContact:'CONTACT', menuBack:'RETOUR',
     eyebrowCompetences:'Compétences',
     sfHeading:'SAVOIR-FAIRE',
     sfDesc:"De l'esquisse à la réception du chantier, une mission complète, précise et suivie.",
@@ -313,7 +321,7 @@ const dict = {
     philosophyQuote:'"Building in Tangier means working with the light of the strait and the memory of the medina — never against them."',
     philosophyCite:'— HAYTHAM MRIBAH, FOUNDER',
     founderPhotoLabel:'FOUNDER PHOTO',
-    menuHome:'HOME', menuAgency:'STUDIO', menuProjects:'PROJECTS', menuExpertise:'EXPERTISE', menuContact:'CONTACT',
+    menuHome:'HOME', menuAgency:'STUDIO', menuProjects:'PROJECTS', menuExpertise:'EXPERTISE', menuContact:'CONTACT', menuBack:'BACK',
     eyebrowCompetences:'Expertise',
     sfHeading:'EXPERTISE',
     sfDesc:'From first sketch to final handover, a complete, precise and closely followed commission.',
@@ -354,7 +362,7 @@ const dict = {
     philosophyQuote:'«البناء في طنجة يعني التعامل مع ضوء المضيق وذاكرة المدينة العتيقة — لا العمل ضدهما أبداً.»',
     philosophyCite:'— هيثم مريباح، المؤسس',
     founderPhotoLabel:'صورة المؤسس',
-    menuHome:'الرئيسية', menuAgency:'المكتب', menuProjects:'المشاريع', menuExpertise:'الخبرات', menuContact:'اتصال',
+    menuHome:'الرئيسية', menuAgency:'المكتب', menuProjects:'المشاريع', menuExpertise:'الخبرات', menuContact:'اتصال', menuBack:'رجوع',
     eyebrowCompetences:'الخبرات',
     sfHeading:'الخبرات',
     sfDesc:'من الرسم الأول إلى تسليم المشروع، مهمة كاملة ودقيقة ومتابَعة عن قرب.',
@@ -403,6 +411,7 @@ function closeMenu(){
 burgerBtn.addEventListener('click', ()=>{
   menuOverlay.classList.contains('open') ? closeMenu() : openMenu();
 });
+document.getElementById('menuClose').addEventListener('click', closeMenu);
 document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
 
 document.querySelectorAll('.menu-links a').forEach(link=>{
@@ -617,11 +626,25 @@ function renderProjectPage(id){
   return true;
 }
 
-function showHome(){
+let homeScrollY = 0;
+let enteredProjectViaClick = false;
+document.addEventListener('click', (e)=>{
+  const link = e.target.closest('a[href^="#project/"]');
+  if(!link) return;
+  enteredProjectViaClick = true;
+  if(homeView.style.display !== 'none'){
+    homeScrollY = window.scrollY;
+  }
+});
+
+function showHome(restoreScroll){
   homeView.style.display = '';
   projectView.style.display = 'none';
   document.title = "Atelier Haytham Mribah — Architecture, Tanger";
   currentProjectId = null;
+  if(restoreScroll){
+    window.scrollTo({top:homeScrollY, left:0, behavior:'instant'});
+  }
 }
 function showProjectView(id){
   const ok = renderProjectPage(id);
@@ -650,12 +673,16 @@ function routeFromHash(){
   const m = location.hash.match(/^#project\/(.+)$/);
   const slug = m ? sanitizeSlug(m[1]) : null;
   if(slug){ showProjectView(slug); }
-  else { showHome(); }
+  else { showHome(true); }
 }
 window.addEventListener('hashchange', routeFromHash);
 document.getElementById('ppBack').addEventListener('click', (e)=>{
   e.preventDefault();
-  location.hash = '';
+  if(enteredProjectViaClick && history.length > 1){
+    history.back();
+  } else {
+    location.hash = '';
+  }
 });
 
 /* ===================== LANGUAGE ===================== */
