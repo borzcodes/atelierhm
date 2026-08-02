@@ -498,7 +498,7 @@ function buildSlides(){
     const div = document.createElement('div');
     div.className = 'slide' + (i===0 ? ' active' : '');
     div.innerHTML = '<img src="'+s.img+'" alt="'+escapeHTML(s.title[currentLang])+'"><div class="scrim"></div>';
-    heroSliderEl.prepend(div);
+    heroSliderEl.appendChild(div);
   });
 }
 function renderSliderCaption(){
