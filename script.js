@@ -35,10 +35,8 @@ function sanitizeSlug(raw){
 
 /* ===================== DATA ===================== */
 const heroSlides = [
-  { img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1800&auto=format&fit=crop', title:{fr:'VILLA DAR ARZ',en:'VILLA DAR ARZ',ar:'فيلا دار الأرز'}, loc:{fr:'TANGER',en:'TANGIER',ar:'طنجة'} },
-  { img:'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1800&auto=format&fit=crop', title:{fr:'RIAD SOUANI',en:'RIAD SOUANI',ar:'رياض سواني'}, loc:{fr:'TANGER — KASBAH',en:'TANGIER — KASBAH',ar:'طنجة — القصبة'} },
-  { img:'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1800&auto=format&fit=crop', title:{fr:'RÉSIDENCE BAIE',en:'BAY RESIDENCE',ar:'إقامة الخليج'}, loc:{fr:'MALABATA',en:'MALABATA',ar:'مالاباطا'} },
-  { img:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1800&auto=format&fit=crop', title:{fr:'DAR LIMANE',en:'DAR LIMANE',ar:'دار ليمان'}, loc:{fr:'ASILAH',en:'ASILAH',ar:'أصيلة'} }
+  { img:'assets/hopital-tetouan-entrance_1.jpg', title:{fr:'HÔPITAL DE TÉTOUAN',en:'TÉTOUAN HOSPITAL',ar:'مستشفى تطوان'}, loc:{fr:'TÉTOUAN',en:'TETOUAN',ar:'تطوان'} },
+  { img:'assets/dental-clinic-corridor.jpg', title:{fr:'CABINET DE DENTISTE',en:'DENTAL CLINIC',ar:'عيادة أسنان'}, loc:{fr:'TANGER',en:'TANGIER',ar:'طنجة'} }
 ];
 
 const projects = [
