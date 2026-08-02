@@ -262,7 +262,8 @@
   .hero-slider{
     position:relative;
     width:100%;
-    aspect-ratio:16/9;
+    height:85vh;
+    min-height:520px;
     overflow:hidden;
     background:var(--limestone-2);
   }
