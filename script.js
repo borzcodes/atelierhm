@@ -35,15 +35,15 @@ function sanitizeSlug(raw){
 
 /* ===================== DATA ===================== */
 const heroSlides = [
-  { img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1800&auto=format&fit=crop', title:'VILLA DAR ARZ', loc:{fr:'TANGER',en:'TANGIER',ar:'طنجة'} },
-  { img:'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1800&auto=format&fit=crop', title:'RIAD SOUANI', loc:{fr:'TANGER — KASBAH',en:'TANGIER — KASBAH',ar:'طنجة — القصبة'} },
-  { img:'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1800&auto=format&fit=crop', title:'RÉSIDENCE BAIE', loc:{fr:'MALABATA',en:'MALABATA',ar:'مالاباطا'} },
-  { img:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1800&auto=format&fit=crop', title:'DAR LIMANE', loc:{fr:'ASILAH',en:'ASILAH',ar:'أصيلة'} }
+  { img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1800&auto=format&fit=crop', title:{fr:'VILLA DAR ARZ',en:'VILLA DAR ARZ',ar:'فيلا دار الأرز'}, loc:{fr:'TANGER',en:'TANGIER',ar:'طنجة'} },
+  { img:'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1800&auto=format&fit=crop', title:{fr:'RIAD SOUANI',en:'RIAD SOUANI',ar:'رياض سواني'}, loc:{fr:'TANGER — KASBAH',en:'TANGIER — KASBAH',ar:'طنجة — القصبة'} },
+  { img:'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1800&auto=format&fit=crop', title:{fr:'RÉSIDENCE BAIE',en:'BAY RESIDENCE',ar:'إقامة الخليج'}, loc:{fr:'MALABATA',en:'MALABATA',ar:'مالاباطا'} },
+  { img:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1800&auto=format&fit=crop', title:{fr:'DAR LIMANE',en:'DAR LIMANE',ar:'دار ليمان'}, loc:{fr:'ASILAH',en:'ASILAH',ar:'أصيلة'} }
 ];
 
 const projects = [
   {
-    id:'hopital-tetouan', title:'HÔPITAL DE TÉTOUAN', year:'2024', surface:'22 000 m²',
+    id:'hopital-tetouan', title:{fr:'HÔPITAL DE TÉTOUAN',en:'TÉTOUAN HOSPITAL',ar:'مستشفى تطوان'}, year:'2024', surface:'22 000 m²',
     loc:{fr:'Tétouan',en:'Tetouan',ar:'تطوان'},
     cat:{fr:'Équipement — Santé',en:'Public Facility — Healthcare',ar:'تجهيز — صحة'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
@@ -61,7 +61,7 @@ const projects = [
     ]
   },
   {
-    id:'riad-souani', title:'RIAD SOUANI', year:'2022', surface:'310 m²',
+    id:'riad-souani', title:{fr:'RIAD SOUANI',en:'RIAD SOUANI',ar:'رياض سواني'}, year:'2022', surface:'310 m²',
     loc:{fr:'Tanger — Kasbah',en:'Tangier — Kasbah',ar:'طنجة — القصبة'},
     cat:{fr:'Réhabilitation — Patrimoine',en:'Rehabilitation — Heritage',ar:'ترميم — تراث'},
     metier:{fr:'Architecture · Réhabilitation',en:'Architecture · Rehabilitation',ar:'العمارة · الترميم'},
@@ -79,7 +79,7 @@ const projects = [
     ]
   },
   {
-    id:'residence-baie', title:'RÉSIDENCE BAIE', year:'2024', surface:'2 400 m²',
+    id:'residence-baie', title:{fr:'RÉSIDENCE BAIE',en:'BAY RESIDENCE',ar:'إقامة الخليج'}, year:'2024', surface:'2 400 m²',
     loc:{fr:'Malabata',en:'Malabata',ar:'مالاباطا'},
     cat:{fr:'Résidentiel — Collectif',en:'Residential — Multi-unit',ar:'سكني — جماعي'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
@@ -97,7 +97,7 @@ const projects = [
     ]
   },
   {
-    id:'dar-limane', title:'DAR LIMANE', year:'2023', surface:'1 850 m²',
+    id:'dar-limane', title:{fr:'DAR LIMANE',en:'DAR LIMANE',ar:'دار ليمان'}, year:'2023', surface:'1 850 m²',
     loc:{fr:'Asilah',en:'Asilah',ar:'أصيلة'},
     cat:{fr:'Hospitality — Boutique-hôtel',en:'Hospitality — Boutique hotel',ar:'ضيافة — فندق بوتيك'},
     metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
@@ -115,7 +115,7 @@ const projects = [
     ]
   },
   {
-    id:'cabinet-dentiste-tanger', title:'CABINET DE DENTISTE', year:'2023', surface:'450 m²',
+    id:'cabinet-dentiste-tanger', title:{fr:'CABINET DE DENTISTE',en:'DENTAL CLINIC',ar:'عيادة أسنان'}, year:'2023', surface:'450 m²',
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Santé — Cabinet dentaire',en:'Healthcare — Dental clinic',ar:'صحة — عيادة أسنان'},
     metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
@@ -135,7 +135,7 @@ const projects = [
     ]
   },
   {
-    id:'villa-a', title:'VILLA A', year:'2021', surface:'520 m²',
+    id:'villa-a', title:{fr:'VILLA A',en:'VILLA A',ar:'فيلا A'}, year:'2021', surface:'520 m²',
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
     metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
@@ -153,7 +153,7 @@ const projects = [
     ]
   },
   {
-    id:'siege-alwifaq', title:'SIÈGE AL WIFAQ', year:'2020', surface:'3 100 m²',
+    id:'siege-alwifaq', title:{fr:'SIÈGE AL WIFAQ',en:'AL WIFAQ HEADQUARTERS',ar:'مقر الوفاق'}, year:'2020', surface:'3 100 m²',
     loc:{fr:'Tétouan',en:'Tetouan',ar:'تطوان'},
     cat:{fr:'Tertiaire — Bureaux',en:'Commercial — Offices',ar:'مكاتب — إداري'},
     metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
@@ -171,7 +171,7 @@ const projects = [
     ]
   },
   {
-    id:'villa-h', title:'VILLA H', year:'2022', surface:'610 m²',
+    id:'villa-h', title:{fr:'VILLA H',en:'VILLA H',ar:'فيلا H'}, year:'2022', surface:'610 m²',
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
     metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
@@ -189,7 +189,7 @@ const projects = [
     ]
   },
   {
-    id:'immeuble-d', title:'IMMEUBLE RÉSIDENTIEL D', year:'2021', surface:'4 200 m²',
+    id:'immeuble-d', title:{fr:'IMMEUBLE RÉSIDENTIEL D',en:'RESIDENTIAL BUILDING D',ar:'مبنى سكني D'}, year:'2021', surface:'4 200 m²',
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Résidentiel — Collectif',en:'Residential — Multi-unit',ar:'سكني — جماعي'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
@@ -207,7 +207,7 @@ const projects = [
     ]
   },
   {
-    id:'complexe-kaa-assrass', title:'COMPLEXE RÉSIDENTIEL', year:'2024', surface:'6 800 m²',
+    id:'complexe-kaa-assrass', title:{fr:'COMPLEXE RÉSIDENTIEL',en:'RESIDENTIAL COMPLEX',ar:'مجمع سكني'}, year:'2024', surface:'6 800 m²',
     loc:{fr:'Kaa Assrass',en:'Kaa Assrass',ar:'قاع السرس'},
     cat:{fr:'Résidentiel — Lotissement',en:'Residential — Masterplan',ar:'سكني — تجزئة'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
@@ -225,7 +225,7 @@ const projects = [
     ]
   },
   {
-    id:'centre-mre', title:"CENTRE D'ACCUEIL MRE", year:'2021', surface:'1 200 m²',
+    id:'centre-mre', title:{fr:"CENTRE D'ACCUEIL MRE",en:'MRE WELCOME CENTRE',ar:'مركز استقبال الجالية'}, year:'2021', surface:'1 200 m²',
     loc:{fr:'Béni Mellal',en:'Beni Mellal',ar:'بني ملال'},
     cat:{fr:'Équipement',en:'Public Facility',ar:'تجهيز عمومي'},
     metier:{fr:'Architecture',en:'Architecture',ar:'العمارة'},
@@ -243,7 +243,7 @@ const projects = [
     ]
   },
   {
-    id:'acces-zone-industrielle', title:'ACCÈS ZONE INDUSTRIELLE', year:'2023', surface:'—',
+    id:'acces-zone-industrielle', title:{fr:'ACCÈS ZONE INDUSTRIELLE',en:'INDUSTRIAL ZONE ACCESS',ar:'مدخل المنطقة الصناعية'}, year:'2023', surface:'—',
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Industriel',en:'Industrial',ar:'صناعي'},
     metier:{fr:'Architecture · Urbanisme',en:'Architecture · Urban planning',ar:'العمارة · التعمير'},
@@ -499,14 +499,14 @@ function buildSlides(){
   heroSlides.forEach((s,i)=>{
     const div = document.createElement('div');
     div.className = 'slide' + (i===0 ? ' active' : '');
-    div.innerHTML = '<img src="'+s.img+'" alt="'+escapeHTML(s.title)+'"><div class="scrim"></div>';
+    div.innerHTML = '<img src="'+s.img+'" alt="'+escapeHTML(s.title[currentLang])+'"><div class="scrim"></div>';
     heroSliderEl.prepend(div);
   });
 }
 function renderSliderCaption(){
   const s = heroSlides[slideIndex];
   document.getElementById('sliderCaptionText').innerHTML =
-    '<span class="title">'+escapeHTML(s.title)+'</span><span>'+escapeHTML(s.loc[currentLang])+'</span>';
+    '<span class="title">'+escapeHTML(s.title[currentLang])+'</span><span>'+escapeHTML(s.loc[currentLang])+'</span>';
   document.querySelectorAll('#sliderDots button').forEach((d,i)=>d.classList.toggle('on', i===slideIndex));
   document.querySelectorAll('.slide').forEach((el,i)=>el.classList.toggle('active', i===slideIndex));
 }
@@ -544,12 +544,12 @@ const FILTER_KEYS = ['all', 'architecture', 'urbanisme', 'interior'];
 
 function cardHTML(p){
   return '<a class="card" data-id="'+escapeHTML(p.id)+'" href="#project/'+encodeURIComponent(p.id)+'">'+
-      '<div class="imgwrap"><img src="'+p.hero+'" alt="'+escapeHTML(p.title)+'"></div>'+
+      '<div class="imgwrap"><img src="'+p.hero+'" alt="'+escapeHTML(p.title[currentLang])+'"></div>'+
       '<div class="scrim"></div>'+
       '<div class="tag">'+escapeHTML(dict[currentLang].viewTag)+'</div>'+
       '<div class="info">'+
         '<div class="loc">'+escapeHTML(p.loc[currentLang])+'</div>'+
-        '<div class="title">'+escapeHTML(p.title)+'</div>'+
+        '<div class="title">'+escapeHTML(p.title[currentLang])+'</div>'+
         '<div class="cat">'+escapeHTML(p.cat[currentLang])+'</div>'+
       '</div>'+
     '</a>';
@@ -635,21 +635,21 @@ function renderProjectPage(id){
   currentProjectId = id;
 
   document.getElementById('ppCat').textContent = p.cat[currentLang];
-  document.getElementById('ppTitle').textContent = p.title;
+  document.getElementById('ppTitle').textContent = p.title[currentLang];
   document.getElementById('ppLieu').textContent = p.loc[currentLang];
   document.getElementById('ppProgramme').textContent = p.cat[currentLang];
   document.getElementById('ppMetier').textContent = p.metier ? p.metier[currentLang] : '';
   document.getElementById('ppAnnee').textContent = p.year;
   document.getElementById('ppSurface').textContent = p.surface;
   document.getElementById('ppHeroImg').src = p.hero;
-  document.getElementById('ppHeroImg').alt = p.title;
+  document.getElementById('ppHeroImg').alt = p.title[currentLang];
   document.getElementById('ppDesc').textContent = p.desc[currentLang];
-  document.getElementById('ppGallery').innerHTML = p.gallery.map(g=>'<div><img src="'+g+'" alt="'+escapeHTML(p.title)+'"></div>').join('');
+  document.getElementById('ppGallery').innerHTML = p.gallery.map(g=>'<div><img src="'+g+'" alt="'+escapeHTML(p.title[currentLang])+'"></div>').join('');
 
   const others = otherProjectsFor(id);
   document.getElementById('ppOtherGrid').innerHTML = others.map(cardHTML).join('');
 
-  document.title = p.title + ' — Atelier Haytham Mribah';
+  document.title = p.title[currentLang] + ' — Atelier Haytham Mribah';
   return true;
 }
 
