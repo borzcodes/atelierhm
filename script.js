@@ -115,6 +115,26 @@ const projects = [
     ]
   },
   {
+    id:'smile-lab-brussels', title:'SMILE LAB BRUSSELS', year:'2023', surface:'450 m²',
+    loc:{fr:'Bruxelles',en:'Brussels',ar:'بروكسل'},
+    cat:{fr:'Santé — Cabinet dentaire',en:'Healthcare — Dental clinic',ar:'صحة — عيادة أسنان'},
+    metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
+    categories:['architecture','interior'],
+    desc:{
+      fr:"Un cabinet dentaire pensé comme un lieu de soin apaisant plutôt qu'un espace clinique. Le bois clair, les murs végétalisés et la lumière naturelle des patios accompagnent le parcours du patient depuis l'accueil jusqu'aux salles de soin, tandis qu'un espace de vie dédié à l'équipe — cuisine, salon, table de billard — prolonge le même langage domestique côté coulisses.",
+      en:"A dental clinic conceived as a calming place of care rather than a clinical space. Light timber, living plant walls and natural light from the patios accompany the patient's path from reception to the treatment rooms, while a dedicated staff space — kitchen, lounge, pool table — extends the same domestic language behind the scenes.",
+      ar:"عيادة أسنان صُممت كمكان علاج مهدئ بدلاً من فضاء سريري بحت. يرافق الخشب الفاتح وجدران النباتات والضوء الطبيعي القادم من الأفنية مسار المريض من الاستقبال إلى غرف العلاج، بينما يمتد فضاء مخصص للفريق — مطبخ وصالة وطاولة بلياردو — بنفس اللغة المنزلية خلف الكواليس."
+    },
+    hero:'assets/dental-clinic-corridor.jpg',
+    gallery:[
+      'assets/dental-clinic-meeting.jpg',
+      'assets/dental-clinic-lounge.jpg',
+      'assets/dental-clinic-treatment-1.jpg',
+      'assets/dental-clinic-reception.jpg',
+      'assets/dental-clinic-office.jpg'
+    ]
+  },
+  {
     id:'villa-a', title:'VILLA A', year:'2021', surface:'520 m²',
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Résidentiel — Villa',en:'Residential — Villa',ar:'سكني — فيلا'},
