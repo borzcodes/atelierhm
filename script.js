@@ -115,8 +115,8 @@ const projects = [
     ]
   },
   {
-    id:'smile-lab-brussels', title:'SMILE LAB BRUSSELS', year:'2023', surface:'450 m²',
-    loc:{fr:'Bruxelles',en:'Brussels',ar:'بروكسل'},
+    id:'cabinet-dentiste-tanger', title:'CABINET DE DENTISTE', year:'2023', surface:'450 m²',
+    loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Santé — Cabinet dentaire',en:'Healthcare — Dental clinic',ar:'صحة — عيادة أسنان'},
     metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
     categories:['architecture','interior'],
@@ -434,31 +434,38 @@ burgerBtn.addEventListener('click', ()=>{
 document.getElementById('menuClose').addEventListener('click', closeMenu);
 document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
 
+function navigateToSection(targetId){
+  const scrollToTarget = () => {
+    if(targetId === 'top'){
+      window.scrollTo({top:0, left:0, behavior:'smooth'});
+    } else {
+      const el = document.getElementById(targetId);
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    history.replaceState(null, '', targetId === 'top' ? location.pathname : '#'+targetId);
+  };
+
+  if(currentProjectId){
+    // Leaving a project page: go home first, then scroll once it's rendered.
+    showHome();
+    history.replaceState(null, '', location.pathname);
+    requestAnimationFrame(()=> requestAnimationFrame(scrollToTarget));
+  } else {
+    scrollToTarget();
+  }
+}
+
 document.querySelectorAll('.menu-links a').forEach(link=>{
   link.addEventListener('click', (e)=>{
     e.preventDefault();
-    const targetId = link.getAttribute('href').slice(1);
     closeMenu();
-
-    const scrollToTarget = () => {
-      if(targetId === 'top'){
-        window.scrollTo({top:0, left:0, behavior:'smooth'});
-      } else {
-        const el = document.getElementById(targetId);
-        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-      }
-      history.replaceState(null, '', '#'+targetId);
-    };
-
-    if(currentProjectId){
-      // Leaving a project page: go home first, then scroll once it's rendered.
-      showHome();
-      history.replaceState(null, '', location.pathname);
-      requestAnimationFrame(()=> requestAnimationFrame(scrollToTarget));
-    } else {
-      scrollToTarget();
-    }
+    navigateToSection(link.getAttribute('href').slice(1));
   });
+});
+
+document.getElementById('logoHome').addEventListener('click', (e)=>{
+  e.preventDefault();
+  navigateToSection('top');
 });
 
 /* ===================== FOUNDER PHOTO FALLBACK =====================
