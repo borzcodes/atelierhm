@@ -627,6 +627,18 @@ function otherProjectsFor(id){
   return others;
 }
 
+// Sizes an image's container to the image's own aspect ratio, so object-fit:contain
+// never has to letterbox — the box always exactly matches that specific photo's shape.
+function matchAspectToImage(img){
+  const apply = () => {
+    if(img.naturalWidth && img.naturalHeight){
+      img.parentElement.style.aspectRatio = img.naturalWidth + ' / ' + img.naturalHeight;
+    }
+  };
+  if(img.complete){ apply(); }
+  else { img.addEventListener('load', apply, {once:true}); }
+}
+
 function renderProjectPage(id){
   const p = projects.find(x=>x.id===id);
   if(!p) return false;
@@ -639,10 +651,13 @@ function renderProjectPage(id){
   document.getElementById('ppMetier').textContent = p.metier ? p.metier[currentLang] : '';
   document.getElementById('ppAnnee').textContent = p.year;
   document.getElementById('ppSurface').textContent = p.surface;
-  document.getElementById('ppHeroImg').src = p.hero;
-  document.getElementById('ppHeroImg').alt = p.title[currentLang];
+  const heroImg = document.getElementById('ppHeroImg');
+  heroImg.src = p.hero;
+  heroImg.alt = p.title[currentLang];
+  matchAspectToImage(heroImg);
   document.getElementById('ppDesc').textContent = p.desc[currentLang];
   document.getElementById('ppGallery').innerHTML = p.gallery.map(g=>'<div><img src="'+g+'" alt="'+escapeHTML(p.title[currentLang])+'"></div>').join('');
+  document.querySelectorAll('#ppGallery img').forEach(matchAspectToImage);
 
   const others = otherProjectsFor(id);
   document.getElementById('ppOtherGrid').innerHTML = others.map(cardHTML).join('');
