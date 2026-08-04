@@ -95,24 +95,6 @@ const projects = [
     ]
   },
   {
-    id:'dar-limane', title:{fr:'DAR LIMANE',en:'DAR LIMANE',ar:'دار ليمان'}, year:'2023', surface:'1 850 m²',
-    loc:{fr:'Asilah',en:'Asilah',ar:'أصيلة'},
-    cat:{fr:'Hospitality — Boutique-hôtel',en:'Hospitality — Boutique hotel',ar:'ضيافة — فندق بوتيك'},
-    metier:{fr:'Architecture · Design intérieur',en:'Architecture · Interior design',ar:'العمارة · التصميم الداخلي'},
-    categories:['architecture','interior'],
-    desc:{
-      fr:"Un boutique-hôtel de 18 chambres aux portes d'Asilah, organisé autour d'un jardin d'agrumes. La palette de matières — chaux, bois brûlé, terre cuite — installe une atmosphère sobre, en continuité avec l'architecture blanche de la médina voisine.",
-      en:"An 18-room boutique hotel at the gates of Asilah, arranged around a citrus garden. The material palette — lime, charred wood, terracotta — sets a quiet mood, continuing the white architecture of the nearby medina.",
-      ar:"فندق بوتيك يضم 18 غرفة عند مداخل أصيلة، ينتظم حول حديقة حمضيات. تُرسي لوحة المواد — الجير، الخشب المحروق، الطين المشوي — أجواءً هادئة تتناغم مع العمارة البيضاء للمدينة العتيقة المجاورة."
-    },
-    hero:'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?q=80&w=1600&auto=format&fit=crop',
-    gallery:[
-      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=900&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1524230572899-a752b3835840?q=80&w=900&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=900&auto=format&fit=crop'
-    ]
-  },
-  {
     id:'cabinet-dentiste-tanger', title:{fr:'CABINET DE DENTISTE',en:'DENTAL CLINIC',ar:'عيادة أسنان'}, year:'2023', surface:'450 m²',
     loc:{fr:'Tanger',en:'Tangier',ar:'طنجة'},
     cat:{fr:'Santé — Cabinet dentaire',en:'Healthcare — Dental clinic',ar:'صحة — عيادة أسنان'},

@@ -1,246 +1,269 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<title>Atelier Haytham Mribah — Architecture, Tanger</title>
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Atelier Haytham Mribah — Architecture, Tanger</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<header id="siteHeader">
-  <a href="#top" class="logo" id="logoHome">HM<span class="dot"></span></a>
-  <div class="nav-right">
-    <nav class="langs" id="langNav">
-      <button data-lang="fr" class="active">FR</button>
-      <button data-lang="en">EN</button>
-      <button data-lang="ar">AR</button>
+  <header id="siteHeader">
+    <a href="#top" class="logo" id="logoHome">HM<span class="dot"></span></a>
+    <div class="nav-right">
+      <nav class="langs" id="langNav">
+        <button data-lang="fr" class="active">FR</button>
+        <button data-lang="en">EN</button>
+        <button data-lang="ar">AR</button>
+      </nav>
+      <button class="burger" id="burgerBtn" aria-label="menu"
+        aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="menu-overlay" id="menuOverlay">
+    <button class="menu-close" id="menuClose" aria-label="close menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M13 3L6 10L13 17" stroke="currentColor" stroke-width="1.6" />
+      </svg>
+      <span data-i18n="menuBack">RETOUR</span>
+    </button>
+    <nav class="menu-links">
+      <a href="#top" data-i18n="menuHome">ACCUEIL</a>
+      <a href="#about" data-i18n="menuAgency">AGENCE</a>
+      <a href="#projects" data-i18n="menuProjects">PROJETS</a>
+      <a href="#savoir-faire" data-i18n="menuExpertise">EXPERTISE</a>
+      <a href="#contact" data-i18n="menuContact">CONTACT</a>
     </nav>
-    <button class="burger" id="burgerBtn" aria-label="menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</header>
-
-<div class="menu-overlay" id="menuOverlay">
-  <button class="menu-close" id="menuClose" aria-label="close menu">
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3L6 10L13 17" stroke="currentColor" stroke-width="1.6"/></svg>
-    <span data-i18n="menuBack">RETOUR</span>
-  </button>
-  <nav class="menu-links">
-    <a href="#top" data-i18n="menuHome">ACCUEIL</a>
-    <a href="#about" data-i18n="menuAgency">AGENCE</a>
-    <a href="#projects" data-i18n="menuProjects">PROJETS</a>
-    <a href="#savoir-faire" data-i18n="menuExpertise">EXPERTISE</a>
-    <a href="#contact" data-i18n="menuContact">CONTACT</a>
-  </nav>
-</div>
-
-<div id="homeView">
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-mark">
-    <svg viewBox="0 0 760 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="outline-part" pathLength="100" d="M60,40 H106 V380 H60 Z"/>
-      <path class="outline-part" pathLength="100" d="M300,40 H346 V380 H300 Z"/>
-      <path class="outline-part" pathLength="100" d="M60,188 H346 V232 H60 Z"/>
-      <path class="outline-part" pathLength="100" d="M410,40 H452 V380 H410 Z"/>
-      <path class="outline-part" pathLength="100" d="M668,40 H710 V380 H668 Z"/>
-      <path class="outline-part" pathLength="100" d="M452,40 L540,230 L500,230 L452,120 Z"/>
-      <path class="outline-part" pathLength="100" d="M668,40 L580,230 L620,230 L668,120 Z"/>
-      <rect class="mpart" x="60" y="40" width="46" height="340" fill="#1B1F19"/>
-      <rect class="mpart" x="300" y="40" width="46" height="340" fill="#1B1F19"/>
-      <rect class="mpart" x="60" y="188" width="286" height="44" fill="#1B1F19"/>
-      <rect class="mpart" x="410" y="40" width="42" height="340" fill="#1B1F19"/>
-      <rect class="mpart" x="668" y="40" width="42" height="340" fill="#1B1F19"/>
-      <polygon class="mpart" points="452,40 540,230 500,230 452,120" fill="#1B1F19"/>
-      <polygon class="mpart" points="668,40 580,230 620,230 668,120" fill="#1B1F19"/>
-    </svg>
-  </div>
-  <div class="hero-tagline" data-i18n="tagline">Atelier d'architecture — Tanger, Maroc</div>
-  <div class="scroll-cue">
-    <span data-i18n="scrollCue">DÉFILER POUR DÉCOUVRIR</span>
-    <span class="line"></span>
-  </div>
-</section>
-
-<!-- HERO SLIDER -->
-<div class="hero-slider reveal" id="heroSlider">
-  <button class="arrow prev" id="prevArrow" aria-label="previous">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5"/></svg>
-  </button>
-  <button class="arrow next" id="nextArrow" aria-label="next">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5"/></svg>
-  </button>
-  <div class="slider-caption">
-    <div class="caption-left" id="sliderCaptionText"></div>
-    <div class="slider-controls">
-      <div class="dots" id="sliderDots"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="wrap about-grid">
-    <h2 class="reveal" data-i18n-html="aboutHeading"></h2>
-    <div class="copy reveal">
-      <p data-i18n="aboutPara1"></p>
-      <p data-i18n="aboutPara2"></p>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="stats reveal">
-      <div class="stat"><div class="num">30+</div><div class="lab" data-i18n="stat1">PROJETS LIVRÉS</div></div>
-      <div class="stat"><div class="num">3</div><div class="lab" data-i18n="stat2">ANNÉES D'EXERCICE</div></div>
-      <div class="stat"><div class="num">04</div><div class="lab" data-i18n="stat3">VILLES AU MAROC</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="wrap">
-    <div class="projects-head reveal">
-      <div>
-        <span class="eyebrow" data-i18n="eyebrowPortfolio">Portfolio</span>
-        <h2 data-i18n-html="projectsHeading"></h2>
-      </div>
-      <p data-i18n="projectsDesc"></p>
-    </div>
-    <div class="project-filters reveal" id="projectFilters"></div>
   </div>
 
-  <div class="project-grid reveal" id="projectGrid"></div>
-
-  <div class="wrap">
-    <div class="view-all reveal"><button id="viewAllBtn" class="btn"></button></div>
-  </div>
-</section>
-
-<!-- PHILOSOPHY -->
-<section class="philosophy">
-  <div class="wrap philosophy-grid">
-    <div class="philosophy-text">
-      <blockquote class="reveal" data-i18n="philosophyQuote"></blockquote>
-      <cite data-i18n="philosophyCite"></cite>
-    </div>
-    <div class="philosophy-portrait reveal">
-      <img src="assets/haytham-mribah-portrait.jpg" alt="Haytham Mribah, fondateur" id="founderPhoto">
-      <div class="portrait-placeholder" id="founderPlaceholder">
-        <svg viewBox="0 0 64 64" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="32" cy="24" r="12" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M10 54c3-12 12-18 22-18s19 6 22 18" stroke="currentColor" stroke-width="1.4"/>
+  <div id="homeView">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-mark">
+        <svg viewBox="0 0 760 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="outline-part" pathLength="100" d="M60,40 H106 V380 H60 Z" />
+          <path class="outline-part" pathLength="100" d="M300,40 H346 V380 H300 Z" />
+          <path class="outline-part" pathLength="100" d="M60,188 H346 V232 H60 Z" />
+          <path class="outline-part" pathLength="100" d="M410,40 H452 V380 H410 Z" />
+          <path class="outline-part" pathLength="100" d="M668,40 H710 V380 H668 Z" />
+          <path class="outline-part" pathLength="100" d="M452,40 L540,230 L500,230 L452,120 Z" />
+          <path class="outline-part" pathLength="100" d="M668,40 L580,230 L620,230 L668,120 Z" />
+          <rect class="mpart" x="60" y="40" width="46" height="340" fill="#1B1F19" />
+          <rect class="mpart" x="300" y="40" width="46" height="340" fill="#1B1F19" />
+          <rect class="mpart" x="60" y="188" width="286" height="44" fill="#1B1F19" />
+          <rect class="mpart" x="410" y="40" width="42" height="340" fill="#1B1F19" />
+          <rect class="mpart" x="668" y="40" width="42" height="340" fill="#1B1F19" />
+          <polygon class="mpart" points="452,40 540,230 500,230 452,120" fill="#1B1F19" />
+          <polygon class="mpart" points="668,40 580,230 620,230 668,120" fill="#1B1F19" />
         </svg>
-        <span class="mono" data-i18n="founderPhotoLabel">PHOTO DU FONDATEUR</span>
+      </div>
+      <div class="hero-tagline" data-i18n="tagline">Atelier d'architecture — Tanger, Maroc</div>
+      <div class="scroll-cue">
+        <span data-i18n="scrollCue">DÉFILER POUR DÉCOUVRIR</span>
+        <span class="line"></span>
+      </div>
+    </section>
+
+    <!-- HERO SLIDER -->
+    <div class="hero-slider reveal" id="heroSlider">
+      <button class="arrow prev" id="prevArrow" aria-label="previous">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </button>
+      <button class="arrow next" id="nextArrow" aria-label="next">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </button>
+      <div class="slider-caption">
+        <div class="caption-left" id="sliderCaptionText"></div>
+        <div class="slider-controls">
+          <div class="dots" id="sliderDots"></div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- SAVOIR-FAIRE -->
-<section id="savoir-faire">
-  <div class="wrap">
-    <div class="sf-head reveal">
-      <div>
-        <span class="eyebrow" data-i18n="eyebrowCompetences">Compétences</span>
-        <h2 data-i18n="sfHeading">SAVOIR-FAIRE</h2>
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="wrap about-grid">
+        <h2 class="reveal" data-i18n-html="aboutHeading"></h2>
+        <div class="copy reveal">
+          <p data-i18n="aboutPara1"></p>
+          <p data-i18n="aboutPara2"></p>
+        </div>
       </div>
-      <p data-i18n="sfDesc"></p>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="sf-grid reveal" id="sfGrid"></div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta" id="contact">
-  <div class="wrap">
-    <span class="eyebrow reveal center-flex" data-i18n="ctaEyebrow"></span>
-    <h2 class="reveal" data-i18n="ctaHeading"></h2>
-    <p class="sub reveal" data-i18n="ctaSub"></p>
-    <a href="mailto:contact@atelierhm.ma" class="btn reveal" data-i18n="ctaBtn"></a>
-  </div>
-</section>
-</div>
-<!-- /homeView -->
-
-<!-- PROJECT DETAIL VIEW -->
-<div id="projectView">
-  <section class="pp-top-section">
-    <div class="wrap">
-      <a href="#" id="ppBack" class="pp-back mono">← <span data-i18n="backToProjects">RETOUR AUX PROJETS</span></a>
-      <span class="eyebrow" id="ppCat"></span>
-      <h1 class="display" id="ppTitle"></h1>
-
-      <div class="pp-meta">
-        <div class="pp-row"><span class="mono" data-i18n="metaLieu">LIEU</span><span id="ppLieu"></span></div>
-        <div class="pp-row"><span class="mono" data-i18n="metaProgramme">PROGRAMME</span><span id="ppProgramme"></span></div>
-        <div class="pp-row"><span class="mono" data-i18n="metaMetier">MÉTIER</span><span id="ppMetier"></span></div>
-        <div class="pp-row"><span class="mono" data-i18n="metaAnnee">ANNÉE</span><span id="ppAnnee"></span></div>
-        <div class="pp-row"><span class="mono" data-i18n="metaSurface">SURFACE</span><span id="ppSurface"></span></div>
+      <div class="wrap">
+        <div class="stats reveal">
+          <div class="stat">
+            <div class="num">30+</div>
+            <div class="lab" data-i18n="stat1">PROJETS LIVRÉS</div>
+          </div>
+          <div class="stat">
+            <div class="num">3</div>
+            <div class="lab" data-i18n="stat2">ANNÉES D'EXERCICE</div>
+          </div>
+          <div class="stat">
+            <div class="num">04</div>
+            <div class="lab" data-i18n="stat3">VILLES AU MAROC</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="pp-hero"><img id="ppHeroImg" src="" alt=""></div>
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="wrap">
+        <div class="projects-head reveal">
+          <div>
+            <span class="eyebrow" data-i18n="eyebrowPortfolio">Portfolio</span>
+            <h2 data-i18n-html="projectsHeading"></h2>
+          </div>
+          <p data-i18n="projectsDesc"></p>
+        </div>
+        <div class="project-filters reveal" id="projectFilters"></div>
+      </div>
 
-  <section class="pp-desc-section">
+      <div class="project-grid reveal" id="projectGrid"></div>
+
+      <div class="wrap">
+        <div class="view-all reveal"><button id="viewAllBtn" class="btn"></button></div>
+      </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy">
+      <div class="wrap philosophy-grid">
+        <div class="philosophy-text">
+          <blockquote class="reveal" data-i18n="philosophyQuote"></blockquote>
+          <cite data-i18n="philosophyCite"></cite>
+        </div>
+        <div class="philosophy-portrait reveal">
+          <img src="assets/haytham-mribah-portrait.jpg" alt="Haytham Mribah, fondateur" id="founderPhoto">
+          <div class="portrait-placeholder" id="founderPlaceholder">
+            <svg viewBox="0 0 64 64" width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="24" r="12" stroke="currentColor" stroke-width="1.4" />
+              <path d="M10 54c3-12 12-18 22-18s19 6 22 18" stroke="currentColor" stroke-width="1.4" />
+            </svg>
+            <span class="mono" data-i18n="founderPhotoLabel">PHOTO DU FONDATEUR</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SAVOIR-FAIRE -->
+    <section id="savoir-faire">
+      <div class="wrap">
+        <div class="sf-head reveal">
+          <div>
+            <span class="eyebrow" data-i18n="eyebrowCompetences">Compétences</span>
+            <h2 data-i18n="sfHeading">SAVOIR-FAIRE</h2>
+          </div>
+          <p data-i18n="sfDesc"></p>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="sf-grid reveal" id="sfGrid"></div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contact">
+      <div class="wrap">
+        <span class="eyebrow reveal center-flex" data-i18n="ctaEyebrow"></span>
+        <h2 class="reveal" data-i18n="ctaHeading"></h2>
+        <p class="sub reveal" data-i18n="ctaSub"></p>
+        <a href="mailto:contact@atelierhm.ma" class="btn reveal" data-i18n="ctaBtn"></a>
+      </div>
+    </section>
+  </div>
+  <!-- /homeView -->
+
+  <!-- PROJECT DETAIL VIEW -->
+  <div id="projectView">
+    <section class="pp-top-section">
+      <div class="wrap">
+        <a href="#" id="ppBack" class="pp-back mono">← <span data-i18n="backToProjects">RETOUR AUX PROJETS</span></a>
+        <span class="eyebrow" id="ppCat"></span>
+        <h1 class="display" id="ppTitle"></h1>
+
+        <div class="pp-meta">
+          <div class="pp-row"><span class="mono" data-i18n="metaLieu">LIEU</span><span id="ppLieu"></span></div>
+          <div class="pp-row"><span class="mono" data-i18n="metaProgramme">PROGRAMME</span><span
+              id="ppProgramme"></span></div>
+          <div class="pp-row"><span class="mono" data-i18n="metaMetier">MÉTIER</span><span id="ppMetier"></span></div>
+          <div class="pp-row"><span class="mono" data-i18n="metaAnnee">ANNÉE</span><span id="ppAnnee"></span></div>
+          <div class="pp-row"><span class="mono" data-i18n="metaSurface">SURFACE</span><span id="ppSurface"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pp-hero"><img id="ppHeroImg" src="" alt=""></div>
+
+    <section class="pp-desc-section">
+      <div class="wrap">
+        <p class="pp-desc" id="ppDesc"></p>
+        <div class="pp-gallery" id="ppGallery"></div>
+      </div>
+    </section>
+
+    <section class="pp-related-section">
+      <div class="wrap">
+        <div class="projects-head">
+          <div>
+            <h2 data-i18n="otherProjectsHeading">AUTRES PROJETS</h2>
+          </div>
+          <p data-i18n="otherProjectsSub"></p>
+        </div>
+        <div class="project-grid pp-other-grid" id="ppOtherGrid"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
     <div class="wrap">
-      <p class="pp-desc" id="ppDesc"></p>
-      <div class="pp-gallery" id="ppGallery"></div>
-    </div>
-  </section>
-
-  <section class="pp-related-section">
-    <div class="wrap">
-      <div class="projects-head">
+      <div class="foot-grid">
         <div>
-          <h2 data-i18n="otherProjectsHeading">AUTRES PROJETS</h2>
+          <div class="foot-logo">HM<span class="dot"></span></div>
+          <div class="foot-tag" data-i18n-html="footTag"></div>
         </div>
-        <p data-i18n="otherProjectsSub"></p>
-      </div>
-      <div class="project-grid pp-other-grid" id="ppOtherGrid"></div>
-    </div>
-  </section>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="foot-logo">HM<span class="dot"></span></div>
-        <div class="foot-tag" data-i18n-html="footTag"></div>
-      </div>
-      <div class="foot-col">
-        <div class="h" data-i18n="footAgency">AGENCE</div>
-        <div class="block">
-          <div class="city" data-i18n="footCity">Tanger</div>
-          <div class="addr" data-i18n-html="footAddr"></div>
+        <div class="foot-col">
+          <div class="h" data-i18n="footAgency">AGENCE</div>
+          <div class="block">
+            <div class="city" data-i18n="footCity">Tanger</div>
+            <div class="addr" data-i18n-html="footAddr"></div>
+          </div>
+        </div>
+        <div class="foot-col">
+          <div class="h" data-i18n="footContact">CONTACT</div>
+          <a class="contact-line" href="tel:+212539000000" data-i18n="footPhone">Tél. +212 539 00 00 00</a>
+          <a class="contact-line" href="mailto:contact@atelierhm.ma">contact@atelierhm.ma</a>
+          <a class="contact-line" href="#" data-i18n="footInsta">Instagram — @atelierhaythammribah</a>
         </div>
       </div>
-      <div class="foot-col">
-        <div class="h" data-i18n="footContact">CONTACT</div>
-        <a class="contact-line" href="tel:+212539000000" data-i18n="footPhone">Tél. +212 539 00 00 00</a>
-        <a class="contact-line" href="mailto:contact@atelierhm.ma">contact@atelierhm.ma</a>
-        <a class="contact-line" href="#" data-i18n="footInsta">Instagram — @atelierhaythammribah</a>
+      <div class="foot-bottom">
+        <span data-i18n="footCopy"></span>
+        <a href="#" data-i18n="footLegal">MENTIONS LÉGALES</a>
       </div>
     </div>
-    <div class="foot-bottom">
-      <span data-i18n="footCopy"></span>
-      <a href="#" data-i18n="footLegal">MENTIONS LÉGALES</a>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
+
 </html>
