@@ -1,13 +1,13 @@
 :root{
-    --limestone:#F1ECE2;
-    --limestone-2:#EAE3D5;
-    --ink:#17160F;
-    --stone:#6E6858;
-    --stone-light:#9C9581;
-    --ochre:#AD5A28;
-    --strait:#1E4654;
-    --line:rgba(23,22,15,0.14);
-    --footer-bg:#100F0B;
+    --limestone:#F4F2EA;
+    --limestone-2:#EAE6D9;
+    --ink:#1B1F19;
+    --stone:#6C6B57;
+    --stone-light:#A6A38F;
+    --ochre:#5B6B3F;
+    --strait:#1C2620;
+    --line:rgba(27,31,25,0.14);
+    --footer-bg:#14170F;
     --footer-line:rgba(255,255,255,0.12);
   }
 
@@ -61,7 +61,7 @@
     transition:background .4s ease, padding .4s ease;
   }
   header.scrolled{
-    background:rgba(241,236,226,0.88);
+    background:rgba(244,242,234,0.88);
     backdrop-filter:blur(10px);
     padding:16px 64px;
     box-shadow:0 1px 0 var(--line);
@@ -187,7 +187,7 @@
   .hero-mark svg{width:100%;height:auto;display:block;}
   .hero-mark svg .outline-part{
     fill:none;
-    stroke:#17160F;
+    stroke:#1B1F19;
     stroke-width:2.5;
     stroke-linejoin:round;
     stroke-linecap:round;
@@ -283,7 +283,7 @@
   .slide.active img{transform:scale(1);}
   .hero-slider .scrim{
     position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(16,15,11,0.05) 0%, rgba(16,15,11,0.55) 100%);
+    background:linear-gradient(180deg, rgba(20,23,15,0.05) 0%, rgba(20,23,15,0.55) 100%);
   }
   .slider-caption{
     position:absolute;
@@ -292,7 +292,7 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
-    color:#F1ECE2;
+    color:#F4F2EA;
     z-index:5;
   }
   body.rtl .slider-caption{flex-direction:row-reverse;}
@@ -312,20 +312,20 @@
   }
   .slider-controls{display:flex;align-items:center;gap:24px;}
   .dots{display:flex;gap:8px;}
-  .dots button{width:6px;height:6px;border-radius:50%;background:rgba(241,236,226,0.4);padding:0;}
-  .dots button.on{background:#F1ECE2;}
+  .dots button{width:6px;height:6px;border-radius:50%;background:rgba(244,242,234,0.4);padding:0;}
+  .dots button.on{background:#F4F2EA;}
   .arrow{
     width:44px;height:44px;
-    border:1px solid rgba(241,236,226,0.5);
+    border:1px solid rgba(244,242,234,0.5);
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
-    color:#F1ECE2;
+    color:#F4F2EA;
     position:absolute;
     top:50%;transform:translateY(-50%);
     z-index:6;
     transition:background .2s, border-color .2s;
   }
-  .arrow:hover{background:rgba(241,236,226,0.15);border-color:#F1ECE2;}
+  .arrow:hover{background:rgba(244,242,234,0.15);border-color:#F4F2EA;}
   .arrow.prev{left:36px;}
   .arrow.next{right:36px;}
   body.rtl .arrow.prev{left:auto;right:36px;transform:translateY(-50%) scaleX(-1);}
@@ -374,7 +374,7 @@
   .about-grid .copy p{
     font-size:17px;
     line-height:1.75;
-    color:#2B2A22;
+    color:#23261F;
     margin-bottom:22px;
     max-width:52ch;
   }
@@ -484,12 +484,12 @@
   .card:hover img{transform:scale(1.07);}
   .card .scrim{
     position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(16,15,11,0) 40%, rgba(16,15,11,0.72) 100%);
+    background:linear-gradient(180deg, rgba(20,23,15,0) 40%, rgba(20,23,15,0.72) 100%);
   }
   .card .info{
     position:absolute;left:0;right:0;bottom:0;
     padding:24px 26px;
-    color:#F1ECE2;
+    color:#F4F2EA;
   }
   .card .loc{
     font-family:'IBM Plex Mono',monospace;
@@ -518,8 +518,8 @@
     font-family:'IBM Plex Mono',monospace;
     font-size:10px;
     letter-spacing:0.1em;
-    color:#F1ECE2;
-    border:1px solid rgba(241,236,226,0.5);
+    color:#F4F2EA;
+    border:1px solid rgba(244,242,234,0.5);
     padding:4px 8px;
     opacity:0;
     transform:translateY(-6px);
@@ -559,7 +559,7 @@
     position:absolute;
     right:-10%;top:-30%;
     width:60%;height:160%;
-    border:1px solid rgba(241,236,226,0.08);
+    border:1px solid rgba(244,242,234,0.08);
     transform:rotate(18deg);
   }
   .philosophy .wrap{position:relative;}
@@ -586,12 +586,12 @@
     font-style:normal;
     font-size:12px;
     letter-spacing:0.14em;
-    color:rgba(241,236,226,0.72);
+    color:rgba(244,242,234,0.72);
   }
   .philosophy-portrait{
     position:relative;
     aspect-ratio:3/4;
-    border:1px solid rgba(241,236,226,0.22);
+    border:1px solid rgba(244,242,234,0.22);
   }
   .philosophy-portrait img{
     display:none;
@@ -606,8 +606,8 @@
     align-items:center;
     justify-content:center;
     gap:16px;
-    color:rgba(241,236,226,0.45);
-    border:1px dashed rgba(241,236,226,0.3);
+    color:rgba(244,242,234,0.45);
+    border:1px dashed rgba(244,242,234,0.3);
     margin:14px;
   }
   .portrait-placeholder span{
@@ -715,7 +715,7 @@
   /* ===== FOOTER ===== */
   footer{
     background:var(--footer-bg);
-    color:#EDE9DE;
+    color:#EDEAE0;
     padding:100px 0 0;
   }
   .foot-grid{
@@ -734,14 +734,14 @@
   .foot-logo .dot{width:9px;height:9px;background:var(--ochre);transform:translateY(-12px);}
   .foot-tag{
     margin-top:16px;
-    color:rgba(237,233,222,0.55);
+    color:rgba(237,234,224,0.55);
     font-size:14px;
   }
   .foot-col .h{
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
     letter-spacing:0.14em;
-    color:rgba(237,233,222,0.5);
+    color:rgba(237,234,224,0.5);
     margin-bottom:22px;
   }
   .foot-col .block{margin-bottom:26px;}
@@ -754,13 +754,13 @@
   .foot-col .block .addr{
     font-size:14px;
     line-height:1.6;
-    color:rgba(237,233,222,0.65);
+    color:rgba(237,234,224,0.65);
   }
   .foot-col a.contact-line{
     display:block;
     font-size:14px;
     margin-bottom:10px;
-    color:rgba(237,233,222,0.8);
+    color:rgba(237,234,224,0.8);
     transition:color .2s;
   }
   .foot-col a.contact-line:hover{color:var(--ochre);}
@@ -773,9 +773,9 @@
     font-family:'IBM Plex Mono',monospace;
     font-size:11px;
     letter-spacing:0.1em;
-    color:rgba(237,233,222,0.5);
+    color:rgba(237,234,224,0.5);
   }
-  .foot-bottom a:hover{color:#EDE9DE;}
+  .foot-bottom a:hover{color:#EDEAE0;}
 
   /* ===== REVEAL ===== */
   .reveal{
@@ -852,7 +852,7 @@
   .pp-desc{
     font-size:17px;
     line-height:1.85;
-    color:#2B2A22;
+    color:#23261F;
     max-width:74ch;
     margin-bottom:50px;
   }
