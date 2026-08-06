@@ -876,6 +876,7 @@
 
   @media (max-width:700px){
     .pp-row{flex-direction:column;gap:6px;}
+    .pp-row > span:first-child{flex:0 0 auto;}
     .pp-row > span:last-child{text-align:left;}
     body.rtl .pp-row > span:last-child{text-align:right;}
     .pp-gallery{grid-template-columns:1fr;}
