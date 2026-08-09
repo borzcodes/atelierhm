@@ -6,6 +6,28 @@ if('scrollRestoration' in history){
   history.scrollRestoration = 'manual';
 }
 
+/* ===================== DARK MODE =====================
+   The theme itself is already applied to <body> by a tiny inline
+   script at the top of <body> (before first paint, to avoid a
+   flash of the wrong theme). This just syncs the switch's visual/
+   aria state and handles toggling + persistence from here on. */
+(function(){
+  const toggle = document.getElementById('themeToggle');
+  if(!toggle) return;
+
+  function syncToggle(){
+    const isDark = document.body.classList.contains('dark-mode');
+    toggle.setAttribute('aria-checked', isDark ? 'true' : 'false');
+  }
+  syncToggle();
+
+  toggle.addEventListener('click', ()=>{
+    const isDark = document.body.classList.toggle('dark-mode');
+    syncToggle();
+    try{ localStorage.setItem('hm-theme', isDark ? 'dark' : 'light'); }catch(e){}
+  });
+})();
+
 /* ===================== SECURITY HELPERS =====================
    This is a static, backend-less site: no forms submit anywhere, no
    API endpoints, no database. The two things that ARE real attack
