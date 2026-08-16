@@ -486,6 +486,80 @@ if(founderPhoto && founderPlaceholder){
   }
 }
 
+/* ===================== HERO SCROLL LOCK =====================
+   Keeps the hero pinned in view until the visitor makes two distinct
+   scroll gestures (wheel/touch/keyboard). The first gesture is
+   absorbed (page stays frozen); the second is let through immediately
+   so the page actually starts moving on that second scroll. A burst
+   of wheel events from one continuous trackpad swipe is debounced to
+   count as a single gesture, not many. Deliberate navigation (menu
+   links, back button, etc.) still works normally — this only gates
+   passive scrolling. */
+(function(){
+  const REQUIRED_ATTEMPTS = 2;
+  const GESTURE_COOLDOWN = 650;
+  let locked = true;
+  let attempts = 0;
+  let cooldown = false;
+  let touchStartY = null;
+
+  function unlock(){
+    locked = false;
+    document.removeEventListener('wheel', onWheel, {passive:false});
+    document.removeEventListener('touchstart', onTouchStart);
+    document.removeEventListener('touchmove', onTouchMove, {passive:false});
+    document.removeEventListener('keydown', onKeydown);
+  }
+
+  // Returns true if this gesture should be blocked (page stays frozen),
+  // false if it should pass through (either off-cooldown mid-burst, or
+  // this is the unlocking gesture and the page should start scrolling).
+  function shouldBlock(){
+    if(cooldown) return true; // still inside the same continuous gesture burst
+    cooldown = true;
+    attempts++;
+    setTimeout(()=>{ cooldown = false; }, GESTURE_COOLDOWN);
+    if(attempts >= REQUIRED_ATTEMPTS){
+      unlock();
+      return false; // let the unlocking gesture through
+    }
+    return true;
+  }
+
+  function onWheel(e){
+    if(!locked) return;
+    if(window.scrollY > 4){ unlock(); return; }
+    if(e.deltaY <= 0) return;
+    if(shouldBlock()) e.preventDefault();
+  }
+
+  function onTouchStart(e){
+    touchStartY = e.touches[0].clientY;
+  }
+
+  function onTouchMove(e){
+    if(!locked) return;
+    if(window.scrollY > 4){ unlock(); return; }
+    if(touchStartY === null) return;
+    const delta = touchStartY - e.touches[0].clientY;
+    if(delta <= 24) return; // require a real upward swipe (scroll-down intent)
+    if(shouldBlock()){ e.preventDefault(); }
+    touchStartY = e.touches[0].clientY;
+  }
+
+  function onKeydown(e){
+    if(!locked) return;
+    if(['ArrowDown','PageDown',' '].includes(e.key)){
+      if(shouldBlock()) e.preventDefault();
+    }
+  }
+
+  document.addEventListener('wheel', onWheel, {passive:false});
+  document.addEventListener('touchstart', onTouchStart, {passive:true});
+  document.addEventListener('touchmove', onTouchMove, {passive:false});
+  document.addEventListener('keydown', onKeydown);
+})();
+
 /* ===================== HERO MARK ANIMATION ===================== */
 const heroMark = document.querySelector('.hero-mark');
 requestAnimationFrame(()=>{
