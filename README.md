@@ -201,6 +201,21 @@ monogram's much heavier letterforms. Coverage rides on the path's own
 forms where they meet. The monogram needs none of this — its stems are heavy
 enough to survive even at header size.
 
+**The favicon** (`public/favicon.svg`, also written by `npm run trace:mark`) is
+the same monogram on a burgundy disc. It needs two things the logotype does
+not. A ground, because a favicon slot is 16px of whatever the browser puts
+behind it, and a disc reads as a deliberate object at that size where a bare
+wordmark reads as debris. And weight: reduced honestly to 16px the hairlines
+land at about a fifth of a pixel and disappear — side by side, the plain
+reduction is illegible at every size a tab actually uses. So the icon carries
+`ICON_STROKE` of extra weight in the mark's own units, which is the optical
+sizing a type designer does for small text; the shape, the swash and the
+counters all survive, they simply carry more ink. It applies to the icon alone
+— the logotype is never redrawn.
+
+There is no PNG fallback. Every current browser renders SVG favicons; add
+`apple-touch-icon` PNGs if iOS home-screen icons ever matter.
+
 The header runs the monogram rather than the full lockup: under about 120px the
 subline stops being words and becomes a grey smear, and the full artwork carries
 a fifth of its height as empty space beneath it, which would leave the header

@@ -579,7 +579,15 @@
   transform-origin: bottom;
   transition: transform 0.6s var(--ease-io);
 }
-.cap__row.is-near::before,
+/* The two highlights are deliberately exclusive. `.is-near` is passive — it
+   follows the scroll and is always lit on some row while the list is on
+   screen — so on its own it stays lit under a row the pointer is nowhere
+   near, and two rows read as selected at once. Scoping it to a list that is
+   not being pointed at hands the highlight to hover for as long as the
+   pointer is in the list, and takes it back on the way out. Where there is no
+   hover at all the list is never `:hover`, so touch keeps the passive
+   behaviour untouched. */
+.cap__list:not(:hover) .cap__row.is-near::before,
 .cap__row:hover::before {
   transform: scaleY(1);
   transform-origin: top;
@@ -614,19 +622,23 @@
   transition: color 0.45s var(--ease-out);
 }
 
-/* The row nearest the middle of the screen steps forward on its own. */
-.cap__row.is-near .cap__sheet {
+/* The row nearest the middle of the screen steps forward on its own — until
+   the pointer enters the list, when hover takes over. Same scoping as the
+   wash above, for the same reason. */
+.cap__list:not(:hover) .cap__row.is-near .cap__sheet {
   color: var(--burgundy);
   transform: translateX(0.25rem);
 }
-.cap__row.is-near .cap__title {
+.cap__list:not(:hover) .cap__row.is-near .cap__title {
   transform: translateX(clamp(5px, 0.8vw, 14px));
   color: var(--burgundy);
 }
-.cap__row.is-near .cap__body {
+.cap__list:not(:hover) .cap__row.is-near .cap__body {
   color: var(--ink);
 }
 
+/* Hover lights a row exactly as passing the middle of the screen does, so the
+   two states are the same picture and the handover is invisible. */
 @media (hover: hover) {
   .cap__row:hover .cap__title {
     transform: translateX(clamp(5px, 0.8vw, 14px));
@@ -634,6 +646,10 @@
   }
   .cap__row:hover .cap__sheet {
     color: var(--burgundy);
+    transform: translateX(0.25rem);
+  }
+  .cap__row:hover .cap__body {
+    color: var(--ink);
   }
 }
 

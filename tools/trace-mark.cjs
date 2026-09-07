@@ -48,8 +48,10 @@ const strFlag = (name, dflt) => {
 };
 
 const OUT = strFlag('out', 'public/assets/logo/hma-mark.svg');
-/* The compact lockup for the header — see where it is written, below. */
+/* The compact lockup for the header, and the app icon — see where each is
+   written, below. */
 const MONO_OUT = strFlag('monoOut', 'public/assets/logo/hma-monogram.svg');
+const ICON_OUT = strFlag('iconOut', 'public/favicon.svg');
 
 /* Coordinate precision in source pixels. The mark is drawn at most 620px wide,
    so a tenth of a pixel is already finer than any display can show. */
@@ -365,6 +367,39 @@ const posterize = (src, opts) =>
     '" fill="currentColor" color="#fff" fill-rule="evenodd">\n' +
     '<path d="' + mono[0].d + '"/>\n</svg>\n';
   fs.writeFileSync(MONO_OUT, monoSvg);
+
+  /* The app icon. A favicon slot is 16 square, so the mark needs two things
+     the logotype does not otherwise need.
+
+     A ground: a burgundy disc, which reads as a deliberate object at that size
+     where a bare wordmark reads as debris. Colours are the palette's
+     --burgundy and white, as literals — an SVG served as its own file cannot
+     see the stylesheet.
+
+     And weight. Reduced honestly to 16px the monogram's hairlines land at
+     about a fifth of a pixel and vanish: measured side by side, the plain
+     reduction is illegible at every size a tab actually uses. ICON_STROKE
+     thickens the letterforms in the mark's own units, which is the optical
+     sizing a type designer does for small text — the shape, the swash and the
+     counters all survive, they simply carry more ink. It applies only to this
+     icon; the logotype itself is never redrawn. */
+  const ICON = 64;
+  const ICON_FILL = 0.86;
+  const ICON_STROKE = 20;
+  const mw = ICON * ICON_FILL;
+  const k = mw / (b.x1 - b.x0);
+  const mh = (b.y1 - b.y0) * k;
+  const place =
+    'translate(' + r((ICON - mw) / 2) + ' ' + r((ICON - mh) / 2) + ') ' +
+    'scale(' + Math.round(k * 1e5) / 1e5 + ') ' +
+    'translate(' + r(-b.x0) + ' ' + r(-b.y0) + ')';
+  const iconSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + ICON + ' ' + ICON + '">\n' +
+    '<circle cx="32" cy="32" r="32" fill="#7a2438"/>\n' +
+    '<g fill="#fff" fill-rule="evenodd" stroke="#fff" stroke-width="' + ICON_STROKE +
+    '" stroke-linejoin="round" transform="' + place + '">\n' +
+    '<path d="' + mono[0].d + '"/>\n</g>\n</svg>\n';
+  fs.writeFileSync(ICON_OUT, iconSvg);
 
   [monoSrc, subSrc].forEach((f) => fs.unlinkSync(f));
 
