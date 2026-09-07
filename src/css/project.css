@@ -1,0 +1,346 @@
+/* =============================================================
+   HM ARCHITECT — project detail page
+   Editorial rhythm: a centred plate with numbered pagination, a
+   margin caption paired with a large statement, then splits.
+   ============================================================= */
+
+.pj-hero {
+  position: relative;
+  height: 78svh;
+  min-height: 460px;
+  overflow: hidden;
+  background: var(--paper-3);
+}
+.pj-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+.pj-hero__grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(13, 12, 11, 0.34) 0%,
+    rgba(13, 12, 11, 0.04) 26%,
+    rgba(13, 12, 11, 0.18) 52%,
+    rgba(13, 12, 11, 0.62) 100%
+  );
+}
+.pj-hero__inner {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0 var(--pad) clamp(1.2rem, 3vw, 3rem);
+  color: var(--bone);
+}
+.pj-hero__title {
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: clamp(1.9rem, 6.2vw, 6.6rem);
+  line-height: 0.9;
+  letter-spacing: -0.042em;
+  text-transform: uppercase;
+}
+.pj-hero__sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin-top: clamp(0.6rem, 1.4vw, 1.4rem);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.pj-back {
+  position: absolute;
+  top: calc(var(--header-h) + 0.6rem);
+  left: var(--pad);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--bone);
+  mix-blend-mode: difference;
+}
+.pj-back svg {
+  width: 1em;
+  transition: transform 0.4s var(--ease-out);
+}
+.pj-back:hover svg {
+  transform: translateX(-0.25rem);
+}
+
+/* --------------------------------------------------------- fact table -- */
+
+.pj-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 var(--gap);
+  padding: clamp(1.6rem, 4vw, 4rem) var(--pad) 0;
+}
+.pj-facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: var(--rule) solid var(--line-soft);
+}
+.pj-facts dt {
+  color: var(--ink-45);
+}
+.pj-facts dd {
+  margin: 0;
+  text-align: right;
+}
+
+/* --------------------------------------------- lede + margin/statement -- */
+
+.pj-lede {
+  padding: clamp(1.6rem, 4vw, 4rem) var(--pad) 0;
+}
+.pj-lede p {
+  font-weight: 700;
+  font-size: clamp(1.25rem, 2.5vw, 2.5rem);
+  line-height: 1.14;
+  letter-spacing: -0.032em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+/* The signature block from the reference: a full-bleed plate, then a small
+   note pinned to the left margin against a large statement set well in from
+   it. The columns are deliberately not adjacent — the empty measure between
+   them is doing as much work as the type. */
+.pj-note__plate {
+  overflow: hidden;
+  background: var(--paper-3);
+}
+.pj-note__plate img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pj-note {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  padding: clamp(1.2rem, 2.6vw, 2.6rem) var(--pad) clamp(1.6rem, 4vw, 4rem);
+  align-items: start;
+}
+.pj-note__aside {
+  grid-column: 1 / span 2;
+  position: relative;
+  padding-top: 0.35rem;
+  color: var(--ink-45);
+  font-size: var(--t-small);
+  line-height: 1.5;
+}
+.pj-note__aside::before {
+  content: '';
+  display: block;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--burgundy);
+  border-radius: 50%;
+  margin-bottom: 0.9rem;
+}
+.pj-note .statement {
+  grid-column: 5 / span 6;
+}
+
+/* ------------------------------------------------------------- plates -- */
+
+.pj-plate {
+  padding: clamp(1rem, 3vw, 3rem) var(--pad);
+}
+.pj-plate--wide {
+  padding-inline: 0;
+}
+.pj-plate figure {
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper-3);
+}
+.pj-plate img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.pj-plate figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.7rem;
+  color: var(--ink-45);
+}
+.pj-plate--wide figcaption {
+  padding-inline: var(--pad);
+}
+
+/* Centred carousel plate with numbered pagination, as in the reference. */
+.pj-carousel {
+  padding: clamp(2rem, 5vw, 5rem) var(--pad);
+}
+.pj-carousel__stage {
+  position: relative;
+  /* The reference holds this plate to a little over half the measure, with
+     the page breathing around it. 52rem also happens to be about the native
+     width of the source imagery, so nothing is upscaled here. */
+  width: min(100%, 52rem);
+  margin-inline: auto;
+  /* Set per project by project.js, so a square scheme is not letterboxed. */
+  aspect-ratio: var(--plate-ratio, 16 / 9);
+  overflow: hidden;
+  background: var(--paper-3);
+}
+.pj-carousel__stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.75s var(--ease-out), transform 1.4s var(--ease-out);
+}
+.pj-carousel__stage img.is-on {
+  opacity: 1;
+  transform: none;
+}
+/* Two-up split, per the case-study reference: edge to edge, no gutter, and
+   two unequal columns sharing one ratio, so the narrower plate ends higher.
+   That step is what gives the pair its rhythm in the reference. */
+.pj-split {
+  display: grid;
+  grid-template-columns: 56fr 44fr;
+  gap: 0;
+  align-items: start;
+}
+.pj-split figure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper-3);
+  /* Both columns share a ratio, so the narrower one simply ends higher. */
+  aspect-ratio: var(--plate-ratio, 16 / 9);
+}
+/* Oversized and pulled up, so the parallax drift never exposes an edge. */
+.pj-split img {
+  position: absolute;
+  inset: -6% 0 auto 0;
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------- body text -- */
+
+.pj-body {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);
+  gap: var(--gap) clamp(1.5rem, 5vw, 6rem);
+  padding: clamp(1.4rem, 3.5vw, 3.5rem) var(--pad);
+  align-items: start;
+}
+.pj-body__label {
+  position: sticky;
+  top: calc(var(--header-h) + 1rem);
+  color: var(--ink-45);
+}
+
+/* ---------------------------------------------------------------- next -- */
+
+.pj-next {
+  position: relative;
+  display: block;
+  border-top: var(--rule) solid var(--line);
+  overflow: hidden;
+}
+.pj-next__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: clamp(1.8rem, 4.5vw, 4.5rem) var(--pad);
+  transition: color 0.5s var(--ease-out);
+}
+.pj-next__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.pj-next__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 0.7s var(--ease-out), transform 1.6s var(--ease-out);
+}
+.pj-next:hover .pj-next__bg img {
+  opacity: 0.9;
+  transform: none;
+}
+.pj-next:hover .pj-next__inner {
+  color: var(--bone);
+}
+.pj-next h2 {
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: clamp(1.6rem, 4.8vw, 5rem);
+  line-height: 0.92;
+  letter-spacing: -0.042em;
+  text-transform: uppercase;
+}
+.pj-next__arrow {
+  width: clamp(2rem, 5vw, 5rem);
+  flex: none;
+  transition: transform 0.6s var(--ease-out);
+}
+.pj-next:hover .pj-next__arrow {
+  transform: translateX(0.4rem);
+}
+
+/* --------------------------------------------------------- not found --- */
+
+.pj-404 {
+  min-height: 70svh;
+  display: grid;
+  place-content: center;
+  gap: 1.2rem;
+  text-align: center;
+  padding: var(--pad);
+}
+
+/* -------------------------------------------------------- responsive --- */
+
+@media (max-width: 900px) {
+  .pj-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .pj-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pj-note,
+  .pj-body {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1.2rem;
+  }
+  .pj-note__aside,
+  .pj-note .statement {
+    grid-column: 1 / -1;
+  }
+  .pj-body__label {
+    position: static;
+  }
+  .pj-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

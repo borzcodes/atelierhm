@@ -1,0 +1,23 @@
+{
+  "name": "hm-architect",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "HM Architect — Tangier, Morocco. Cinematic architecture portfolio.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "trace:mark": "node tools/trace-mark.cjs"
+  },
+  "devDependencies": {
+    "jimp": "^0.14.0",
+    "pngjs": "^3.4.0",
+    "potrace": "^2.1.8",
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "lenis": "^1.1.18"
+  }
+}

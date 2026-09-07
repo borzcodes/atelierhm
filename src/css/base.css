@@ -1,0 +1,728 @@
+/* =============================================================
+   HM ARCHITECT — foundations
+   Tokens, reset, typography, and the chrome shared by every page:
+   loader, header, menu, footer, cookie notice.
+   ============================================================= */
+
+:root {
+  /* --- colour ------------------------------------------------
+     A white site with burgundy doing the accenting: white ground
+     everywhere, burgundy reserved for labels, marks, hovers and the two
+     surfaces that take over the screen (the menu and the cookie notice).
+     Even the rules and the ink carry a burgundy cast, so the tint reads
+     across the whole page without ever taking much of it. */
+  --paper: #ffffff;
+  --paper-2: #f8f3f4; /* faintly tinted band, for the contact section */
+  --paper-3: #efe6e8; /* wells behind images before they load */
+
+  --ink: #1a1014; /* near-black, warm — not a neutral grey */
+  --ink-70: rgba(26, 16, 20, 0.7);
+  --ink-45: rgba(26, 16, 20, 0.45);
+  --ink-20: rgba(26, 16, 20, 0.2);
+
+  --burgundy: #7a2438;
+  --burgundy-deep: #47131f;
+  --burgundy-soft: rgba(122, 36, 56, 0.07);
+
+  --line: rgba(122, 36, 56, 0.2);
+  --line-soft: rgba(122, 36, 56, 0.11);
+
+  /* Anything sitting on top of a photograph still wants plain white type. */
+  --bone: #ffffff;
+
+  /* --- layout ------------------------------------------------ */
+  --pad: clamp(1rem, 3.2vw, 3.25rem);
+  --gap: clamp(1rem, 1.8vw, 2rem);
+  --rule: 1px;
+  --header-h: clamp(46px, 4.4vw, 62px);
+
+  /* --- type -------------------------------------------------- */
+  --font-display: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+
+  --t-micro: clamp(0.56rem, 0.66vw, 0.72rem);
+  --t-small: clamp(0.72rem, 0.86vw, 0.86rem);
+  --t-body: clamp(0.95rem, 1.05vw, 1.1rem);
+  --t-lede: clamp(1.15rem, 1.85vw, 1.85rem);
+  --t-h2: clamp(1.9rem, 5.2vw, 5.6rem);
+  --t-h3: clamp(1.3rem, 2.4vw, 2.4rem);
+
+  /* --- motion ------------------------------------------------ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ------------------------------------------------------------- reset --- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--t-body);
+  font-weight: 400;
+  line-height: 1.45;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body.is-locked {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--burgundy);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--burgundy);
+  outline-offset: 3px;
+}
+
+/* Present for assistive tech and search, absent on screen. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 999;
+  padding: 0.6rem 1rem;
+  background: var(--burgundy);
+  color: var(--bone);
+  font-size: var(--t-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: translateY(-160%);
+  transition: transform 0.3s var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ---------------------------------------------------------- type kit --- */
+
+.micro {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.statement {
+  font-size: var(--t-lede);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.prose p + p {
+  margin-top: 1.15em;
+}
+.prose {
+  font-size: var(--t-body);
+  line-height: 1.62;
+  color: var(--ink-70);
+  max-width: 60ch;
+}
+
+/* ----------------------------------------------------------- accents --- */
+/* The numbered section labels are where the burgundy shows up most often —
+   small, frequent, and always in the same place, so the colour reads as a
+   system rather than as decoration. */
+.section__head .micro:first-child,
+.band__over .micro {
+  color: var(--burgundy);
+}
+
+/* ------------------------------------------------------------- grain --- */
+/* A fixed film-grain veil keeps the flat CSS and the 3D renders in the same
+   material world. Pointer-events off, so it never intercepts anything. */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 400;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  animation: grain-shift 6s steps(6) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -2%); }
+  80% { transform: translate(3%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ------------------------------------------------------------ loader --- */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--bone);
+  display: grid;
+  place-items: center;
+}
+
+/* The shuffling plate: sized small, then flown to full-bleed on reveal. */
+.loader__plate {
+  position: relative;
+  width: min(30vw, 340px);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--paper-3);
+  will-change: transform;
+}
+
+.loader__plate img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+.loader__plate img.is-on {
+  opacity: 1;
+}
+
+.loader__meta {
+  position: fixed;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: calc(var(--pad) * 0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.loader__count {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+}
+
+.loader__bar {
+  position: fixed;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: calc(var(--pad) * 0.9 + 2.2rem);
+  height: 1px;
+  background: var(--line);
+}
+.loader__bar span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--ink);
+}
+
+/* ------------------------------------------------------------ header --- */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 200;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: 0 var(--pad);
+  color: var(--bone);
+  mix-blend-mode: difference;
+}
+/* `difference` against white inverts over any backdrop, so the header stays
+   legible over both the photographic hero and the white page. The one place
+   it misbehaves is the burgundy menu, where differencing white lands on a
+   pale cyan — so while the menu is open the header just goes plain white. */
+
+.is-menu-open .header {
+  mix-blend-mode: normal;
+  color: #fff;
+}
+
+/* The monogram, at the size the wordmark used to sit at. It is white artwork,
+   so it inverts with the rest of the header under the difference blend and
+   stays white when the menu forces the header to plain white. */
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+.header__logo img {
+  display: block;
+  width: clamp(50px, 5.3vw, 74px);
+  height: auto;
+}
+
+
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-size: var(--t-micro);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.menu-toggle i {
+  display: block;
+  width: 0.75em;
+  height: 0.75em;
+  position: relative;
+  transition: transform 0.5s var(--ease-out);
+}
+.menu-toggle i::before,
+.menu-toggle i::after {
+  content: '';
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 1.5px;
+  background: currentColor;
+  transform: translateY(-50%);
+  transition: transform 0.4s var(--ease-out);
+}
+.menu-toggle i::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+.is-menu-open .menu-toggle i {
+  transform: rotate(135deg);
+}
+
+/* -------------------------------------------------------- menu panel --- */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  background: var(--burgundy-deep);
+  color: var(--bone);
+  padding: calc(var(--header-h) + var(--pad)) var(--pad) var(--pad);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  clip-path: inset(0 0 100% 0);
+  visibility: hidden;
+}
+.menu[data-open='true'] {
+  visibility: visible;
+}
+
+.menu__nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.1rem, 0.4vw, 0.4rem);
+}
+.menu__item {
+  overflow: hidden;
+}
+.menu__item a {
+  display: inline-block;
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: clamp(1.7rem, 5.6vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  transform: translateY(105%);
+  transition: color 0.35s var(--ease-out);
+}
+.menu__item a:hover {
+  color: #e7b9c3;
+}
+.menu__item a em {
+  font-style: normal;
+  font-size: 0.24em;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  vertical-align: super;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 0.5em;
+}
+
+.menu__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-top: var(--gap);
+  border-top: var(--rule) solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.62);
+}
+.menu__foot a:hover {
+  color: #fff;
+}
+/* ------------------------------------------------------------ badges --- */
+
+/* The rotating sticker used for "scroll", "dive in" and section marks. */
+.sticker {
+  --size: clamp(74px, 8vw, 116px);
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--burgundy);
+  color: #fff;
+  flex: none;
+}
+.sticker--ink { background: var(--ink); color: #fff; }
+.sticker__ring {
+  position: absolute;
+  inset: 0;
+  animation: spin 18s linear infinite;
+}
+.sticker__ring text {
+  font-size: 9.4px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  fill: currentColor;
+}
+.sticker__core {
+  font-size: var(--t-micro);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ------------------------------------------------------------ footer --- */
+
+.footer {
+  position: relative;
+  background: var(--bone);
+  border-top: var(--rule) solid var(--line);
+  padding-top: clamp(2rem, 5vw, 5.5rem);
+}
+
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap);
+  padding: 0 var(--pad) clamp(2rem, 5.5vw, 6rem);
+}
+.footer__cols h4 {
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-45);
+  margin-bottom: 0.9em;
+}
+.footer__cols li + li {
+  margin-top: 0.35em;
+}
+.footer__cols a,
+.footer__cols p {
+  font-size: var(--t-small);
+  letter-spacing: 0.02em;
+}
+.footer__cols a {
+  position: relative;
+}
+.footer__cols a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-out);
+}
+.footer__cols a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* The giant edge-to-edge CTA with an image slot living inside the words. */
+.seework {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.4rem, 1.4vw, 1.4rem);
+  padding: 0 var(--pad) clamp(0.8rem, 1.6vw, 1.6rem);
+  color: var(--burgundy);
+}
+.seework__word {
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: clamp(1.7rem, 8vw, 8.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.seework__slot {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: clamp(2.5rem, 9vw, 10rem);
+  height: clamp(2.1rem, 9.6vw, 10.5rem);
+  overflow: hidden;
+  background: var(--paper-3);
+  align-self: flex-end;
+  margin-bottom: 0.1em;
+}
+.seework__slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+.seework__slot img.is-on {
+  opacity: 1;
+}
+.seework__arrow {
+  flex: none;
+  width: clamp(2.4rem, 8vw, 8.5rem);
+  color: var(--burgundy);
+  transition: transform 0.55s var(--ease-out);
+}
+.seework:hover .seework__arrow {
+  transform: translateX(0.3em);
+}
+
+.footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+  justify-content: space-between;
+  padding: var(--gap) var(--pad);
+  border-top: var(--rule) solid var(--line);
+  color: var(--ink-45);
+}
+
+/* ------------------------------------------------------------ cookie --- */
+
+.cookie {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(0.8rem, 2vw, 1.6rem);
+  z-index: 210;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  max-width: calc(100vw - var(--pad) * 2);
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: var(--burgundy-deep);
+  color: #fff;
+  transition: transform 0.6s var(--ease-out), opacity 0.4s linear;
+}
+.cookie[hidden] {
+  display: none;
+}
+.cookie.is-out {
+  transform: translate(-50%, 200%);
+  opacity: 0;
+}
+.cookie p {
+  font-size: var(--t-micro);
+  letter-spacing: 0.06em;
+}
+.cookie a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cookie__actions {
+  display: flex;
+  gap: 0.9rem;
+  flex: none;
+}
+.cookie__actions button {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  transition: opacity 0.25s linear;
+}
+.cookie__actions button:hover {
+  opacity: 1;
+}
+.cookie__actions button[data-accept] {
+  opacity: 1;
+  color: #f0c4ce;
+}
+
+/* ------------------------------------------------------ reveal states --- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(clamp(14px, 2vw, 30px));
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  /* --stagger is set by initReveals() on the children of a [data-stagger]
+     container, so a list arrives one item at a time. */
+  transition: opacity 0.9s var(--ease-out) calc(var(--stagger, 0) * 70ms),
+    transform 1s var(--ease-out) calc(var(--stagger, 0) * 70ms);
+}
+
+[data-clip] {
+  clip-path: inset(0 0 100% 0);
+}
+[data-clip].is-in {
+  clip-path: inset(0 0 0% 0);
+  transition: clip-path 1.1s var(--ease-io);
+}
+
+/* Masked line reveal used by every large heading. */
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+.line-mask > span {
+  display: block;
+  transform: translateY(105%);
+}
+.line-mask.is-in > span {
+  transform: none;
+  transition: transform 1s var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal],
+  [data-clip],
+  .line-mask > span {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .grain { display: none; }
+}
+
+/* ---------------------------------------------------------- responsive -- */
+
+@media (max-width: 860px) {
+  .footer__cols {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem var(--gap);
+  }
+  /* Lifted clear of the hero pill and the scroll badge, which occupy the
+     bottom corners on small screens. */
+  .cookie {
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 14px;
+    gap: 0.7rem;
+    left: var(--pad);
+    right: var(--pad);
+    transform: none;
+    max-width: none;
+    bottom: calc(var(--pad) + 4.6rem);
+  }
+  .cookie.is-out {
+    transform: translateY(220%);
+  }
+  .cookie__actions {
+    align-self: stretch;
+    justify-content: flex-end;
+    gap: 1.4rem;
+  }
+}
+
+@media (max-width: 460px) {
+  /* The pill keeps its cycling still; the caption would collide with the
+     scroll badge at this width. */
+  .hero__pill span {
+    display: none;
+  }
+  .hero__pill {
+    padding: 0.4rem;
+  }
+}

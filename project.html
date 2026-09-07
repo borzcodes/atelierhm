@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project — HM Architect</title>
+    <meta name="description" content="A project by HM Architect — architecture and interiors, Tangier." />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0d0c0b" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/css/base.css" />
+    <link rel="stylesheet" href="/src/css/project.css" />
+    <noscript>
+      <style>
+        /* Reveal animations are JS-driven; without it, show everything. */
+        [data-reveal], [data-clip], .line-mask > span, .hero__word > span {
+          opacity: 1 !important;
+          transform: none !important;
+          clip-path: none !important;
+        }
+        .loader { display: none !important; }
+        .header, .hero__foot { opacity: 1 !important; }
+      </style>
+    </noscript>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#pjMain">Skip to the project</a>
+
+    <!-- ===================================================== header === -->
+    <header class="header">
+      <a class="header__logo" href="index.html" aria-label="HM Architect — home">
+        <img src="assets/logo/hma-monogram.svg" alt="" width="682" height="266" />
+      </a>
+
+
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu">
+        <i aria-hidden="true"></i><span id="menuLabel">Menu</span>
+      </button>
+    </header>
+
+    <nav class="menu" id="menu" data-open="false" aria-label="Main">
+      <ul class="menu__nav">
+        <li class="menu__item"><a href="index.html">Index <em>00</em></a></li>
+        <li class="menu__item"><a href="index.html#founder">Founder <em>01</em></a></li>
+        <li class="menu__item"><a href="index.html#work">Work <em>02</em></a></li>
+        <li class="menu__item"><a href="index.html#capability">Capability <em>03</em></a></li>
+        <li class="menu__item"><a href="index.html#contact">Contact <em>04</em></a></li>
+      </ul>
+      <div class="menu__foot micro">
+        <span>12 Rue d'Italie, Kasbah — 90030 Tangier</span>
+        <a href="mailto:studio@hmarchitect.ma">studio@hmarchitect.ma</a>
+        <span>35.7889° N, 5.8136° W</span>
+      </div>
+    </nav>
+
+    <main id="pjMain"></main>
+
+    <!-- ===================================================== footer === -->
+    <footer class="footer">
+      <div class="footer__cols">
+        <div>
+          <h4>Follow</h4>
+          <ul>
+            <li><a href="#" rel="noopener">Instagram</a></li>
+            <li><a href="#" rel="noopener">LinkedIn</a></li>
+            <li><a href="#" rel="noopener">Divisare</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Site</h4>
+          <ul>
+            <li><a href="index.html#founder">Founder</a></li>
+            <li><a href="index.html#work">Work</a></li>
+            <li><a href="index.html#capability">Capability</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Studio</h4>
+          <p>12 Rue d'Italie, Kasbah<br />90030 Tangier, Morocco</p>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:studio@hmarchitect.ma">studio@hmarchitect.ma</a></li>
+            <li><a href="tel:+212539331208">+212 539 33 12 08</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <a class="seework" href="index.html#work" id="seeWork">
+        <span class="seework__word">See</span>
+        <span class="seework__word">work</span>
+        <span class="seework__slot" id="seeWorkSlot" aria-hidden="true"></span>
+        <svg class="seework__arrow" viewBox="0 0 100 40" fill="none" aria-hidden="true">
+          <path d="M0 20h92M74 4l18 16-18 16" stroke="currentColor" stroke-width="5" />
+        </svg>
+      </a>
+
+      <div class="footer__base micro">
+        <span>© <span id="year">2026</span> HM Architect — Tangier, Morocco</span>
+        <span>Architecture, interiors and urban design</span>
+        <span>35.7889° N, 5.8136° W</span>
+      </div>
+    </footer>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <script type="module" src="/src/js/project.js"></script>
+  </body>
+</html>
