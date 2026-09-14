@@ -17,13 +17,9 @@ export function plate(slug, file, size) {
   return `${IMG}/${slug}/${file}${size === 'lg' ? '-lg' : ''}.webp`;
 }
 
-/**
- * Path to one of a project's plates. Always use this rather than `plate()`
- * with `project.slug`: a placeholder borrows another project's imagery, so
- * the folder it reads from is not the folder its own slug would name.
- */
+/** Path to one of a project's plates. */
 export function projectPlate(project, file, size) {
-  return plate(project.imageSlug || project.slug, file, size);
+  return plate(project.slug, file, size);
 }
 
 export const CATEGORIES = [
@@ -42,30 +38,35 @@ const REAL = [
     category: 'public',
     categoryLabel: 'Public',
     location: 'Tétouan, Morocco',
+    // TODO(studio): confirm the year — the proposal carries none.
     year: '2024',
-    status: 'Completed',
+    status: 'Design proposal',
     aspect: 'wide',
     accent: '#3E5A63',
-    lede: 'A provincial hospital planned as a single mass, then opened up with courtyards until every room found daylight.',
+    // The statement is the studio's own description of the proposal, carried
+    // into English; the lede and body expand on it from the drawings.
+    lede: 'A proposal for a provincial hospital planned as a single mass, then opened up with courtyards until every room found daylight.',
     statement:
-      'The brief arrived as a schedule of areas — a medico-technical platform, a logistics spine, and the inpatient wings above. We began with one solid volume covering the site, and the whole design was the act of carving into it: patios cut for light, then wings pulled apart until the plan read as a sequence of gardens rather than a sequence of corridors.',
+      'The project is built around a legible, efficient organisation of the hospital\'s functions — one that keeps movement fluid, gives the interior spaces real quality, and puts the comfort of the people using them first. It is a contemporary architecture in the service of care: laid out to keep pace with how medical practice will change, while holding a strong and lasting identity of its own.',
     caption:
-      'Five moves, in order: the initial mass, the patios, the medico-technical platform, the inpatient wings, the final volume.',
+      'Five moves, in order: the initial mass, the patios cut for light, the medico-technical platform and logistics zone, the inpatient wings, the final volume.',
     body: [
       'A hospital is a machine before it is a building, and the machine is not negotiable. Operating theatres want depth and no daylight; wards want the opposite. The plan holds both by stacking them — the technical platform low and deep, the inpatient wings above it and only two rooms thick.',
-      'Between them sit the courtyards. They are the entire environmental argument of the project: no patient room is more than seven metres from one, and the corridors that serve them are lit and ventilated along their whole length rather than at the ends.',
+      'The design began as one solid volume covering the site, and everything after that was the act of carving into it: patios cut for light, then wings pulled apart until the plan read as a sequence of gardens rather than a sequence of corridors. The ground floor shows the result — a logistics zone to one side, the emergency and technical platform in the centre, a public spine running through, and the wards laid out around their own courtyards.',
       'The entrance canopy is a timber lattice on slender columns, sized so that the shade it throws reaches the drop-off point at midday in July. It is the one gesture the building makes towards the road, and it is deliberately the softest thing on the site.',
     ],
     facts: [
-      ['Typology', 'Provincial hospital'],
+      ['Typology', 'Centre hospitalier provincial'],
       ['Location', 'Tétouan, Morocco'],
       ['Programme', 'Medico-technical, logistics, inpatient'],
       ['Concept', 'Carved mass, courtyard-lit'],
-      ['Status', 'Completed'],
+      ['Status', 'Design proposal'],
     ],
+    // Reading order, not file order: the whole, the idea, the plan, the
+    // arrival. The concept sheet sits second so the caption beside it — the
+    // five moves — describes what is actually on the page.
     images: [
       { file: '01', alt: 'Aerial view of the hospital complex at night, courtyards lit within the mass' },
-      { file: '02', alt: 'The entrance canopy at dusk, timber lattice over the drop-off' },
       {
         file: '03',
         alt: 'Conceptual diagram: five massing moves from initial volume to final form',
@@ -73,6 +74,12 @@ const REAL = [
         // blank card in the small cycling slots.
         diagram: true,
       },
+      {
+        file: '04',
+        alt: 'General ground-floor plan: logistics, the medico-technical platform, the public spine and the inpatient wings around their courtyards',
+        diagram: true,
+      },
+      { file: '02', alt: 'The entrance canopy at dusk, timber lattice over the drop-off' },
     ],
   },
 
@@ -118,11 +125,12 @@ const REAL = [
     category: 'interiors',
     categoryLabel: 'Interiors',
     location: 'Brussels, Belgium',
+    // TODO(studio): confirm the year — the proposal carries none.
     year: '2023',
-    status: 'Completed',
+    status: 'Design proposal',
     aspect: 'wide',
     accent: '#B08A5E',
-    lede: 'A dental clinic built out of oak, poured concrete and borrowed daylight — and almost nothing that reads as clinical.',
+    lede: 'A proposal for a dental clinic in oak, poured concrete and borrowed daylight — and almost nothing that reads as clinical.',
     statement:
       'Nobody looks forward to a dental appointment, so the brief was really about the ninety seconds before one. The plan puts a garden on the other side of every wall a patient faces: from the street window, from the waiting room, from the chair itself. The equipment is not hidden, but it is never the first thing in the frame.',
     caption:
@@ -130,14 +138,14 @@ const REAL = [
     body: [
       'The clinic occupies a narrow Brussels plot with rooms front and back and a courtyard cut through the middle. That courtyard does most of the work: it lights the treatment rooms from the side rather than overhead, which is both better for the dentist and far better for the person in the chair.',
       'Everything vertical is oak — full-height panelling, joinery, door leaves, the reception desk — set against polished concrete floors and plain white ceilings. A single recessed line of warm light runs through the whole plan and does the rest.',
-      'Behind the clinical rooms there is a staff kitchen and lounge opening onto the garden. It was not in the original brief. It is the reason the practice can run two shifts.',
+      'Behind the clinical rooms there is a staff kitchen and lounge opening onto the garden. It was not in the original brief; it is there so that a practice running two shifts has somewhere to be between them.',
     ],
     facts: [
       ['Typology', 'Dental clinic'],
       ['Location', 'Brussels, Belgium'],
       ['Programme', 'Reception, surgeries, staff lounge'],
       ['Materials', 'Oak, polished concrete, glass'],
-      ['Status', 'Completed'],
+      ['Status', 'Design proposal'],
     ],
     images: [
       { file: '05', alt: 'Reception and waiting area, with the street window beyond' },
@@ -150,32 +158,35 @@ const REAL = [
   },
 
   {
-    slug: 'residence-terracotta',
-    title: 'Résidence Terracotta',
-    shortTitle: 'Résidence Terracotta',
+    slug: 'appartement-f3-brussels',
+    // The studio's own name for it. An F3 is a three-room flat — living room
+    // plus two bedrooms — in the French and Belgian convention.
+    title: 'Appartement F3 — Brussels',
+    shortTitle: 'Appartement F3',
     category: 'residential',
     categoryLabel: 'Residential',
-    location: 'Tangier, Morocco',
+    location: 'Brussels, Belgium',
+    // TODO(studio): confirm the year — the proposal carries none.
     year: '2025',
-    status: 'Completed',
+    status: 'Design proposal',
     aspect: 'wide',
     accent: '#C0725A',
-    lede: 'An apartment worked out in three colours — terracotta, sage and warm marble — and then left alone.',
+    lede: 'A proposal for a three-room Brussels flat worked out in three colours — terracotta, sage and warm marble — and then left alone.',
     statement:
-      'The palette was fixed in the first week and never revisited: a burnt terracotta for the joinery, a soft sage for the upholstery, and a warm veined marble wherever water or heat arrives. Everything after that was a question of where each one stops.',
+      'The palette was fixed first and never revisited: a burnt terracotta for the joinery, a soft sage for the upholstery, and a warm veined marble wherever water or heat arrives. Everything after that was a question of where each one stops.',
     caption:
       'Terracotta on the joinery, sage on the soft furniture, marble at the hearth and the wet rooms. Three materials, one rule each.',
     body: [
-      'The plan is conventional — a through living room, a kitchen off it, bedrooms behind — so the work went into the surfaces and the light. Full-height sheers on every window keep the daylight even and stop the terracotta going orange in the afternoon.',
+      'The plan is the conventional one for an F3 — a through living room, a kitchen off it, two bedrooms behind — so the work went into the surfaces and the light. Full-height sheers on every window keep the flat Brussels daylight even and stop the terracotta going orange in the afternoon.',
       'Joinery runs floor to ceiling in every room and carries the lighting, so there are no downlights in the living spaces at all. The ceiling stays a single unbroken plane; a shadow gap and a concealed strip do everything a fitting would have.',
       'In the principal bedroom the wardrobe, the dressing table and the bathroom are one continuous piece of cabinetry that turns three corners. The marble shower sits inside it like a lit vitrine.',
     ],
     facts: [
-      ['Typology', 'Private apartment'],
-      ['Location', 'Tangier, Morocco'],
-      ['Programme', 'Living, kitchen, principal suite'],
+      ['Typology', 'Private apartment, F3'],
+      ['Location', 'Brussels, Belgium'],
+      ['Programme', 'Living, kitchen, two bedrooms'],
       ['Materials', 'Lacquered joinery, marble, brass'],
-      ['Status', 'Completed'],
+      ['Status', 'Design proposal'],
     ],
     images: [
       { file: '02', alt: 'Living room with the terracotta media wall and sage seating' },
@@ -183,96 +194,92 @@ const REAL = [
       { file: '01', alt: 'Principal bedroom opening into the marble bathroom' },
     ],
   },
-];
 
-/* -------------------------------------------------------- placeholders -- */
-/**
- * Stand-ins, so every category has six entries to lay out against while the
- * studio's own archive is still being gathered. They borrow imagery from the
- * four real projects, rotated so no two cards open on the same plate.
- *
- * TO REMOVE: delete PLACEHOLDER_SEED and the `...placeholders` spread in the
- * PROJECTS assembly below. Nothing else refers to them.
- */
-const PLACEHOLDER_SEED = [
-  // --- public ---
-  ['Centre de Santé Beni Makada', 'public', 'Beni Makada, Tangier', '2025', 'In design'],
-  ['Lycée Ibn Batouta', 'public', 'Tétouan, Morocco', '2022', 'Completed'],
-  ['Bibliothèque de la Médina', 'public', 'Medina, Tangier', '2026', 'In design'],
-  ['Pôle Mère-Enfant', 'public', 'Al Hoceima, Morocco', '2023', 'Completed'],
-  ['Centre de Dialyse', 'public', 'Larache, Morocco', '2024', 'On site'],
-  // --- mixed-use ---
-  ['Marina Bay Offices', 'mixed-use', 'Tanger Med, Morocco', '2025', 'On site'],
-  ['Socco Alto Extension', 'mixed-use', 'Tangier, Morocco', '2024', 'Completed'],
-  ['Rif Business Park', 'mixed-use', 'Tétouan, Morocco', '2026', 'In design'],
-  ['Corniche Hotel & Residences', 'mixed-use', 'Corniche, Tangier', '2025', 'On site'],
-  ['Gare Boukhalef Retail', 'mixed-use', 'Boukhalef, Tangier', '2023', 'Completed'],
-  // --- interiors ---
-  ['Clinique Dentaire Iberia', 'interiors', 'Iberia, Tangier', '2024', 'Completed'],
-  ['Bureau Nord Workplace', 'interiors', 'Brussels, Belgium', '2023', 'Completed'],
-  ['Café Cinéma Rif', 'interiors', 'Grand Socco, Tangier', '2022', 'Completed'],
-  ['Pharmacie Centrale', 'interiors', 'Tétouan, Morocco', '2025', 'On site'],
-  ['Studio HM', 'interiors', "Rue d'Italie, Tangier", '2021', 'Completed'],
-  // --- residential ---
-  ['Villa Achakkar', 'residential', 'Achakkar, Tangier', '2025', 'On site'],
-  ['Appartement Marshan', 'residential', 'Marshan, Tangier', '2024', 'Completed'],
-  ['Riad Dar Zaynab', 'residential', 'Kasbah, Tangier', '2023', 'Completed'],
-  ['Maison Malabata', 'residential', 'Malabata, Tangier', '2026', 'In design'],
-  ['Duplex Iberia', 'residential', 'Iberia, Tangier', '2022', 'Completed'],
-];
-
-const CATEGORY_LABEL = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.label]));
-
-/** Which real project each category borrows its imagery from. */
-const BORROWS = {
-  public: 'hopital-tetouan',
-  'mixed-use': 'tangier-sky-ring',
-  interiors: 'smile-lab-brussels',
-  residential: 'residence-terracotta',
-};
-
-const slugify = (s) =>
-  s
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-
-const placeholders = PLACEHOLDER_SEED.map(([title, category, location, year, status], i) => {
-  const base = REAL.find((p) => p.slug === BORROWS[category]) || REAL[0];
-  const turn = i % base.images.length;
-  return {
-    slug: slugify(title),
-    title,
-    shortTitle: title,
-    category,
-    categoryLabel: CATEGORY_LABEL[category],
-    location,
-    year,
-    status,
-    aspect: base.aspect,
-    accent: base.accent,
-    placeholder: true,
-    // Imagery is borrowed, so it lives under the lender's folder.
-    imageSlug: base.slug,
-    lede: base.lede,
-    statement: base.statement,
-    caption: base.caption,
-    body: base.body,
-    facts: [
-      ['Typology', CATEGORY_LABEL[category]],
-      ['Location', location],
-      ['Year', year],
-      ['Status', status],
+  {
+    slug: 'regard-opticien',
+    title: 'Regard Opticien',
+    shortTitle: 'Regard Opticien',
+    category: 'interiors',
+    categoryLabel: 'Interiors',
+    // TODO(studio): confirm location, year and status — the renders carry none.
+    location: 'Tangier, Morocco',
+    year: '2026',
+    status: 'In design',
+    aspect: 'wide',
+    accent: '#A8927A',
+    lede: 'An optician laid out like a gallery — frames on floating shelves, one long table to try them at, and light that flatters a face.',
+    statement:
+      'People come to an optician to be looked at, so the room is built around a single act: sitting down at a table and holding a frame up to a mirror. The table is the plan. Everything else — the shelves, the desk, the eye on the wall — stands back from it and lights it.',
+    caption:
+      'Travertine for anything you touch, dark timber for the walls, and the frames on lit glass so they float. The wall texts do the talking so the fittings do not have to.',
+    body: [
+      'The frames sit on floating glass shelves with a warm light let into the wall behind each one, so a pair of glasses reads as an object rather than as stock. The shelves are the brightest thing in the room by design; the ceiling carries almost no downlights at all.',
+      'A single travertine block runs the length of the shop as the fitting table, with the reception desk cut from the same stone at the far end. It is where a customer spends their whole visit, and it is finished to be sat at for half an hour.',
+      'The walls are dark stained timber, which does two things: it makes the lit shelves count, and it makes the faces at the table the lightest thing in every mirror. A large photographic eye on the back wall is the only image in the shop, and it is looking at you.',
     ],
-    // Rotated so each card opens on a different plate.
-    images: [...base.images.slice(turn), ...base.images.slice(0, turn)],
-  };
-});
+    facts: [
+      ['Typology', 'Optician'],
+      ['Location', 'Tangier, Morocco'],
+      ['Programme', 'Display, fitting table, examination, reception'],
+      ['Materials', 'Travertine, stained timber, lit glass shelving'],
+      ['Status', 'In design'],
+    ],
+    images: [
+      { file: '01', alt: 'The shop from the entrance — travertine fitting table, lit shelves either side, the Regard sign on the back wall' },
+      { file: '02', alt: 'The fitting table head-on, three chairs, the photographic eye on the wall behind' },
+      { file: '03', alt: 'Along the table towards the reception desk, frames on lit glass shelves to the right' },
+    ],
+  },
 
-/** Real work first, stand-ins after; numbering runs across the whole list. */
-export const PROJECTS = [...REAL, ...placeholders].map((p, i) => ({
+  {
+    slug: 'mediatheque-tetouan',
+    title: 'Médiathèque de Tétouan',
+    shortTitle: 'Médiathèque de Tétouan',
+    category: 'public',
+    categoryLabel: 'Public',
+    location: 'Tétouan, Morocco',
+    // TODO(studio): confirm the year — the proposal carries none.
+    year: '2025',
+    status: 'Design proposal',
+    aspect: 'wide',
+    accent: '#8A6A46',
+    // Copy is the studio's own Instagram description, carried into English.
+    lede: 'A proposal for a médiathèque conceived as a cultural hub — open, flexible, connected spaces, and an amphitheatre that the library wraps around.',
+    statement:
+      'The library is a crescent, and the crescent holds an outdoor amphitheatre. That is the whole plan: a building organised around open, flexible and connected spaces for reading, learning, meeting and cultural life, whose glazed facade keeps up a permanent conversation with the tiered seating outside it. More than a place to consult a book, it is meant as a place of transmission, invention and collective life.',
+    caption:
+      'Three volumes — administration, the entrance hall, the library — and a stepped amphitheatre cut into the ground between the library and the garden. The section reads at +3, +6 and +10.',
+    body: [
+      'The site is a trapezoid at the edge of Tétouan with the Rif behind it and agricultural land alongside. The administration and the entrance hall are two straight blocks along the access road; the library is the third volume and the only curved one, turning its back to the car park and its whole glazed face to the amphitheatre and the garden.',
+      'That facade is the project\'s architectural language: a dynamic volume under a continuous roof plate, with full-height glazing between close-set timber mullions that run the length of the curve. From the tiers you see straight through to the shelves; from the reading rooms you look out over the seating to the mountains.',
+      'The amphitheatre is not an event space bolted on but the middle of the scheme — the ground stepping down from the library to the lawn, lit along each riser at night. It is what makes the building a public place before anyone has gone inside it, and it is the image the proposal leads with.',
+    ],
+    facts: [
+      ['Typology', 'Médiathèque'],
+      ['Location', 'Tétouan, Morocco'],
+      ['Programme', 'Library, hall, administration, outdoor amphitheatre'],
+      ['Facade', 'Timber mullions, full-height glazing'],
+      ['Status', 'Design proposal'],
+    ],
+    images: [
+      { file: '01', alt: 'The amphitheatre by day — tiered seating stepping up to the curved glass facade of the library' },
+      { file: '02', alt: 'The library facade: full-height glazing between timber mullions under the roof plate' },
+      { file: '03', alt: 'Axonometric of the site — administration, hall and library, with the amphitheatre held in the curve' },
+      { file: '04', alt: 'Section AA through the library and the amphitheatre, the Rif behind' },
+      {
+        file: '05',
+        alt: 'First-floor plan: the crescent of the library, the hall, the administration wing',
+        // Line art on a white sheet — a full frame on the project page, a
+        // blank card in the small cycling slots.
+        diagram: true,
+      },
+      { file: '06', alt: 'The amphitheatre at night, the library lit behind it, a crescent moon' },
+    ],
+  },
+];
+
+/** Numbered in the order above. */
+export const PROJECTS = REAL.map((p, i) => ({
   ...p,
   index: String(i + 1).padStart(2, '0'),
 }));
@@ -292,16 +299,22 @@ export const HERO_SLIDES = [
     alt: 'Tangier Sky Ring — the twin towers and the suspended ring at night',
   },
   {
-    slug: 'hopital-tetouan',
+    slug: 'regard-opticien',
     file: '02',
     position: 'center 50%',
-    alt: 'The hospital entrance canopy at dusk',
+    alt: 'Regard Opticien — the fitting table and the lit shelves',
   },
   {
-    slug: 'residence-terracotta',
+    slug: 'appartement-f3-brussels',
     file: '02',
     position: 'center 60%',
-    alt: 'Résidence Terracotta — the living room',
+    alt: 'Appartement F3, Brussels — the living room',
+  },
+  {
+    slug: 'mediatheque-tetouan',
+    file: '06',
+    position: 'center 58%',
+    alt: 'Médiathèque de Tétouan — the amphitheatre at night, the library lit behind it',
   },
 ];
 
@@ -321,7 +334,7 @@ export const ALL_PLATES = PROJECTS.flatMap((p) =>
   p.images
     .filter((im) => !im.diagram)
     .map((im) => ({
-      slug: p.imageSlug || p.slug,
+      slug: p.slug,
       file: im.file,
       alt: im.alt,
       title: p.title,

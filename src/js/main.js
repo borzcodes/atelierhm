@@ -30,11 +30,10 @@ import { initContact } from './contact.js';
 import { mountCycler } from './media.js';
 import { mountMark, revealMark, settleMark } from './mark.js';
 
-/* Plates the loader shuffles through. Kept to the real projects and capped:
-   every one of these is fetched and decoded before the site is revealed, so
-   the list must not grow with the placeholder entries. */
+/* Plates the loader shuffles through, capped: every one of these is fetched
+   and decoded before the site is revealed. */
 const SHUFFLE = [
-  ...PROJECTS.filter((p) => !p.placeholder).map((p) => projectPlate(p, p.images[0].file)),
+  ...PROJECTS.map((p) => projectPlate(p, p.images[0].file)),
   ...ALL_PLATES.map((p) => plate(p.slug, p.file)),
 ]
   .filter((v, i, a) => a.indexOf(v) === i)
@@ -104,9 +103,7 @@ function startHero() {
 /* ------------------------------------------------------------ cyclers --- */
 
 function mountCyclers() {
-  const pillSrcs = PROJECTS.filter((p) => !p.placeholder).map((p) =>
-    projectPlate(p, p.images[0].file)
-  );
+  const pillSrcs = PROJECTS.map((p) => projectPlate(p, p.images[0].file));
   mountCycler(document.getElementById('heroPillMedia'), pillSrcs, {
     interval: 1400,
     alt: 'Recent work',

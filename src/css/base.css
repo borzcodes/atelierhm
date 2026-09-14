@@ -208,13 +208,18 @@ button {
 
 /* ------------------------------------------------------------- grain --- */
 /* A fixed film-grain veil keeps the flat CSS and the 3D renders in the same
-   material world. Pointer-events off, so it never intercepts anything. */
+   material world. Pointer-events off, so it never intercepts anything.
+
+   Kept faint. Grain is noise laid over every photograph, and on the smooth
+   passages of a render — a sky, a plastered wall — it reads as compression
+   artefacts rather than film. 0.1 keeps the texture on the flat page without
+   roughening the plates; set it to 0 to drop the effect altogether. */
 .grain {
   position: fixed;
   inset: -50%;
   z-index: 400;
   pointer-events: none;
-  opacity: 0.2;
+  opacity: 0.1;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
   animation: grain-shift 6s steps(6) infinite;

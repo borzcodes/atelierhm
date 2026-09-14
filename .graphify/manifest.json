@@ -1,0 +1,214 @@
+{
+  "C:/Users/borz/Desktop/atelier_hm/src/data/projects.js": {
+    "mtime": 1788737977934.7317,
+    "hash": "d9fbf5d0381f39328319944123a33cea"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/chrome.js": {
+    "mtime": 1788786671821.4893,
+    "hash": "7a820e2060d06bb8d3c3a9cb6732ea25"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/contact.js": {
+    "mtime": 1788711071851.59,
+    "hash": "91d92da67164387dd47ec1397e09514a"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/fit.js": {
+    "mtime": 1788712290559.8804,
+    "hash": "20dcc252293d146dc55da9d45bb2afaf"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/hero.js": {
+    "mtime": 1788730747095.5354,
+    "hash": "115a2db9c3395a2ed44435e361cb908c"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/loader.js": {
+    "mtime": 1788745578189.0217,
+    "hash": "6ec1a529c7f4c5f0604ad60289116ca1"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/main.js": {
+    "mtime": 1788785069907.1082,
+    "hash": "20342f32303db0de9a5806bf421254f2"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/mark.js": {
+    "mtime": 1788752385590.3662,
+    "hash": "ce817d24568fe406279af9cc6424984a"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/media.js": {
+    "mtime": 1788711061211.5957,
+    "hash": "9537e625e52ebf91f23620693b85dbc3"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/project.js": {
+    "mtime": 1788785163234.687,
+    "hash": "74ef4a644401d62744b2ac5ded26454e"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/raf.js": {
+    "mtime": 1788712219909.67,
+    "hash": "a08480263399ff4b2e78ff8728b6dc70"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/src/js/work.js": {
+    "mtime": 1788785153388.1238,
+    "hash": "b0b6a403ae65fdc8d29fa1bfd6ffc4c8"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/vite.config.js": {
+    "mtime": 1788736667144.1042,
+    "hash": "42f371abf95264b613d41a42dd0a27ef"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/README.md": {
+    "mtime": 1788793725535.9517,
+    "hash": "bde009a744bc6614c9107c4838f053cb"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/index.html": {
+    "mtime": 1788914005051.7795,
+    "hash": "853a5a41259018c7e862687e12278751"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/project.html": {
+    "mtime": 1788786650154.9067,
+    "hash": "9940b32272b1064195c911ad6375d0fc"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/founder/haytham-mribah.jpg": {
+    "mtime": 1788783690312.1206,
+    "hash": "4964351d5f2076ecf7a4098e6ba41c3d"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/hopital-tetouan/01-lg.webp": {
+    "mtime": 1788730314998.0918,
+    "hash": "406f9ebf8c3604f9210f2797d874dc63"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/hopital-tetouan/01.webp": {
+    "mtime": 1788730312079.6191,
+    "hash": "aa3269c8ebdf14b2fdc7009cc6a1161e"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/hopital-tetouan/02-lg.webp": {
+    "mtime": 1788730321879.1292,
+    "hash": "d8edd1020d613423730029a5a798cc55"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/hopital-tetouan/02.webp": {
+    "mtime": 1788730317276.646,
+    "hash": "66456bbac6c6f1deb39e808bda5f3c98"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/hopital-tetouan/03-lg.webp": {
+    "mtime": 1788730324694.4553,
+    "hash": "1d19c9b664796a48ed58d714b6b6e39f"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/hopital-tetouan/03.webp": {
+    "mtime": 1788730323643.8794,
+    "hash": "babbd8ec8feff79f03294858fe6cc34f"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/residence-terracotta/01-lg.webp": {
+    "mtime": 1788730350046.763,
+    "hash": "74bbf3477b01eac11d9876048fab0062"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/residence-terracotta/01.webp": {
+    "mtime": 1788730348294.2898,
+    "hash": "4278caf21983f765be0a124990dd90be"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/residence-terracotta/02-lg.webp": {
+    "mtime": 1788730353626.3574,
+    "hash": "cd3b086b3a194eb580df70d5f35d8241"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/residence-terracotta/02.webp": {
+    "mtime": 1788730351987.0498,
+    "hash": "207773157036ed8de04f93c5a2992e32"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/residence-terracotta/03-lg.webp": {
+    "mtime": 1788730356399.114,
+    "hash": "738da0d8f3a22fe1ff43b3e1331ac4d4"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/residence-terracotta/03.webp": {
+    "mtime": 1788730354911.7725,
+    "hash": "f20541ca7586ba98e6a4697fe6e8ff39"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/01-lg.webp": {
+    "mtime": 1788730328159.818,
+    "hash": "28ceaa2614685a5368f128147961bb1d"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/01.webp": {
+    "mtime": 1788730326257.7969,
+    "hash": "7f3b3294235ff16831a1ee4a63844b78"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/02-lg.webp": {
+    "mtime": 1788730331425.4724,
+    "hash": "1eae9b6d8b2a2ce98206f971210b8a04"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/02.webp": {
+    "mtime": 1788730329759.1294,
+    "hash": "ebbe47f4c205f8c2f7cf7229d1819a43"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/03-lg.webp": {
+    "mtime": 1788730335073.4707,
+    "hash": "718981019a09ac924122ac8acf29c9c1"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/03.webp": {
+    "mtime": 1788730333257.8743,
+    "hash": "a946f378f7ee9fd97450d673433f6084"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/04-lg.webp": {
+    "mtime": 1788730338374.8933,
+    "hash": "ba32c5bb117ced9c78fcec080d756a8b"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/04.webp": {
+    "mtime": 1788730336400.901,
+    "hash": "03bd22f2d999d3d76d9ace989cce4d67"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/05-lg.webp": {
+    "mtime": 1788730342409.628,
+    "hash": "0dd77b21b82c4ba28bfde62de4001066"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/05.webp": {
+    "mtime": 1788730340382.1265,
+    "hash": "c454d6a5fc7936335e31770f9d6b0565"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/06-lg.webp": {
+    "mtime": 1788730346465.2793,
+    "hash": "5b734ec423929f5511dccc95b9b2d7d6"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/smile-lab-brussels/06.webp": {
+    "mtime": 1788730344565.4517,
+    "hash": "7c3b92f0fc84dd7b2a9ac4cf91cf2b45"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/tangier-sky-ring/01-lg.webp": {
+    "mtime": 1788730293358.9475,
+    "hash": "cd6dd236cdec2355cd7e0cdfef10c3d6"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/tangier-sky-ring/01.webp": {
+    "mtime": 1788730288432.3386,
+    "hash": "84a25c0d3ab8279a1c5986ca875e0955"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/tangier-sky-ring/02-lg.webp": {
+    "mtime": 1788730300954.2656,
+    "hash": "a8e933405b446543a85f7e8464f2ae37"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/tangier-sky-ring/02.webp": {
+    "mtime": 1788730296224.4656,
+    "hash": "9189a054dbb8794581bd4cdfd43b5ac6"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/tangier-sky-ring/03-lg.webp": {
+    "mtime": 1788730309547.976,
+    "hash": "b8677ad67dd0e886db5ac092ed5a076f"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/img/tangier-sky-ring/03.webp": {
+    "mtime": 1788730304381.2546,
+    "hash": "81567cf0d69b30f06b05dcf08ce8a64b"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/logo/hma-mark.png": {
+    "mtime": 1788746609056.8462,
+    "hash": "f073008bc66a4b1194690f75d631fdf4"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/logo/hma-mark.svg": {
+    "mtime": 1788793636277.0366,
+    "hash": "fdfe368d58c141355d9fef24996b58a4"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/logo/hma-mark.webp": {
+    "mtime": 1788746609205.2942,
+    "hash": "3dec144ae1a90ce82224479b4cfbe81c"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/logo/hma-monogram.svg": {
+    "mtime": 1788793636286.6519,
+    "hash": "dc50d2dd407736d394e8fd167d7b0f3f"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/assets/logo/hma-original.jpg": {
+    "mtime": 1788746608834.5234,
+    "hash": "4201883906a92b71a5144ef79102fc1c"
+  },
+  "C:/Users/borz/Desktop/atelier_hm/public/favicon.svg": {
+    "mtime": 1788793636287.6594,
+    "hash": "14e1c16721a1fc4dc2b133d8c9378a7f"
+  }
+}

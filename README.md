@@ -19,53 +19,63 @@ npm run preview  # serve the build
 | Home | `index.html` | Hero sequence, founder, work slider, capability, contact, footer |
 | Project | `project.html?p=<slug>` | Lays itself out from the project's image list |
 
-Four projects, defined in `src/data/projects.js`:
-
-Four are the studio's own:
+Six projects, all the studio's own, defined in `src/data/projects.js`:
 
 | Slug | Project | Plates |
 | --- | --- | --- |
-| `hopital-tetouan` | Hôpital Provincial de Tétouan | 3 (incl. the concept diagram) |
+| `hopital-tetouan` | Hôpital Provincial de Tétouan | 4 (incl. concept diagram and plan), design proposal |
 | `tangier-sky-ring` | Tangier Sky Ring | 3, square format |
-| `smile-lab-brussels` | Smile Lab Brussels | 6 |
-| `residence-terracotta` | Résidence Terracotta | 3 |
+| `smile-lab-brussels` | Smile Lab Brussels | 6, design proposal |
+| `appartement-f3-brussels` | Appartement F3 — Brussels | 3, design proposal |
+| `regard-opticien` | Regard Opticien | 3, renders |
+| `mediatheque-tetouan` | Médiathèque de Tétouan | 6 (incl. plan and section), design proposal |
 
-**The other twenty are placeholders.** `PLACEHOLDER_SEED` in
-`src/data/projects.js` generates five more entries per category — twenty-four
-in total, six each — so the slider and the filters have something to lay out
-against. They borrow the real projects' imagery, rotated so no two cards open
-on the same plate, and every one is flagged `placeholder: true`. To remove
-them: delete `PLACEHOLDER_SEED` and the `...placeholders` spread in the
-`PROJECTS` assembly. Nothing else refers to them.
+Every entry is a design proposal or in design — none is presented as built.
+The categories a project can carry are `CATEGORIES` in the same file; the
+work slider only shows a filter chip for categories that have a project in
+them, so an empty one costs nothing.
 
 ## Imagery
 
-Source images were supplied as screenshots from the studio's Instagram. They
-were processed once, offline, into `public/assets/img/<slug>/`:
+Source images were supplied as screenshots from the studio's Instagram; Regard
+Opticien, the hospital, the apartment and Smile Lab were later re-sourced from the studio's own 1080px
+posts, which need no inpainting. They were processed once, offline, into
+`public/assets/img/<slug>/`:
 
-- **Carousel chrome removed.** The prev/next arrows and the dot indicators were
-  inpainted out with ffmpeg's `delogo` filter rather than cropped, so the full
+- **Carousel chrome removed** (screenshots only). The prev/next arrows and the
+  dot indicators were inpainted out with ffmpeg's `delogo` filter rather than cropped, so the full
   frame is kept — these are only ~850px wide and every pixel counts. The
   positions were measured per image, and each source was checked for which
   controls it actually carried, so nothing was smudged that did not need it.
-- **Graded.** A light contrast/saturation lift and a gentle unsharp pass. The
-  concept diagram gets a milder grade, since a contrast boost would clip line
-  art on white.
-- **Two sizes per plate.** `NN.webp` at native resolution for cards, galleries
-  and splits; `NN-lg.webp` upscaled to 1500px with lanczos and re-sharpened,
-  for the places that go full-bleed.
+- **Graded, never sharpened.** A light contrast/saturation lift only. Rows
+  marked `line` in the `JOBS` table — the hospital's concept diagram, the
+  médiathèque's plan — get a milder grade, since a contrast boost would clip
+  line art on white. There is deliberately no unsharp pass: the sources are
+  Instagram JPEGs, already soft and already compressed, and sharpening them
+  turns their compression artefacts into halos and grit. An earlier version of
+  the pipeline did this and its full-bleed plates came out measurably worse
+  than the files they were made from.
+- **Two sizes per plate.** `NN.webp` at native resolution (WebP q94) for
+  cards, galleries and splits; `NN-lg.webp` at exactly 2x with lanczos (q92)
+  for the places that go full-bleed. A 1080 source gains no detail from the
+  upscale, but one clean integer resample beats the browser stretching it live,
+  and 2160px covers a 1920 display at 1.25 DPR without a second resample.
 
-The pipeline is checked in at `tools/process-images.sh`. If you re-shoot or
-receive higher-resolution originals, drop them into the same
-`Borj / Dentist / Hopital / "Living Room"` folder layout and re-run it:
+The pipeline is checked in at `tools/process-images.sh`, and `npm install`
+brings in the ffmpeg it needs (`ffmpeg-static`). To add a project, drop its
+originals in a folder next to `Borj / Dentist / Hopital / "Living Room" /
+Opticien`, add its rows to the `JOBS` table — `0|0|0` for anything supplied
+clean, a trailing `line` for drawings on white — and run it for that project alone so the others are not re-encoded:
 
 ```bash
-FF=/path/to/ffmpeg bash tools/process-images.sh
+ONLY=regard-opticien bash tools/process-images.sh
 ```
 
-**Higher-resolution originals are the single biggest quality win available to
-this site** — at ~850px the full-bleed plates are being upscaled to fill a
-desktop hero, which costs real sharpness.
+**Higher-resolution originals remain the single biggest quality win available
+to this site.** Every plate is a 1080px Instagram export, and the hero fills a
+1920 display at 1.25 DPR — 2400 device pixels. The pipeline now does nothing to
+make that worse, but nothing can make it better except the studio's own
+full-resolution renders. Ask for them.
 
 ## How the motion works
 
@@ -73,7 +83,7 @@ desktop hero, which costs real sharpness.
   image finishes decoding, a counter tracks real progress, and when the last
   one lands the plate flies out to full bleed while the headline wipes up word
   by word (`src/js/loader.js`).
-- **Hero.** Four full-bleed plates cross-cut on a timer under a deep scrim,
+- **Hero.** Five full-bleed plates cross-cut on a timer under a deep scrim,
   each drifting on a slow Ken Burns move; the move lives in CSS so the class
   toggle restarts it, and `src/js/hero.js` only decides when to cut. Over it
   sits the logotype, then the French tagline, then the scroll cue.
