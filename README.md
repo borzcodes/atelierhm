@@ -87,15 +87,14 @@ full-resolution renders. Ask for them.
   each drifting on a slow Ken Burns move; the move lives in CSS so the class
   toggle restarts it, and `src/js/hero.js` only decides when to cut. Over it
   sits the logotype, then the French tagline, then the scroll cue.
-- **The mark** (`src/js/mark.js`). The logotype is the studio's own artwork,
-  used exactly as supplied — it is never redrawn, only vectorised. `mark.js`
-  fetches `hma-mark.svg` and inlines it, so the monogram's own contour can be
-  lifted back out through a `<use>` and stroked. The reveal draws that contour
-  on with a dash offset, as though the letters were being set out on a drawing
-  board, then floods the fill through it and retires the contour. The subline
-  is a hairline already and arrives with the fill. If the fetch never lands the
-  raster in the markup stands in and simply fades up; reduced motion skips
-  straight to the filled mark.
+- **The mark** (`src/js/mark.js`). The studio's signature lockup, used exactly
+  as supplied — never redrawn, only vectorised. `mark.js` fetches `hma-mark.svg`
+  and inlines it, so the signature's own contour can be lifted back out through
+  a `<use>` and stroked. The reveal draws that contour on with a dash offset —
+  one pen line signing itself across the frame — then floods the fill through
+  it, at which point the name and tagline arrive, and retires the contour. If
+  the fetch never lands the raster in the markup stands in and simply fades up;
+  reduced motion skips straight to the finished mark.
 - **The work slider** (`src/js/work.js`). A card deck seen in perspective:
   the active project stands square to the viewer while the rest fall away to
   the side, shrinking and turning as they go. Each card is a mounted print —
@@ -162,78 +161,47 @@ small cycling slots, where line art reads as a blank card.
 descriptive prose and the `facts` figures are placeholder editorial — replace
 them before this goes live.
 
-**The logo.** `public/assets/logo/` holds five files:
+**The logo.** `public/assets/logo/` holds four files, plus the favicon at the
+site root:
 
 | File | What it is |
 | --- | --- |
-| `hma-original.jpg` | The supplied artwork, untouched, on its burgundy plate |
-| `hma-mark.png` | The mark lifted off that plate — transparent, lossless master |
-| `hma-mark.webp` | The same, 7 kB — the fallback if the SVG never arrives |
-| `hma-mark.svg` | The traced mark, 24 kB, and what the hero actually draws |
-| `hma-monogram.svg` | The monogram alone, cropped to its own bounds — the header logo |
+| `hma-original.jpg` | The artwork as the studio supplied it — its avatar: white signature lockup on a `#7c0028` disc, inside a white ring, 1080 square |
+| `hma-mark.png` | The lockup keyed off the disc — transparent master, and the hero's fallback if the SVG never arrives |
+| `hma-mark.svg` | The lockup as vector — signature, name, rule, tagline — and what the hero draws |
+| `hma-sign.svg` | The signature alone, for the header |
+| `/favicon.svg` | The avatar itself: disc, ring, signature at icon weight |
 
-The mark was cropped to its own bounds and keyed off the background by
-luminance: the burgundy tops out at 80/255 while the mark is pure white, so a
-threshold at 88 removes the plate without touching a single hairline, and RGB
-is forced to white so no burgundy fringes the antialiased edges. The
-letterforms themselves are untouched.
+`npm run trace:mark` rebuilds all of them from the JPG. The artwork keys by
+luminance — a flat plate at ~45/255 against ink at 240+, so a ramp between the
+two takes the antialiased edge and nothing else — and the ring is dropped by
+radius rather than traced, since it is a true circle and is drawn as one.
 
-`npm run trace:mark` regenerates the SVG from the PNG. It traces the mark in
-two passes, because the file holds two very different kinds of artwork: the
-monogram is solid and traces two-tone almost exactly, while the
-HAYTHAM MRIBAH ARCHITECTS subline is a half-pixel hairline carried at partial
-alpha, which at the monogram's threshold loses the T's stem outright and breaks
-every diagonal into dashes. So the subline is traced at a threshold loose
-enough to keep each stroke whole and then given the one opacity at which its
-ink matches the original — measured, not guessed, from the band's total alpha
-over the area the trace covers. Against the raster the result carries 99.4% of
-the monogram's ink and 100.5% of the subline's, with 1.2% of pixels differing
-at 4x magnification, all of them on antialiased edges. The raster masters stay
-in the repo: the SVG is derived, and the artwork as supplied is the reference.
+The lockup is traced in two passes because it is two kinds of drawing. The
+signature is a 3–4px pen stroke in smooth curves, one continuous line; it
+traces cleanly on a 2x grid with a loose curve fit. The name and tagline are
+1–2px type at about 15px cap height; they want a 3x grid and a tighter fit or
+the counters fill in. The two are separated by a rectangle, not a row band,
+because the signature's descender runs down past the text on the left. The
+traces are indistinguishable from the raster at hero size.
 
-How large it sits in the frame is one value: `--mark-w` on `.hero__mark` in
-`src/css/home.css`.
+How large the mark sits in the hero is one value: `--mark-w` on `.hero__mark`
+in `src/css/home.css`. The header size is `.header__logo img` in
+`src/css/base.css` — it runs wider than a monogram would, because a signature
+three times wider than it is tall needs the width to read at all.
 
-**The subline is hinted, and has to be.** `HAYTHAM MRIBAH ARCHITECTS` is drawn
-one source pixel wide, and the hero renders the mark at roughly two thirds size
-— which puts those strokes at 0.84 of a device pixel. Under a pixel the browser
-antialiases them to grey and any stroke straddling a pixel boundary all but
-vanishes, so the line reads faded and gap-toothed with the T stems missing.
-This is not a defect of the trace: rendered at the same size, the supplied
-raster breaks in exactly the same places. The artwork itself is sub-pixel here.
+**The favicon** is the avatar, which is what a tab icon is for. Two things a
+16px slot forces. The ring is 13px in 1080 — a fifth of a pixel at 16 — so it
+is drawn heavier than measured or it is not there. And the signature is a 3px
+pen line; reduced honestly to 16px it is nothing, so `ICON_STROKE` thickens it
+in its own units — the optical sizing a typeface does for small sizes. At 32px
+the signature reads; at 16px it is the avatar, a white stroke in a white ring
+on a burgundy disc, which is exactly what the studio's own Instagram icon is at
+that size. Neither adjustment touches anything but the icon.
 
-`.mark__sub` in `src/css/home.css` answers it the way a typeface hints a stem
-that falls below a pixel — 0.7px of `vector-effect: non-scaling-stroke`, which
-does not shrink with the artwork, so it holds every stroke at a full pixel
-however small the mark is drawn and stays a rounding error against the
-monogram's much heavier letterforms. Coverage rides on the path's own
-`opacity` (not `fill-opacity`) so fill and stroke composite as one and no rim
-forms where they meet. The monogram needs none of this — its stems are heavy
-enough to survive even at header size.
-
-**The favicon** (`public/favicon.svg`, also written by `npm run trace:mark`) is
-the same monogram on a burgundy disc. It needs two things the logotype does
-not. A ground, because a favicon slot is 16px of whatever the browser puts
-behind it, and a disc reads as a deliberate object at that size where a bare
-wordmark reads as debris. And weight: reduced honestly to 16px the hairlines
-land at about a fifth of a pixel and disappear — side by side, the plain
-reduction is illegible at every size a tab actually uses. So the icon carries
-`ICON_STROKE` of extra weight in the mark's own units, which is the optical
-sizing a type designer does for small text; the shape, the swash and the
-counters all survive, they simply carry more ink. It applies to the icon alone
-— the logotype is never redrawn.
-
-There is no PNG fallback. Every current browser renders SVG favicons; add
-`apple-touch-icon` PNGs if iOS home-screen icons ever matter.
-
-The header runs the monogram rather than the full lockup: under about 120px the
-subline stops being words and becomes a grey smear, and the full artwork carries
-a fifth of its height as empty space beneath it, which would leave the header
-logo floating. So `hma-monogram.svg` is the same traced path cropped to its own
-bounds — nothing redrawn. It is white artwork, which is what the header's
-`difference` blend wants (it inverts to dark over the white page on its own) and
-what the burgundy menu wants when that blend is switched off. Its size is
-`.header__logo img` in `src/css/base.css`.
+The mark is fetched with ordinary HTTP caching, deliberately not `force-cache`:
+it is served under a fixed name, and a revised mark has to be able to reach a
+browser that already holds the old one — as it did when the studio rebranded.
 
 **The founder portrait.** `public/assets/founder/haytham-mribah.jpg` is the
 photograph supplied for Haytham Mribah, wired to `#founderPortrait` in

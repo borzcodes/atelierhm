@@ -1,32 +1,28 @@
 /**
- * Vectorise the studio mark — public/assets/logo/hma-mark.png -> hma-mark.svg
+ * Vectorise the studio mark — public/assets/logo/hma-original.jpg -> the SVGs
  *
  *   node tools/trace-mark.cjs
  *
- * The mark is two very different kinds of artwork sharing one file, and tracing
- * them the same way ruins one or the other:
+ * The source is the signature lockup the studio supplied as its avatar: white
+ * artwork on a flat #7c0028 disc, inside a white ring, 1080 square. Four
+ * files come out of it:
  *
- *   - The HM monogram is a solid, fully opaque shape. A plain two-tone trace
- *     reproduces it almost exactly — 1.0% of pixels differ at 4x magnification,
- *     all of them on the antialiased edge.
- *   - The HAYTHAM MRIBAH ARCHITECTS subline is a half-pixel hairline that the
- *     supplied artwork carries at partial alpha, and unevenly: some stems are
- *     solid, the T's is a quarter covered. Traced at the monogram's threshold
- *     it falls apart — the T loses its stem, every diagonal breaks into dashes.
+ *   hma-mark.png   the lockup keyed off the disc — transparent raster master,
+ *                  and what the hero falls back to if the SVG never arrives
+ *   hma-mark.svg   the lockup as vector: signature, name, rule, tagline
+ *   hma-sign.svg   the signature alone, for the header
+ *   favicon.svg    the avatar itself — disc, ring, signature at icon weight
  *
- * So the subline is traced at a threshold permissive enough to keep every
- * stroke whole, and then given the one opacity at which its ink matches the
- * original's exactly. That opacity is measured here rather than guessed: total
- * alpha over the band, divided by the number of pixels the trace will cover.
- * Uniform coverage across a 10px-tall line is a distinction no display resolves,
- * and it costs one path instead of five.
+ * The lockup is traced in two passes because it is two kinds of drawing. The
+ * signature is a 3-4px pen stroke, smooth curves, one continuous line; it
+ * traces cleanly at 2x with a loose curve fit. The name and tagline are 1-2px
+ * type at ~15px cap height — they need a 3x grid and a tighter fit or the
+ * counters fill in. The rule between them is solid and goes with the type.
+ * The two regions are separated by a rectangle, not a row band, because the
+ * signature's descender runs down past the text on the left.
  *
- * (Posterising the subline into five alpha bands is the textbook answer and is
- * kept behind --subMode=posterize, but potrace fills the counters of A and R
- * at these stroke widths, and the result runs 11% heavy and four times larger.)
- *
- * The raster masters stay in the repo: this is a derived file, and the artwork
- * as supplied remains the reference.
+ * The ring is not traced: it is a true circle, so it is drawn as one, at a
+ * radius and thickness measured off the source.
  */
 
 const fs = require('fs');
@@ -36,89 +32,91 @@ const { PNG } = require('pngjs');
 const Jimp = require('jimp');
 const potrace = require('potrace');
 
-const SRC = 'public/assets/logo/hma-mark.png';
-
-const flag = (name, dflt) => {
-  const hit = process.argv.find((a) => a.startsWith('--' + name + '='));
-  return hit ? Number(hit.split('=')[1]) : dflt;
-};
-const strFlag = (name, dflt) => {
-  const hit = process.argv.find((a) => a.startsWith('--' + name + '='));
-  return hit ? hit.split('=').slice(1).join('=') : dflt;
+const SRC = 'public/assets/logo/hma-original.jpg';
+const OUT = {
+  master: 'public/assets/logo/hma-mark.png',
+  mark: 'public/assets/logo/hma-mark.svg',
+  sign: 'public/assets/logo/hma-sign.svg',
+  icon: 'public/favicon.svg',
 };
 
-const OUT = strFlag('out', 'public/assets/logo/hma-mark.svg');
-/* The compact lockup for the header, and the app icon — see where each is
-   written, below. */
-const MONO_OUT = strFlag('monoOut', 'public/assets/logo/hma-monogram.svg');
-const ICON_OUT = strFlag('iconOut', 'public/favicon.svg');
+/* The brand colours, as they are in the artwork. Literals, because an SVG
+   served as its own file cannot see the stylesheet. */
+const BURGUNDY = '#7c0028';
+const WHITE = '#ffffff';
 
-/* Coordinate precision in source pixels. The mark is drawn at most 620px wide,
-   so a tenth of a pixel is already finer than any display can show. */
+/* Coordinate precision in source pixels. */
 const PREC = 1;
 
-/* The monogram traces on a 2x grid: potrace fits contours to pixels, so an
-   upscale buys smoother curves. Its threshold — a potrace cut on the inverted
-   greyscale, so 115 means alpha above about 140 — was set by matching total ink
-   against the raster, which puts the traced monogram at 1.004x its weight. */
-const MONO = {
-  scale: flag('monoScale', 2),
-  threshold: flag('monoThreshold', 115),
-  turdSize: flag('monoTurd', 3),
-  alphaMax: 0.35,
-  optTolerance: 0.08,
+/* Where the type sits, in source pixels — measured, and clear of the signature
+   on every side (the signature's descender bottoms out at x≈330). */
+const TEXT = { x0: 370, y0: 585, x1: 860, y1: 650 };
+
+/* Anything this far from the centre is the ring, not the lockup. */
+const RING_CUT = 465;
+
+const SIG = {
+  scale: 2,
+  threshold: 128,
+  turdSize: 4,
+  alphaMax: 1.0,
+  optTolerance: 0.2,
+  turnPolicy: potrace.Potrace.TURNPOLICY_MINORITY,
+};
+const TYPE = {
+  scale: 3,
+  threshold: 128,
+  turdSize: 3,
+  alphaMax: 0.6,
+  optTolerance: 0.15,
   turnPolicy: potrace.Potrace.TURNPOLICY_MINORITY,
 };
 
-/* 200 counts a pixel as ink from about a fifth alpha up. Stricter and the T's
-   stem — a quarter covered in the artwork — starts dropping out; looser and the
-   antialiasing haze thickens the strokes until the A's counter closes. At 200
-   the traced subline carries 100.5% of the original's ink. */
-const SUB = {
-  mode: strFlag('subMode', 'trace'),
-  scale: flag('subScale', 1),
-  threshold: flag('subThreshold', 200),
-  turdSize: flag('subTurd', 1),
-  alphaMax: flag('subAlpha', 0.35),
-  optTolerance: flag('subOpt', 0.2),
-  steps: flag('bands', 5),
-  turnPolicy: potrace.Potrace.TURNPOLICY_MINORITY,
-};
-
-/* ---------------------------------------------------------------- masks --- */
+/* ----------------------------------------------------------------- key --- */
 
 /**
- * The blank rows between the monogram and the subline. Found rather than
- * hard-coded, so re-running this after an artwork change cannot silently cut
- * the mark in the wrong place.
+ * White artwork on a flat dark plate keys by luminance. The plate tops out
+ * around 45/255 and the ink sits at 240+, so a ramp between them takes the
+ * antialiased edge with it and touches nothing else.
  */
-function findSplit(png) {
-  const { width: W, height: H, data } = png;
-  const rowInk = [];
-  for (let y = 0; y < H; y++) {
-    let s = 0;
-    for (let x = 0; x < W; x++) s += data[(y * W + x) * 4 + 3];
-    rowInk.push(s);
+function keyAlpha(img) {
+  const { width: W, height: H, data } = img.bitmap;
+  const alpha = new Uint8Array(W * H);
+  for (let i = 0; i < W * H; i++) {
+    const k = i * 4;
+    const lum = 0.299 * data[k] + 0.587 * data[k + 1] + 0.114 * data[k + 2];
+    alpha[i] = Math.max(0, Math.min(255, Math.round(((lum - 70) / 120) * 255)));
   }
-  let y = H - 1;
-  while (y > 0 && rowInk[y] === 0) y--; // below the subline
-  while (y > 0 && rowInk[y] > 0) y--; // the subline itself
-  const gapBottom = y;
-  while (y > 0 && rowInk[y] === 0) y--; // the gap above it
-  if (y <= 0) throw new Error('no gap between monogram and subline');
-  return Math.round((y + gapBottom) / 2);
+  return { W, H, alpha };
 }
 
-/** Inverted greyscale of one horizontal band, everything else left blank. */
-async function maskFile(png, y0, y1, file, scale) {
-  const { width: W, height: H } = png;
+/** The ring's centre-line radius and thickness, read off the centre row —
+    only its outer stretch, since the signature's flourish crosses that row too. */
+function measureRing({ W, alpha }, cy) {
+  const hits = [];
+  for (let x = 0; x < W / 2 - RING_CUT; x++) if (alpha[cy * W + x] > 128) hits.push(x);
+  if (!hits.length) throw new Error('no ring found on the centre row');
+  const outer = W / 2 - hits[0];
+  const inner = W / 2 - hits[hits.length - 1];
+  return { r: (outer + inner) / 2, w: outer - inner };
+}
+
+/* --------------------------------------------------------------- masks --- */
+
+const inRect = (x, y, r) => x >= r.x0 && x <= r.x1 && y >= r.y0 && y <= r.y1;
+
+/**
+ * Inverted greyscale (potrace reads dark as ink) of the pixels `keep` admits,
+ * everything else blank, resampled to `scale`.
+ */
+async function maskFile({ W, H, alpha }, keep, file, scale) {
   const out = new PNG({ width: W, height: H });
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
-      const i = (y * W + x) * 4;
-      const v = y >= y0 && y < y1 ? 255 - png.data[i + 3] : 255;
-      out.data[i] = out.data[i + 1] = out.data[i + 2] = v;
-      out.data[i + 3] = 255;
+      const i = y * W + x;
+      const v = keep(x, y) ? 255 - alpha[i] : 255;
+      out.data[i * 4] = out.data[i * 4 + 1] = out.data[i * 4 + 2] = v;
+      out.data[i * 4 + 3] = 255;
     }
   }
   fs.writeFileSync(file, PNG.sync.write(out));
@@ -130,19 +128,9 @@ async function maskFile(png, y0, y1, file, scale) {
   return file;
 }
 
-/** Total ink in a band, in whole-pixel equivalents. */
-function bandInk(png, y0, y1) {
-  const { width: W } = png;
-  let ink = 0;
-  for (let y = y0; y < y1; y++) {
-    for (let x = 0; x < W; x++) ink += png.data[(y * W + x) * 4 + 3] / 255;
-  }
-  return ink;
-}
-/**
- * Flatten a path's contours into polygons. Every command potrace emits is
- * absolute M, L or C, so this only has to walk those three.
- */
+/* ------------------------------------------------------------ geometry --- */
+
+/** Flatten a path's contours into polygons; potrace only emits M, L, C. */
 function flatten(d) {
   const STEPS = 8;
   const rings = [];
@@ -199,32 +187,6 @@ const bounds = (pts) => ({
   y1: Math.max(...pts.map((p) => p[1])),
 });
 
-/**
- * Area a traced path actually covers: shoelace every contour, then subtract
- * the ones nested inside another. The nesting has to be worked out rather than
- * read off the winding, because potrace turns its counters the same way round
- * as their letters — which is exactly why it asks for evenodd.
- */
-function pathArea(d, scale) {
-  const rings = flatten(d).map((pts) => {
-    let a = 0;
-    for (let i = 0; i < pts.length; i++) {
-      const [x1, y1] = pts[i];
-      const [x2, y2] = pts[(i + 1) % pts.length];
-      a += x1 * y2 - x2 * y1;
-    }
-    return { area: Math.abs(a) / 2, ...bounds(pts) };
-  });
-
-  const inside = (a, b) => a !== b && a.x0 >= b.x0 && a.x1 <= b.x1 && a.y0 >= b.y0 && a.y1 <= b.y1;
-  let total = 0;
-  for (const r of rings) {
-    const depth = rings.filter((o) => inside(r, o)).length;
-    total += depth % 2 ? -r.area : r.area;
-  }
-  return total / (scale * scale);
-}
-
 /** The tight box a path occupies, measured off the flattened curves. */
 function pathBBox(d) {
   const all = flatten(d).flat();
@@ -232,11 +194,9 @@ function pathBBox(d) {
   return bounds(all);
 }
 
+/* ---------------------------------------------------------------- trim --- */
 
-/* ----------------------------------------------------------------- trim --- */
-
-/** Rescale back to source pixels, round, and drop the separators potrace
-    leaves behind. Worth about two thirds of the payload on its own. */
+/** Rescale to source pixels, round, and drop the separators potrace leaves. */
 function tidy(d, scale) {
   const n = (v) => {
     let s = (v / scale).toFixed(PREC);
@@ -269,149 +229,126 @@ function tidy(d, scale) {
   return out;
 }
 
-const readPaths = (svg, scale) =>
-  [...svg.matchAll(/<path([^>]*?)\sd="([^"]+)"/g)].map((m) => ({
-    opacity: Number((m[1].match(/fill-opacity="([^"]+)"/) || [, 1])[1]),
-    d: tidy(m[2], scale),
-  }));
-
 const trace = (src, opts) =>
   new Promise((res, rej) =>
     potrace.trace(src, { ...opts, color: '#000' }, (e, s) => (e ? rej(e) : res(s)))
   );
 
-const posterize = (src, opts) =>
-  new Promise((res, rej) =>
-    potrace.posterize(
-      src,
-      {
-        ...opts,
-        color: '#000',
-        background: 'transparent',
-        fillStrategy: potrace.Posterizer.FILL_DOMINANT,
-        rangeDistribution: potrace.Posterizer.RANGES_AUTO,
-      },
-      (e, s) => (e ? rej(e) : res(s))
-    )
-  );
+const pathOf = (svg, scale) => tidy(svg.match(/\sd="([^"]+)"/)[1], scale);
+
+const r1 = (v) => Math.round(v * 10) / 10;
+const vb = (b, pad = 1) =>
+  [r1(b.x0 - pad), r1(b.y0 - pad), r1(b.x1 - b.x0 + 2 * pad), r1(b.y1 - b.y0 + 2 * pad)].join(' ');
 
 /* ------------------------------------------------------------------ run --- */
 
 (async () => {
-  const png = PNG.sync.read(fs.readFileSync(SRC));
-  const { width: W, height: H } = png;
-  const split = findSplit(png);
+  const img = await Jimp.read(SRC);
+  const key = keyAlpha(img);
+  const { W, H, alpha } = key;
+  const cx = W / 2;
+  const cy = H / 2;
 
-  const tmp = (name) => path.join(os.tmpdir(), 'hma-' + name + '.png');
-  const monoSrc = await maskFile(png, 0, split, tmp('mono'), MONO.scale);
-  const subSrc = await maskFile(png, split, H, tmp('sub'), SUB.scale);
+  const ring = measureRing(key, Math.round(cy));
+  const inDisc = (x, y) => Math.hypot(x - cx, y - cy) < RING_CUT;
 
-  const mono = readPaths(await trace(monoSrc, MONO), MONO.scale);
-
-  let sub;
-  if (SUB.mode === 'posterize') {
-    sub = readPaths(await posterize(subSrc, SUB), SUB.scale);
-  } else {
-    sub = readPaths(await trace(subSrc, SUB), SUB.scale);
-    const ink = bandInk(png, split, H);
-    const area = sub.reduce((a, p) => a + pathArea(p.d, 1), 0);
-    const opacity = Math.min(1, Math.round((ink / area) * 1000) / 1000);
-    sub = sub.map((p) => ({ ...p, opacity }));
-    console.log(
-      'subline: ' + ink.toFixed(0) + ' ink px over ' + area.toFixed(0) +
-        ' traced px -> fill-opacity ' + opacity
-    );
+  /* The lockup's own bounds, for the master crop and the SVG viewBox. */
+  let lb = { x0: W, y0: H, x1: 0, y1: 0 };
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      if (alpha[y * W + x] > 8 && inDisc(x, y)) {
+        lb.x0 = Math.min(lb.x0, x);
+        lb.x1 = Math.max(lb.x1, x);
+        lb.y0 = Math.min(lb.y0, y);
+        lb.y1 = Math.max(lb.y1, y);
+      }
+    }
   }
 
-  /* Both regions are labelled, for different reasons. The monogram carries an
-     id because the hero references it through <use> to draw the mark in. The
-     subline carries a class because the page has to reach it with CSS and give
-     it a hinting stroke — see .mark__sub in home.css.
+  /* 1. the raster master: the lockup, white on transparent, cropped */
+  const mw = lb.x1 - lb.x0 + 1;
+  const mh = lb.y1 - lb.y0 + 1;
+  const master = new PNG({ width: mw, height: mh });
+  for (let y = 0; y < mh; y++) {
+    for (let x = 0; x < mw; x++) {
+      const sx = lb.x0 + x;
+      const sy = lb.y0 + y;
+      const o = (y * mw + x) * 4;
+      master.data[o] = master.data[o + 1] = master.data[o + 2] = 255;
+      master.data[o + 3] = inDisc(sx, sy) ? alpha[sy * W + sx] : 0;
+    }
+  }
+  fs.writeFileSync(OUT.master, PNG.sync.write(master));
 
-     Its coverage goes on as `opacity` rather than `fill-opacity` so that the
-     stroke inherits it too, and so that fill and stroke composite before being
-     faded: with separate opacities the two would double-darken where they
-     overlap, and the letterforms would gain a rim. */
-  const body = [
-    ...sub.map(
-      (p) =>
-        '<path class="mark__sub"' +
-        (p.opacity < 1 ? ' opacity="' + p.opacity + '"' : '') +
-        ' d="' + p.d + '"/>'
-    ),
-    ...mono.map((p) => '<path d="' + p.d + '" id="markSolid"/>'),
-  ].join('\n');
+  /* 2. the two traces */
+  const tmp = (n) => path.join(os.tmpdir(), 'hma-' + n + '.png');
+  const sigSrc = await maskFile(key, (x, y) => inDisc(x, y) && !inRect(x, y, TEXT), tmp('sig'), SIG.scale);
+  const typeSrc = await maskFile(key, (x, y) => inRect(x, y, TEXT), tmp('type'), TYPE.scale);
 
-  /* evenodd is not decoration: potrace winds a counter the same way round as
-     the letter that holds it, so under the default nonzero rule every A, R and
-     B fills solid. */
-  const svg =
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H +
-    '" fill="currentColor" fill-rule="evenodd">\n' + body + '\n</svg>\n';
+  const sig = pathOf(await trace(sigSrc, SIG), SIG.scale);
+  const type = pathOf(await trace(typeSrc, TYPE), TYPE.scale);
+  [sigSrc, typeSrc].forEach((f) => fs.unlinkSync(f));
 
-  fs.writeFileSync(OUT, svg);
+  const sb = pathBBox(sig);
+  const tb = pathBBox(type);
+  const all = {
+    x0: Math.min(sb.x0, tb.x0), y0: Math.min(sb.y0, tb.y0),
+    x1: Math.max(sb.x1, tb.x1), y1: Math.max(sb.y1, tb.y1),
+  };
 
-  /* The small lockup. Below about 120px the subline is a grey smear rather
-     than words, so the compact mark is the monogram on its own, cropped to
-     its own bounds — the full artwork carries 20% empty height under it,
-     which would leave the header logo floating. Same path, no redraw.
+  /* 3. the lockup. The signature is named: the hero strokes that one path to
+        draw the mark in — a signature signing itself — before the fill floods
+        through it and the type arrives. */
+  const markSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb(all) +
+    '" fill="currentColor" fill-rule="evenodd">\n' +
+    '<path d="' + type + '" id="markType"/>\n' +
+    '<path d="' + sig + '" id="markSolid"/>\n' +
+    '</svg>\n';
+  fs.writeFileSync(OUT.mark, markSvg);
 
-     currentColor with a white default: as an <img> it paints white, which is
-     what the header wants under its difference blend, and inlined anywhere
-     else a CSS color property still overrides it. */
-  const b = pathBBox(mono[0].d);
-  const r = (v) => Math.round(v * 10) / 10;
-  const monoSvg =
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' +
-    [r(b.x0), r(b.y0), r(b.x1 - b.x0), r(b.y1 - b.y0)].join(' ') +
+  /* 4. the signature alone, for the header. currentColor with a white default,
+        so it paints white as an <img> and still takes a CSS colour inline. */
+  const signSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb(sb) +
     '" fill="currentColor" color="#fff" fill-rule="evenodd">\n' +
-    '<path d="' + mono[0].d + '"/>\n</svg>\n';
-  fs.writeFileSync(MONO_OUT, monoSvg);
+    '<path d="' + sig + '"/>\n</svg>\n';
+  fs.writeFileSync(OUT.sign, signSvg);
 
-  /* The app icon. A favicon slot is 16 square, so the mark needs two things
-     the logotype does not otherwise need.
+  /* 5. the avatar as the app icon: disc, ring, signature.
 
-     A ground: a burgundy disc, which reads as a deliberate object at that size
-     where a bare wordmark reads as debris. Colours are the palette's
-     --burgundy and white, as literals — an SVG served as its own file cannot
-     see the stylesheet.
-
-     And weight. Reduced honestly to 16px the monogram's hairlines land at
-     about a fifth of a pixel and vanish: measured side by side, the plain
-     reduction is illegible at every size a tab actually uses. ICON_STROKE
-     thickens the letterforms in the mark's own units, which is the optical
-     sizing a type designer does for small text — the shape, the swash and the
-     counters all survive, they simply carry more ink. It applies only to this
-     icon; the logotype itself is never redrawn. */
+        Two things a favicon slot forces. The ring is 13px in 1080 — a fifth of
+        a pixel at 16 — so it is drawn heavier than measured, or it is not
+        there. And the signature is a 3px pen line; reduced honestly to 16px it
+        is nothing. ICON_STROKE thickens it in its own units, the optical
+        sizing a typeface does for small sizes: the gesture survives, it just
+        carries more ink. Neither applies anywhere but this icon. */
   const ICON = 64;
-  const ICON_FILL = 0.86;
-  const ICON_STROKE = 20;
-  const mw = ICON * ICON_FILL;
-  const k = mw / (b.x1 - b.x0);
-  const mh = (b.y1 - b.y0) * k;
+  const ICON_FILL = 0.78;
+  const ICON_STROKE = 22;
+  const RING_W = 2.2;
+  const ringR = (ring.r / W) * ICON - (RING_W - (ring.w / W) * ICON) / 2;
+  const sw = sb.x1 - sb.x0;
+  const sh = sb.y1 - sb.y0;
+  const k = (ICON * ICON_FILL) / sw;
   const place =
-    'translate(' + r((ICON - mw) / 2) + ' ' + r((ICON - mh) / 2) + ') ' +
+    'translate(' + r1((ICON - sw * k) / 2) + ' ' + r1((ICON - sh * k) / 2) + ') ' +
     'scale(' + Math.round(k * 1e5) / 1e5 + ') ' +
-    'translate(' + r(-b.x0) + ' ' + r(-b.y0) + ')';
+    'translate(' + r1(-sb.x0) + ' ' + r1(-sb.y0) + ')';
   const iconSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + ICON + ' ' + ICON + '">\n' +
-    '<circle cx="32" cy="32" r="32" fill="#7a2438"/>\n' +
-    '<g fill="#fff" fill-rule="evenodd" stroke="#fff" stroke-width="' + ICON_STROKE +
-    '" stroke-linejoin="round" transform="' + place + '">\n' +
-    '<path d="' + mono[0].d + '"/>\n</g>\n</svg>\n';
-  fs.writeFileSync(ICON_OUT, iconSvg);
-
-  [monoSrc, subSrc].forEach((f) => fs.unlinkSync(f));
+    '<circle cx="32" cy="32" r="32" fill="' + BURGUNDY + '"/>\n' +
+    '<circle cx="32" cy="32" r="' + r1(ringR) + '" fill="none" stroke="' + WHITE +
+    '" stroke-width="' + RING_W + '"/>\n' +
+    '<g fill="' + WHITE + '" stroke="' + WHITE + '" stroke-width="' + ICON_STROKE +
+    '" stroke-linejoin="round" stroke-linecap="round" transform="' + place + '">\n' +
+    '<path d="' + sig + '"/>\n</g>\n</svg>\n';
+  fs.writeFileSync(OUT.icon, iconSvg);
 
   const kb = (s) => (s.length / 1024).toFixed(1);
-  console.log('source ' + W + 'x' + H + ', split at y=' + split);
-  console.log(
-    OUT + ' — ' + kb(svg) + ' kB: monogram ' + kb(mono[0].d) + ' kB, subline ' +
-      kb(sub.map((p) => p.d).join('')) + ' kB in ' + sub.length +
-      (sub.length === 1 ? ' path' : ' paths')
-  );
-  console.log(
-    MONO_OUT + ' — ' + kb(monoSvg) + ' kB: monogram only, cropped to ' +
-      r(b.x1 - b.x0) + 'x' + r(b.y1 - b.y0)
-  );
+  console.log('source ' + W + 'x' + H + ', plate ' + BURGUNDY + ', ring r=' + r1(ring.r) + ' w=' + ring.w);
+  console.log('lockup ' + mw + 'x' + mh + ' at ' + lb.x0 + ',' + lb.y0 + ' -> ' + OUT.master);
+  console.log(OUT.mark + ' — ' + kb(markSvg) + ' kB (signature ' + kb(sig) + ', type ' + kb(type) + ')');
+  console.log(OUT.sign + ' — ' + kb(signSvg) + ' kB, ' + r1(sw) + 'x' + r1(sh));
+  console.log(OUT.icon + ' — ' + kb(iconSvg) + ' kB');
 })();

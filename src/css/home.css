@@ -100,13 +100,13 @@
 
 .hero__mark {
   /* The single dial for how large the logo sits in the frame. */
-  --mark-w: clamp(235px, 44vw, 640px);
+  --mark-w: clamp(280px, 52vw, 760px);
 
   position: relative;
   width: var(--mark-w);
   /* The artwork's own proportions, so the box is the right shape before the
      traced mark has been fetched into it. */
-  aspect-ratio: 700 / 334;
+  aspect-ratio: 732.7 / 248.9;
   margin: 0;
   color: #f6f2ea;
   opacity: 0;
@@ -128,33 +128,12 @@
   height: 100%;
 }
 
-/* The monogram's own contour, stroked. vector-effect keeps it a true hairline
+/* The signature's own contour, stroked. vector-effect keeps it a true hairline
    at every size the mark is drawn at, rather than scaling with the artwork. */
 .mark__draw {
   fill: none;
   stroke: currentColor;
   stroke-width: 1.4;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-
-/* HAYTHAM MRIBAH ARCHITECTS is drawn a single source pixel wide, and the hero
-   renders the mark at about two thirds size — which lands those strokes at
-   0.84 of a device pixel. Under one pixel the browser antialiases them to
-   grey, and any stroke that happens to straddle a pixel boundary all but
-   disappears: the line reads faded and gap-toothed, the T stems worst of all.
-   The supplied raster does exactly the same thing at this size — it is the
-   artwork that is sub-pixel, not the trace.
-
-   So the fix is the one a typeface uses when its stems fall below a pixel:
-   hint them. A non-scaling stroke does not shrink with the artwork, so it
-   holds every stroke at a full pixel however small the mark is drawn, while
-   staying a rounding error against the monogram's much heavier letterforms.
-   Coverage is left to the path's own `opacity`, so fill and stroke composite
-   as one and no rim forms where they meet. */
-.mark__sub {
-  stroke: currentColor;
-  stroke-width: 0.7;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }

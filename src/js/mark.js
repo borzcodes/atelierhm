@@ -1,16 +1,16 @@
 /**
  * The hero mark.
  *
- * The logotype is the studio's own artwork, used exactly as supplied — it is
- * never redrawn. What changed is the format: the raster master is traced to
- * vector by tools/trace-mark.cjs, which lets the mark stay crisp at any size
- * and, more to the point, lets it draw itself.
+ * The mark is the studio's own artwork — the signature lockup it uses as its
+ * avatar — used exactly as supplied and never redrawn. What changed is the
+ * format: the raster is traced to vector by tools/trace-mark.cjs, which lets
+ * it stay crisp at any size and, more to the point, lets it draw itself.
  *
- * The reveal is the reference's two-part entrance. The monogram's own outline
- * is stroked as a hairline and drawn on with a dash offset, as though it were
- * being set out on a drawing board; then the fill floods through it and the
- * contour retires. The subline is a hairline already, so it arrives with the
- * fill rather than drawing.
+ * The reveal is the reference's two-part entrance, and a signature is the
+ * best possible subject for it. The signature's contour is stroked as a
+ * hairline and drawn on with a dash offset — one continuous pen line signing
+ * itself across the frame — then the fill floods through it, the name and
+ * tagline arrive with the fill, and the contour retires.
  *
  * If the SVG cannot be fetched the raster in the markup stands in and simply
  * fades up — the mark is never missing.
@@ -40,7 +40,7 @@ export async function mountMark(host) {
   svg.classList.add('mark__svg');
   svg.setAttribute('aria-hidden', 'true');
   svg.setAttribute('focusable', 'false');
-  // Everything the trace produced becomes the fill; the monogram's contour is
+  // Everything the trace produced becomes the fill; the signature's contour is
   // lifted back out through <use> so it can be stroked without a second copy.
   const ink = document.createElementNS(svg.namespaceURI, 'g');
   ink.setAttribute('class', 'mark__ink');
@@ -79,8 +79,10 @@ export async function mountMark(host) {
 /** Fetch the traced mark. Returns null if anything about it is not an SVG. */
 async function loadMark() {
   try {
-    // Cached indefinitely: the file never changes without a filename change.
-    const res = await fetch(SRC, { cache: 'force-cache' });
+    // Ordinary HTTP caching, deliberately not force-cache: the file is served
+    // under a fixed name, and a revised mark has to be able to reach a browser
+    // that already holds the old one — as it did when the studio rebranded.
+    const res = await fetch(SRC);
     if (!res.ok) return null;
     const doc = new DOMParser().parseFromString(await res.text(), 'image/svg+xml');
     const root = doc.documentElement;
@@ -111,16 +113,17 @@ export function revealMark(host, mark) {
   if (draw) {
     const len = Number(draw.dataset.len) || 0;
     tl.to(draw, { opacity: 1, duration: 0.25, ease: 'none' }, 0)
+      // 1. the pen: a steady hand, not an ease that rushes the middle
       .fromTo(
         draw,
         { strokeDashoffset: len },
-        { strokeDashoffset: 0, duration: 1.7, ease: 'power2.inOut' },
+        { strokeDashoffset: 0, duration: 2.2, ease: 'power1.inOut' },
         0
       )
-      // 2. the fill floods through the finished outline
-      .to(ink, { opacity: 1, duration: 0.9, ease: 'power2.inOut' }, 1.35)
-      // 3. the contour has done its job once the letter is solid
-      .to(draw, { opacity: 0, duration: 0.5, ease: 'none' }, 1.75);
+      // 2. the fill floods through as the line completes; the type comes with it
+      .to(ink, { opacity: 1, duration: 0.9, ease: 'power2.inOut' }, 1.7)
+      // 3. the contour has done its job once the stroke is solid
+      .to(draw, { opacity: 0, duration: 0.5, ease: 'none' }, 2.2);
   } else {
     tl.to(ink, { opacity: 1, duration: 1.1, ease: 'power2.out' }, 0.2);
   }

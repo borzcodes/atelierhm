@@ -324,7 +324,8 @@ button {
   color: #fff;
 }
 
-/* The monogram, at the size the wordmark used to sit at. It is white artwork,
+/* The signature. It is a long, low mark — three times wider than it is tall —
+   so it takes more width than a monogram would to read at all. White artwork,
    so it inverts with the rest of the header under the difference blend and
    stays white when the menu forces the header to plain white. */
 .header__logo {
@@ -333,7 +334,7 @@ button {
 }
 .header__logo img {
   display: block;
-  width: clamp(50px, 5.3vw, 74px);
+  width: clamp(84px, 9vw, 120px);
   height: auto;
 }
 
