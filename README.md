@@ -78,22 +78,33 @@ full-resolution renders. Ask for them.
 
 ## How the motion works
 
-- **Loader → hero.** A small plate shuffles through the portfolio as each
-  image finishes decoding, a counter tracks real progress, and when the last
-  one lands the plate flies out to full bleed while the headline wipes up word
-  by word (`src/js/loader.js`).
+- **Loader → hero.** A burgundy field, and on it the founder's signature
+  lockup signing itself on out of nothing — the contour drawn as one pen line,
+  the fill flooding through, the name and the line beneath arriving with it
+  (`src/js/mark.js`). The hero's plates decode behind it with a thin bar and a
+  counter tracking real progress; once the signature has finished and the
+  plates are in, the field lifts like a curtain and the hero's wordmark rises
+  under it (`src/js/loader.js`).
 - **Hero.** Five full-bleed plates cross-cut on a timer under a deep scrim,
   each drifting on a slow Ken Burns move; the move lives in CSS so the class
   toggle restarts it, and `src/js/hero.js` only decides when to cut. Over it
   sits the logotype, then the French tagline, then the scroll cue.
-- **The mark** (`src/js/mark.js`). The studio's signature lockup, used exactly
-  as supplied — never redrawn, only vectorised. `mark.js` fetches `hma-mark.svg`
-  and inlines it, so the signature's own contour can be lifted back out through
-  a `<use>` and stroked. The reveal draws that contour on with a dash offset —
-  one pen line signing itself across the frame — then floods the fill through
-  it, at which point the name and tagline arrive, and retires the contour. If
-  the fetch never lands the raster in the markup stands in and simply fades up;
-  reduced motion skips straight to the finished mark.
+- **The wordmark** (`.wordmark` in `base.css`, `src/js/wordmark.js`). The
+  studio's wordmark — hma, the m dissolving downward, "architect / urbanist"
+  alongside, and the star — is set live from its typeface rather than shipped
+  as a picture, so it takes any colour and size and its parts can arrive
+  separately: in the hero the letters rise through the baseline one after
+  another, the tagline settles in, the star turns into place. The same markup
+  sits in the header (letters and star) and leads the footer (the whole
+  lockup). Reduced motion skips to the finished mark.
+- **The signature** (`src/js/mark.js`, `src/js/signature.js`). The founder's
+  signature, used exactly as supplied — never redrawn, only vectorised — opens
+  the site and signs itself over and over in the founder and contact sections.
+  `signature.js` fetches `hma-sign.svg` once, inlines a copy into each host
+  and strokes its contour, then loops: the contour drawn on with a dash offset
+  — one pen line — the fill flooding through it, a hold, the ink lifting, and
+  the pen again; each runs only while on screen. Until the vector lands the
+  artwork is painted through a CSS mask, so it is never missing.
 - **The work grid** (`src/js/work.js`). Every project as one tile, three across:
   the plate full-bleed with a dark foot, and on the foot the city, the title and
   the category, read top to bottom like the label on a print. The plates are the
@@ -168,9 +179,9 @@ site root:
 | File | What it is |
 | --- | --- |
 | `hma-original.jpg` | The artwork as the studio supplied it — its avatar: white signature lockup on a `#7c0028` disc, inside a white ring, 1080 square |
-| `hma-mark.png` | The lockup keyed off the disc — transparent master, and the hero's fallback if the SVG never arrives |
-| `hma-mark.svg` | The lockup as vector — signature, name, rule, tagline — and what the hero draws |
-| `hma-sign.svg` | The signature alone, for the header |
+| `hma-mark.png` | The lockup keyed off the disc — transparent master, and the loader's fallback if the SVG never arrives |
+| `hma-mark.svg` | The lockup as vector — signature, name, rule, tagline — and what the loader draws |
+| `hma-sign.svg` | The signature alone — the founder section, and what the contact section draws on |
 | `/favicon.svg` | The avatar itself: disc, ring, signature at icon weight |
 
 `npm run trace:mark` rebuilds all of them from the JPG. The artwork keys by
@@ -214,12 +225,10 @@ through a CSS mask so it takes the page's ink colour.
 The hero's `<h1>` is the mark itself, with the studio name inside it as
 `.sr-only` text so the page keeps a readable level-one heading.
 
-**Contact form.** Validation is real; submission is not. Replace the body of
-`send()` in `src/js/contact.js` with a POST to your endpoint, and delete the
-note under the form.
-
-**Contact details.** Address, email and phone appear in `index.html`,
-`project.html` and the menu. The phone number is a placeholder.
+**Contact.** There is no form: the contact section is a `mailto:` button and
+the email and WhatsApp addresses as rows. Address, email and number appear in
+`index.html` (contact section, footer), `project.html` (footer) and the menu;
+the WhatsApp links are `https://wa.me/<number>`. The number is a placeholder.
 
 **Colour and type.** Tokens are at the top of `src/css/base.css`. The scheme is
 white with burgundy accenting it — roughly nine parts to one. White is the

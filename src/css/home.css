@@ -98,17 +98,17 @@
 
 /* --- the mark --- */
 
+/* The wordmark, set in bone over the plates. Held at opacity 0 until
+   wordmark.js has staged its parts, so the finished lockup never flashes
+   before its entrance. */
 .hero__mark {
   /* The single dial for how large the logo sits in the frame. */
-  --mark-w: clamp(280px, 52vw, 760px);
+  --wm: clamp(6rem, 15vw, 13rem);
+  --wm-ink: #f6f2ea;
 
   position: relative;
-  width: var(--mark-w);
-  /* The artwork's own proportions, so the box is the right shape before the
-     traced mark has been fetched into it. */
-  aspect-ratio: 732.7 / 248.9;
   margin: 0;
-  color: #f6f2ea;
+  line-height: 1;
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -116,26 +116,10 @@
 .hero__mark.is-in {
   opacity: 1;
 }
-
-/* The traced mark and the raster stand-in occupy the same box, which the
-   aspect ratio holds open before either has arrived. */
-.mark__svg,
-.mark__fallback {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* The signature's own contour, stroked. vector-effect keeps it a true hairline
-   at every size the mark is drawn at, rather than scaling with the artwork. */
-.mark__draw {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.4;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
+/* The letters rise in from under the baseline, so the word is clipped there:
+   the line box runs 0.13em below the baseline in this face. */
+.hero__mark .wordmark__word {
+  clip-path: inset(-0.2em -0.08em 0.115em -0.08em);
 }
 
 .hero__tagline {
@@ -256,13 +240,13 @@
 .founder__name {
   font-weight: 800;
   font-stretch: 110%;
-  font-size: clamp(1.5rem, 3.7vw, 4rem);
-  line-height: 0.88;
-  letter-spacing: -0.042em;
+  font-size: var(--t-h2);
+  line-height: 0.92;
+  letter-spacing: -0.038em;
   text-transform: uppercase;
 }
 .founder__role {
-  margin-top: clamp(0.8rem, 1.4vw, 1.4rem);
+  margin-top: clamp(0.7rem, 1.1vw, 1.1rem);
   color: var(--burgundy);
 }
 .founder__bio {
@@ -277,25 +261,55 @@
   padding-top: clamp(1.4rem, 2.6vw, 2.6rem);
   border-top: var(--rule) solid var(--line);
   font-size: var(--t-lede);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.18;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.24;
   text-wrap: balance;
 }
 
-/* The signature is the mark's own artwork, painted through a mask so it takes
-   the ink colour here rather than the white it is drawn in. */
-.signature {
-  margin-top: clamp(1.4rem, 2.6vw, 2.6rem);
-  width: clamp(170px, 19vw, 260px);
+/* --- the signature --- */
+/* The founder's signature, wherever it signs: painted through a mask first, so
+   the white artwork takes the host's colour and is on the page whatever
+   happens to the script; once signature.js has fetched the vector it takes the
+   box over, the mask steps aside, and the pen starts. */
+.sign {
+  position: relative;
   aspect-ratio: 732.7 / 248.9;
-  background: var(--ink);
+  background: currentColor;
   -webkit-mask: url('/assets/logo/hma-sign.svg') no-repeat center / contain;
   mask: url('/assets/logo/hma-sign.svg') no-repeat center / contain;
 }
+.sign.is-vector {
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+}
+.sign__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* The contour, stroked. vector-effect keeps it a true hairline at every size
+   the signature is drawn at, rather than scaling with the artwork. */
+.sign__draw {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Small, in ink, under the founder's words. */
+.signature {
+  margin-top: clamp(1.4rem, 2.6vw, 2.6rem);
+  width: clamp(150px, 16vw, 230px);
+  color: var(--ink);
+}
 
 /* Three figures in a ruled strip, after the reference: a hairline box cut into
-   equal cells, the number large and the label small beneath it. */
+   equal cells, the number bold at heading size and what it counts in the
+   soft line beneath. */
 .stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -303,7 +317,7 @@
   border: var(--rule) solid var(--line);
 }
 .stats__cell {
-  padding: clamp(1.4rem, 2.6vw, 2.8rem) clamp(1.2rem, 2.2vw, 2.4rem);
+  padding: clamp(1.2rem, 2.2vw, 2.4rem) clamp(1.2rem, 2.2vw, 2.4rem);
   border-left: var(--rule) solid var(--line);
 }
 .stats__cell:first-child {
@@ -313,14 +327,13 @@
   margin: 0;
   font-weight: 700;
   font-stretch: 108%;
-  font-size: clamp(2.4rem, 5vw, 5rem);
+  font-size: var(--t-h2);
   line-height: 0.95;
   letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
 }
 .stats__cell dt {
-  margin-top: 0.7rem;
-  color: var(--ink-45);
+  margin-top: 0.45rem;
 }
 
 /* ----------------------------------------------------------- projects -- */
@@ -417,9 +430,9 @@
 .tile__title {
   font-weight: 700;
   font-stretch: 108%;
-  font-size: clamp(1.15rem, 1.7vw, 1.75rem);
-  line-height: 1.02;
-  letter-spacing: -0.028em;
+  font-size: var(--t-h3);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
   text-wrap: balance;
 }
@@ -541,11 +554,11 @@
 }
 
 .cap__title {
-  font-weight: 800;
+  font-weight: 700;
   font-stretch: 108%;
-  font-size: clamp(1.15rem, 2.1vw, 2.1rem);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-size: var(--t-h3);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
   transition: transform 0.55s var(--ease-out), color 0.45s var(--ease-out);
 }
@@ -592,13 +605,20 @@
 
 /* ----------------------------------------------------------- contact --- */
 
+/* The page closes on a burgundy band — this section and the footer beneath it,
+   in the menu's palette. `data-dark` in the markup tells the header to drop
+   its blend while it crosses it. */
 .contact {
-  background: var(--paper-2);
-  color: var(--ink);
-  padding: clamp(1.6rem, 3.8vw, 4.2rem) 0 clamp(1.2rem, 2.6vw, 2.8rem);
+  background: var(--burgundy-deep);
+  color: var(--bone);
+  padding: clamp(1.6rem, 3.8vw, 4.2rem) 0 clamp(2rem, 4.5vw, 5rem);
 }
 .contact .section__head {
-  border-color: var(--line);
+  border-color: var(--bone-line);
+  color: var(--bone-60);
+}
+.contact .section__head .micro:first-child {
+  color: var(--rose);
 }
 .contact__title {
   font-weight: 800;
@@ -610,151 +630,136 @@
   letter-spacing: -0.045em;
   text-transform: uppercase;
 }
-.contact__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
-  gap: clamp(2rem, 5vw, 6rem);
-  padding-top: clamp(2rem, 5vw, 5rem);
-}
-.contact__details h4 {
-  font-size: var(--t-micro);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--burgundy);
-  margin-bottom: 0.6em;
-}
-.contact__details > div + div {
-  margin-top: clamp(1.4rem, 2.6vw, 2.6rem);
-}
-.contact__details p,
-.contact__details a {
-  font-size: clamp(1rem, 1.35vw, 1.35rem);
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-}
-.contact__details a:hover {
-  color: var(--burgundy);
+/* --- the sign-off --- */
+/* The signature centred, a line, and the one button. The page closes on the
+   same mark it opened with. */
+
+.contact__sign-off {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(1.2rem, 2.2vw, 2rem);
+  padding: clamp(3rem, 7vw, 7.5rem) 0 clamp(2.6rem, 6vw, 6.5rem);
 }
 
-/* --- form --- */
-
-.form {
-  display: grid;
-  gap: clamp(1rem, 2vw, 1.8rem);
-}
-.form__row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(1rem, 2vw, 1.8rem);
-}
-.field {
-  position: relative;
-  display: block;
-}
-.field > span {
-  display: block;
-  font-size: var(--t-micro);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--burgundy);
-  margin-bottom: 0.55em;
-}
-.field input,
-.field textarea,
-.field select {
-  width: 100%;
-  padding: 0.65em 0;
-  background: transparent;
-  border: 0;
-  border-bottom: var(--rule) solid var(--line);
-  color: var(--ink);
-  font-family: inherit;
-  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
-  border-radius: 0;
-  transition: border-color 0.35s var(--ease-out);
-}
-.field select {
-  appearance: none;
-  cursor: pointer;
-}
-.field select option {
-  background: var(--paper);
-  color: var(--ink);
-}
-.field textarea {
-  min-height: 7.5rem;
-  resize: vertical;
-}
-.field input:focus,
-.field textarea:focus,
-.field select:focus {
-  outline: none;
-  border-color: var(--burgundy);
-}
-.field input::placeholder,
-.field textarea::placeholder {
-  color: var(--ink-45);
-}
-.field[data-invalid='true'] input,
-.field[data-invalid='true'] textarea {
-  border-color: var(--burgundy);
-  border-bottom-width: 2px;
-}
-.field em {
-  display: block;
-  margin-top: 0.4em;
-  font-style: normal;
-  font-size: var(--t-micro);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--burgundy);
-  opacity: 0;
-  transition: opacity 0.25s linear;
-}
-.field[data-invalid='true'] em {
-  opacity: 1;
+/* Large, in bone, as the sign-off — the same .sign as the founder's, at size. */
+.contact__sign {
+  width: clamp(240px, 36vw, 540px);
+  color: var(--bone);
 }
 
-.submit {
+.contact__lede {
+  max-width: 34ch;
+  font-size: var(--t-lede);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.24;
+  text-wrap: balance;
+}
+
+/* The one button, inverted on the band: bone, with the band's colour as its
+   type. Sized to be the thing the section is for. */
+.contact__cta {
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
-  justify-self: start;
-  padding: 0.95em 1.7em;
+  gap: 1rem;
+  margin-top: 0.6rem;
+  padding: 1.2em 2.4em;
   border-radius: 999px;
-  background: var(--burgundy);
-  color: #fff;
-  font-size: var(--t-micro);
+  background: var(--bone);
+  color: var(--burgundy-deep);
+  font-size: clamp(0.78rem, 0.95vw, 1rem);
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  transition: background 0.35s var(--ease-out), color 0.35s var(--ease-out);
+  transition: background 0.35s var(--ease-out), transform 0.45s var(--ease-out);
 }
-.submit:hover {
-  background: var(--burgundy-deep);
+.contact__cta:hover {
+  background: var(--rose);
+  transform: translateY(-2px);
 }
-.submit svg {
-  width: 1.1em;
+.contact__cta svg {
+  width: 1.15em;
   transition: transform 0.45s var(--ease-out);
 }
-.submit:hover svg {
-  transform: translateX(0.25rem);
+.contact__cta:hover svg {
+  transform: translateX(0.3rem);
 }
-.form__note {
-  font-size: var(--t-micro);
-  letter-spacing: 0.08em;
-  color: var(--ink-45);
+
+/* --- the ways to reach the studio --- */
+/* Email, WhatsApp and the door as ruled rows, after the capability list: the
+   channel on the left with a soft line on what pressing it does, the address
+   bold at row-title size, and an arrow for the two that open something. The
+   whole row is the link. */
+
+.ways {
+  /* The arrow column is fixed, not auto, so the row without an arrow keeps
+     its address on the same vertical as the two that have one. */
+  --arrow: clamp(1.4rem, 2.2vw, 2.4rem);
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: var(--rule) solid var(--bone-line);
 }
-.form__done {
-  padding: 1rem 0;
-  color: var(--burgundy);
-  font-size: clamp(1rem, 1.4vw, 1.4rem);
+.ways__row {
+  border-bottom: var(--rule) solid var(--bone-line);
+}
+.ways__link {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 7fr) var(--arrow);
+  grid-template-rows: auto auto;
+  column-gap: var(--gap);
+  align-items: center;
+  padding: clamp(1.3rem, 2.4vw, 2.4rem) 0;
+  color: inherit;
+}
+.ways__label {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  color: var(--rose);
+}
+.ways__hint {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  margin-top: 0.3rem;
+  color: var(--bone-60);
+}
+.ways__value {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-size: var(--t-h3);
   font-weight: 700;
+  font-stretch: 104%;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  transition: color 0.35s var(--ease-out);
 }
-.form__done[hidden] {
-  display: none;
+.ways__value small {
+  display: block;
+  margin-top: 0.3em;
+  font-size: var(--t-small);
+  font-weight: 400;
+  font-stretch: 100%;
+  letter-spacing: 0.01em;
+  color: var(--bone-60);
+}
+.ways__arrow {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  width: var(--arrow);
+  color: var(--bone-60);
+  transition: transform 0.45s var(--ease-out), color 0.35s var(--ease-out);
+}
+a.ways__link:hover .ways__value,
+a.ways__link:hover .ways__arrow {
+  color: var(--rose);
+}
+a.ways__link:hover .ways__arrow {
+  transform: translate(0.2em, -0.2em);
 }
 
 /* -------------------------------------------------------- responsive --- */
@@ -793,8 +798,7 @@
 }
 
 @media (max-width: 760px) {
-  .founder,
-  .contact__grid {
+  .founder {
     grid-template-columns: minmax(0, 1fr);
   }
   .founder__portrait {
@@ -837,7 +841,31 @@
   .cap__sheet {
     padding-top: 0;
   }
-  .form__row {
-    grid-template-columns: minmax(0, 1fr);
+  .contact__sign {
+    width: clamp(200px, 62vw, 300px);
+  }
+  /* The rows stack: channel, then the address, then the hint, the arrow
+     alongside all three. */
+  .ways__link {
+    grid-template-columns: minmax(0, 1fr) var(--arrow);
+    grid-template-rows: auto auto auto;
+    row-gap: 0.35rem;
+  }
+  .ways__label {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .ways__value {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .ways__hint {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 0;
+  }
+  .ways__arrow {
+    grid-column: 2;
+    grid-row: 1 / span 3;
   }
 }

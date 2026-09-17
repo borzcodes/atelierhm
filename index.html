@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Outfit:wght@700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/css/base.css" />
@@ -28,10 +28,9 @@
         }
         .loader { display: none !important; }
         .header, .hero__tagline, .hero__scroll { opacity: 1 !important; }
-        /* The reveal is scripted; without it, show the finished mark. */
+        /* The entrance is scripted; without it, show the finished wordmark. */
         .hero__mark { opacity: 1 !important; }
-        .mark__fallback, .mark__ink { opacity: 1 !important; }
-        .mark__draw { opacity: 0 !important; }
+        .hero__mark .wordmark__word { clip-path: none !important; }
       </style>
     </noscript>
   </head>
@@ -41,7 +40,11 @@
 
     <!-- ===================================================== loader === -->
     <div class="loader" id="loader" aria-hidden="true">
-      <div class="loader__plate" id="loaderPlate"></div>
+      <!-- The signature lockup is fetched and inlined by mark.js so it can be
+           drawn on. This raster is what stands in if that fetch never lands. -->
+      <div class="loader__mark" id="loaderMark">
+        <img class="mark__fallback" src="assets/logo/hma-mark.png" alt="" decoding="async" />
+      </div>
       <div class="loader__bar"><span id="loaderBar"></span></div>
       <div class="loader__meta">
         <span class="micro">HM Architect — Tanger</span>
@@ -51,8 +54,12 @@
 
     <!-- ===================================================== header === -->
     <header class="header">
-      <a class="header__logo" href="index.html" aria-label="HM Architect — accueil">
-        <img src="assets/logo/hma-sign.svg" alt="" width="733" height="249" />
+      <a class="header__logo wordmark" href="index.html" aria-label="HMA — accueil">
+        <span class="wordmark__word" aria-hidden="true"><span class="wordmark__l">h</span><span class="wordmark__l wordmark__m">m</span><span class="wordmark__l">a</span></span><span class="wordmark__side" aria-hidden="true"><span class="wordmark__col">
+          <svg class="wordmark__star" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93 4.93 19.07" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" />
+          </svg>
+        </span></span>
       </a>
 
 
@@ -86,12 +93,19 @@
         <div class="hero__inner">
           <div class="hero__center">
             <h1 class="hero__mark" id="heroMark">
-              <span class="sr-only">Haytham Mribah Architectes</span>
-              <!-- The traced mark is fetched and inlined by mark.js so the signature
-                   can be stroked and drawn on. This raster is what stands in
-                   if that fetch never lands. -->
-              <img class="mark__fallback" src="assets/logo/hma-mark.png"
-                   alt="" aria-hidden="true" fetchpriority="low" decoding="async" />
+              <span class="sr-only">HMA — architecte urbaniste, Tanger</span>
+              <!-- The wordmark, set live (see .wordmark in base.css) so its
+                   letters, tagline and star can arrive one after another. -->
+              <span class="wordmark" aria-hidden="true">
+                <!-- No whitespace between the word and the side column: a space
+                     here is set at the letters' size and would push it away. -->
+                <span class="wordmark__word"><span class="wordmark__l">h</span><span class="wordmark__l wordmark__m">m</span><span class="wordmark__l">a</span></span><span class="wordmark__side"><span class="wordmark__col">
+                  <span class="wordmark__tag">architect<br />urbanist</span>
+                  <svg class="wordmark__star" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93 4.93 19.07" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" />
+                  </svg>
+                </span></span>
+              </span>
             </h1>
             <p class="hero__tagline">Atelier d'architecture &mdash; Tanger, Maroc</p>
           </div>
@@ -136,7 +150,7 @@
                 <span class="line-mask" data-line><span>Haytham</span></span>
                 <span class="line-mask" data-line><span>Mribah</span></span>
               </h2>
-              <p class="founder__role micro" data-reveal>Fondateur &amp; architecte principal — Tanger</p>
+              <p class="founder__role sub" data-reveal>Fondateur &amp; architecte principal — Tanger</p>
 
               <p class="founder__bio" data-reveal>
                 Une petite agence basée à Tanger, active de Tétouan à Bruxelles — santé,
@@ -148,26 +162,27 @@
                 trois échelles : d'où vient la lumière, et que voit-on en premier. »
               </blockquote>
 
-              <!-- The studio's own signature, the same artwork as the mark, painted
-                   through a CSS mask so it takes the ink colour of the page. -->
-              <div class="signature" data-reveal role="img" aria-label="Signature de Haytham Mribah"></div>
+              <!-- The founder's signature, signing itself over and over
+                   (signature.js). Painted through a CSS mask until the vector
+                   lands, so it is there without the script. -->
+              <div class="sign signature" data-sign role="img" aria-label="Signature de Haytham Mribah"></div>
             </div>
           </div>
 
-          <!-- Three figures in a ruled strip. The project count is read from
-               the index by main.js, so it cannot drift from the work below. -->
+          <!-- Three figures in a ruled strip — the studio's own numbers, set
+               here and counted up by main.js as the strip scrolls in. -->
           <dl class="stats" data-stagger>
             <div class="stats__cell">
               <dd class="stats__num" data-count="15" data-prefix="+">+15</dd>
-              <dt class="micro">Projets</dt>
+              <dt class="sub">Projets</dt>
             </div>
             <div class="stats__cell">
               <dd class="stats__num" data-count="2" data-prefix="+">+2</dd>
-              <dt class="micro">Pays</dt>
+              <dt class="sub">Pays</dt>
             </div>
             <div class="stats__cell">
               <dd class="stats__num" data-count="4">4</dd>
-              <dt class="micro">Membres de l'équipe</dt>
+              <dt class="sub">Membres de l'équipe</dt>
             </div>
           </dl>
         </div>
@@ -245,7 +260,7 @@
       </section>
 
       <!-- ================================================= contact === -->
-      <section class="contact" id="contact">
+      <section class="contact" id="contact" data-dark>
         <div class="shell">
           <div class="section__head" data-reveal>
             <p class="micro">04 — Nous contacter</p>
@@ -256,113 +271,140 @@
             <span class="line-mask" data-line><span>Nous contacter</span></span>
           </h2>
 
-          <div class="contact__grid">
-            <div class="contact__details" data-stagger>
-              <div>
-                <h4>Agence</h4>
-                <p>
-                  12 Rue d'Italie, Kasbah<br />
-                  90030 Tanger, Maroc
-                </p>
-              </div>
-              <div>
-                <h4>Écrire</h4>
-                <p><a href="mailto:studio@hmarchitect.ma">studio@hmarchitect.ma</a></p>
-                <p><a href="tel:+212539331208">+212 539 33 12 08</a></p>
-              </div>
-              <div>
-                <h4>Horaires</h4>
-                <p>Du lundi au vendredi, 09h00 — 18h00<br />Visites sur rendez-vous</p>
-              </div>
-            </div>
-
-            <form class="form" id="contactForm" novalidate data-stagger>
-              <div class="form__row">
-                <label class="field">
-                  <span>Votre nom</span>
-                  <input type="text" name="name" required placeholder="Nom complet" autocomplete="name" />
-                  <em>Merci d'indiquer votre nom</em>
-                </label>
-                <label class="field">
-                  <span>Email</span>
-                  <input type="email" name="email" required placeholder="vous@exemple.com" autocomplete="email" />
-                  <em>Merci d'indiquer une adresse valide</em>
-                </label>
-              </div>
-
-              <div class="form__row">
-                <label class="field">
-                  <span>Type de projet</span>
-                  <select name="type">
-                    <option>Maison individuelle</option>
-                    <option>Culturel ou public</option>
-                    <option>Commercial</option>
-                    <option>Intérieurs ou rénovation</option>
-                    <option>Autre</option>
-                  </select>
-                </label>
-                <label class="field">
-                  <span>Où</span>
-                  <input type="text" name="place" placeholder="Site ou ville" />
-                </label>
-              </div>
-
-              <label class="field">
-                <span>Parlez-nous-en</span>
-                <textarea name="message" required placeholder="Le site, le programme, le calendrier — autant que vous le souhaitez."></textarea>
-                <em>Quelques lignes suffisent</em>
-              </label>
-
-              <button class="submit" type="submit">
-                Envoyer
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" />
-                </svg>
-              </button>
-
-              <p class="form__note">
-                Ceci est une démonstration front-end — les envois sont journalisés dans la
-                console, non transmis. Connectez votre point de terminaison dans <code>src/js/contact.js</code>.
-              </p>
-              <p class="form__done" id="formDone" hidden>
-                Merci — nous vous répondrons sous deux jours ouvrés.
-              </p>
-            </form>
+          <!-- No form. The studio takes enquiries by email or WhatsApp, so the
+               section says so: the signature, one line, a button that opens the
+               visitor's mail client, and both channels as rows beneath for
+               anyone who would rather copy an address. The signature signs
+               itself over and over while on screen (signature.js); until the
+               vector lands it is painted through a mask by CSS alone. -->
+          <div class="contact__sign-off">
+            <div class="sign contact__sign" data-sign role="img" aria-label="Signature de Haytham Mribah"></div>
+            <p class="contact__lede" data-reveal>
+              Un projet, une question, un terrain — parlons-en.
+            </p>
+            <a class="contact__cta" href="mailto:studio@hmarchitect.ma?subject=Prise%20de%20contact" data-reveal>
+              Prendre contact
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 12h15M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </a>
           </div>
+
+          <ul class="ways" data-stagger>
+            <li class="ways__row">
+              <a class="ways__link" href="mailto:studio@hmarchitect.ma?subject=Prise%20de%20contact">
+                <span class="ways__label micro">Email</span>
+                <span class="ways__value">studio@hmarchitect.ma</span>
+                <span class="ways__hint sub">Écrire un message</span>
+                <svg class="ways__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 18L18 6M8 6h10v10" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+              </a>
+            </li>
+            <li class="ways__row">
+              <!-- wa.me opens the chat directly, with the first line already typed. -->
+              <a class="ways__link"
+                 href="https://wa.me/212539331208?text=Bonjour%2C%20je%20souhaite%20discuter%20d%27un%20projet%20avec%20vous."
+                 target="_blank" rel="noopener">
+                <span class="ways__label micro">WhatsApp</span>
+                <span class="ways__value">+212 539 33 12 08</span>
+                <span class="ways__hint sub">Ouvrir la conversation</span>
+                <svg class="ways__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 18L18 6M8 6h10v10" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+              </a>
+            </li>
+            <li class="ways__row">
+              <div class="ways__link">
+                <span class="ways__label micro">Agence</span>
+                <span class="ways__value">
+                  12 Rue d'Italie, Kasbah — 90030 Tanger, Maroc
+                  <small>Visites sur rendez-vous</small>
+                </span>
+              </div>
+            </li>
+          </ul>
         </div>
       </section>
     </main>
 
     <!-- ===================================================== footer === -->
     <footer class="footer">
-      <div class="footer__cols" data-stagger>
-        <div>
-          <h4>Suivre</h4>
-          <ul>
-            <li><a href="#" rel="noopener">Instagram</a></li>
-            <li><a href="#" rel="noopener">LinkedIn</a></li>
-            <li><a href="#" rel="noopener">Divisare</a></li>
+      <div class="footer__top">
+        <div class="footer__brand" data-reveal>
+          <!-- The whole lockup, set large enough for its tagline to read. -->
+          <a class="wordmark footer__mark" href="index.html" aria-label="HMA — accueil">
+            <span class="wordmark__word" aria-hidden="true"><span class="wordmark__l">h</span><span class="wordmark__l wordmark__m">m</span><span class="wordmark__l">a</span></span><span class="wordmark__side" aria-hidden="true"><span class="wordmark__col">
+              <span class="wordmark__tag">architect<br />urbanist</span>
+              <svg class="wordmark__star" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93 4.93 19.07" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" />
+              </svg>
+            </span></span>
+          </a>
+          <p class="footer__about sub">
+            Atelier d'architecture et d'urbanisme à Tanger — santé, mixte et
+            intérieurs, de Tétouan à Bruxelles.
+          </p>
+          <ul class="social" aria-label="Nous suivre et nous écrire">
+            <li>
+              <a class="social__btn" href="#" aria-label="Instagram" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" />
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a class="social__btn" href="#" aria-label="LinkedIn" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <circle cx="4.4" cy="4.4" r="2.2" />
+                  <path d="M2.4 8.6h4v13h-4zM9.2 8.6H13v1.8c.7-1.2 2.1-2.1 4-2.1 3.5 0 4.3 2.3 4.3 5.3v8H17.3v-6.7c0-1.6-.3-3-2-3s-2.1 1.4-2.1 3v6.7H9.2z" />
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a class="social__btn" href="https://wa.me/212539331208" aria-label="WhatsApp" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.9L3.5 20.5l4.2-1.1A8.5 8.5 0 1 0 12 3.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                  <path d="M9.1 8.2c.3-.3.7-.3.9 0l1 1.5c.2.3.1.7-.1.9l-.6.6c.6 1.2 1.6 2.2 2.8 2.8l.6-.6c.3-.3.7-.3.9-.1l1.5 1c.3.2.3.6 0 .9l-.7.7c-.6.6-1.5.8-2.3.4-2.2-1-4-2.8-5-5-.4-.8-.2-1.7.4-2.3z" fill="currentColor" />
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a class="social__btn" href="mailto:studio@hmarchitect.ma" aria-label="Email">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8" />
+                  <path d="M3.5 7.5 12 13.2l8.5-5.7" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </li>
           </ul>
         </div>
-        <div>
-          <h4>Site</h4>
-          <ul>
-            <li><a href="#founder">Fondateur</a></li>
-            <li><a href="#work">Projets</a></li>
-            <li><a href="#capability">Savoir-faire</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Agence</h4>
-          <p>12 Rue d'Italie, Kasbah<br />90030 Tanger, Maroc</p>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="mailto:studio@hmarchitect.ma">studio@hmarchitect.ma</a></li>
-            <li><a href="tel:+212539331208">+212 539 33 12 08</a></li>
-          </ul>
+
+        <div class="footer__cols" data-stagger>
+          <nav aria-label="Plan du site">
+            <h4 class="micro">Site</h4>
+            <ul>
+              <li><a href="#founder">Fondateur</a></li>
+              <li><a href="#work">Projets</a></li>
+              <li><a href="#capability">Savoir-faire</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </nav>
+          <div>
+            <h4 class="micro">Agence</h4>
+            <p>12 Rue d'Italie, Kasbah<br />90030 Tanger, Maroc</p>
+            <p class="sub">Visites sur rendez-vous</p>
+          </div>
+          <div>
+            <h4 class="micro">Contact</h4>
+            <ul>
+              <li><a href="mailto:studio@hmarchitect.ma">studio@hmarchitect.ma</a></li>
+              <li><a href="https://wa.me/212539331208" target="_blank" rel="noopener">+212 539 33 12 08</a></li>
+            </ul>
+            <p class="sub">Email ou WhatsApp</p>
+          </div>
         </div>
       </div>
 

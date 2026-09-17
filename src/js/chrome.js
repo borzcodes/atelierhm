@@ -214,6 +214,37 @@ export function initProximity(selector) {
   lenis?.on('scroll', check);
 }
 
+/**
+ * The header is drawn with `mix-blend-mode: difference`, which inverts it over
+ * whatever it crosses — right for the hero and the white page, wrong over the
+ * burgundy band the page closes on, where differencing white lands on a pale
+ * cyan. So while any `data-dark` section sits under the header the document
+ * carries `.is-over-dark`, and the header drops the blend for plain white —
+ * the same rule the open menu uses.
+ */
+export function initHeaderOverDark() {
+  const darks = [...document.querySelectorAll('[data-dark]')];
+  const header = document.querySelector('.header');
+  if (!darks.length || !header) return;
+
+  const root = document.documentElement;
+  const check = () => {
+    // Measured at the header's own midline, so the switch lands as the type
+    // crosses the edge rather than a beat before or after.
+    const probe = header.offsetHeight / 2;
+    const over = darks.some((el) => {
+      const r = el.getBoundingClientRect();
+      return r.top <= probe && r.bottom > probe;
+    });
+    root.classList.toggle('is-over-dark', over);
+  };
+
+  check();
+  window.addEventListener('scroll', check, { passive: true });
+  window.addEventListener('resize', check, { passive: true });
+  lenis?.on('scroll', check);
+}
+
 /* -------------------------------------------------------------- cookie --- */
 
 const COOKIE_KEY = 'hm-cookie-choice';

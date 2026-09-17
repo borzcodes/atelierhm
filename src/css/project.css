@@ -37,9 +37,9 @@
 .pj-hero__title {
   font-weight: 800;
   font-stretch: 110%;
-  font-size: clamp(1.3rem, 3.9vw, 4rem);
-  line-height: 0.9;
-  letter-spacing: -0.042em;
+  font-size: var(--t-h1);
+  line-height: 0.94;
+  letter-spacing: -0.038em;
   text-transform: uppercase;
 }
 .pj-hero__sub {
@@ -98,11 +98,11 @@
   padding: clamp(1.6rem, 4vw, 4rem) var(--pad) 0;
 }
 .pj-lede p {
-  font-weight: 700;
-  font-size: clamp(1.25rem, 2.5vw, 2.5rem);
-  line-height: 1.14;
-  letter-spacing: -0.032em;
-  max-width: 22ch;
+  font-weight: 600;
+  font-size: var(--t-lede);
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+  max-width: 34ch;
   text-wrap: balance;
 }
 
@@ -291,9 +291,9 @@
 .pj-next h2 {
   font-weight: 800;
   font-stretch: 110%;
-  font-size: clamp(1.1rem, 3vw, 3.2rem);
-  line-height: 0.92;
-  letter-spacing: -0.042em;
+  font-size: var(--t-h2);
+  line-height: 0.94;
+  letter-spacing: -0.038em;
   text-transform: uppercase;
 }
 .pj-next__arrow {

@@ -1,16 +1,18 @@
 /**
- * The hero mark.
+ * The signature lockup — the opening.
  *
  * The mark is the studio's own artwork — the signature lockup it uses as its
- * avatar — used exactly as supplied and never redrawn. What changed is the
- * format: the raster is traced to vector by tools/trace-mark.cjs, which lets
- * it stay crisp at any size and, more to the point, lets it draw itself.
+ * avatar: the signature, the name, the rule, the line beneath — used exactly
+ * as supplied and never redrawn. What changed is the format: the raster is
+ * traced to vector by tools/trace-mark.cjs, which lets it stay crisp at any
+ * size and, more to the point, lets it draw itself.
  *
- * The reveal is the reference's two-part entrance, and a signature is the
- * best possible subject for it. The signature's contour is stroked as a
- * hairline and drawn on with a dash offset — one continuous pen line signing
- * itself across the frame — then the fill floods through it, the name and
- * tagline arrive with the fill, and the contour retires.
+ * The entrance is two-part, and a signature is the best possible subject for
+ * it. The signature's contour is stroked as a hairline and drawn on with a
+ * dash offset — one continuous pen line signing itself onto an empty field —
+ * then the fill floods through it, the name and tagline arrive with the fill,
+ * and the contour retires. The loader plays this while the hero's plates
+ * decode behind it (loader.js).
  *
  * If the SVG cannot be fetched the raster in the markup stands in and simply
  * fades up — the mark is never missing.

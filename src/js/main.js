@@ -18,6 +18,7 @@ import {
   initMenu,
   initReveals,
   initProximity,
+  initHeaderOverDark,
   initCookie,
   initYear,
   initAnchors,
@@ -26,9 +27,9 @@ import {
 import { runLoader } from './loader.js';
 import { HeroSequence, buildSlides } from './hero.js';
 import { initWork } from './work.js';
-import { initContact } from './contact.js';
+import { initSignatures } from './signature.js';
 import { mountCycler } from './media.js';
-import { mountMark, revealMark, settleMark } from './mark.js';
+import { stageWordmark, revealWordmark, settleWordmark } from './wordmark.js';
 
 /* Plates the loader shuffles through, capped: every one of these is fetched
    and decoded before the site is revealed. */
@@ -55,16 +56,17 @@ async function boot() {
   initAnchors();
   initWork();
   initStats();
-  initContact();
+  initSignatures();
   initReveals();
   initProximity('.cap__row');
+  initHeaderOverDark();
 
   buildSlides(document.getElementById('heroStage'), HERO_SRCS);
 
-  // Inlined up front so the logo is staged and ready to draw the instant the
+  // Staged up front so the wordmark is ready to come in the instant the
   // loader hands the screen over.
   const markHost = document.getElementById('heroMark');
-  const markPromise = mountMark(markHost);
+  stageWordmark(markHost);
 
   try {
     await runLoader({ shuffle: SHUFFLE, heroSrc: HERO_SRCS[0].src });
@@ -73,7 +75,7 @@ async function boot() {
     degrade();
   }
 
-  revealMark(markHost, await markPromise);
+  revealWordmark(markHost);
   startHero();
   mountCyclers();
   ScrollTrigger.refresh();
@@ -166,7 +168,7 @@ function mountCyclers() {
 function degrade() {
   document.getElementById('loader')?.remove();
   gsap.set(['.header', '.hero__tagline', '.hero__scroll'], { opacity: 1 });
-  settleMark(document.getElementById('heroMark'));
+  settleWordmark(document.getElementById('heroMark'));
   document.querySelector('.hero__slide')?.classList.add('is-on');
   startScroll();
 }

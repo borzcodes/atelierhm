@@ -30,6 +30,13 @@
   /* Anything sitting on top of a photograph still wants plain white type. */
   --bone: #ffffff;
 
+  /* The dark surfaces — the menu and the contact band — share one palette:
+     bone type, a dimmed bone for secondary lines and rules, and a rose for
+     whatever lights up under the pointer. */
+  --bone-60: rgba(255, 255, 255, 0.6);
+  --bone-line: rgba(255, 255, 255, 0.22);
+  --rose: #e7b9c3;
+
   /* --- layout ------------------------------------------------ */
   --pad: clamp(1rem, 3.2vw, 3.25rem);
   --gap: clamp(1rem, 1.8vw, 2rem);
@@ -39,13 +46,21 @@
   /* --- type -------------------------------------------------- */
   --font-display: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+  /* The wordmark's own face — a round geometric, used nowhere else. */
+  --font-logo: 'Outfit', 'Avenir Next', 'Century Gothic', var(--font-display);
 
-  --t-micro: clamp(0.56rem, 0.66vw, 0.72rem);
-  --t-small: clamp(0.72rem, 0.86vw, 0.86rem);
+  /* One scale, kept tight. A heading and the line under it sit within about
+     a step and a half of each other; the hierarchy is carried by weight and
+     colour — the main line bold, its sub regular and dimmed — not by size.
+     Every title on the site takes one of these rather than its own clamp(),
+     so nothing can drift back to display size on its own. */
+  --t-micro: clamp(0.64rem, 0.72vw, 0.78rem); /* eyebrows and mono labels */
+  --t-small: clamp(0.8rem, 0.9vw, 0.92rem); /* the soft sub-line */
   --t-body: clamp(0.95rem, 1.05vw, 1.1rem);
-  --t-lede: clamp(1.15rem, 1.85vw, 1.85rem);
-  --t-h2: clamp(1.2rem, 3.3vw, 3.4rem);
-  --t-h3: clamp(1.05rem, 1.8vw, 1.8rem);
+  --t-lede: clamp(1.05rem, 1.35vw, 1.4rem); /* statements and quotes */
+  --t-h3: clamp(1.05rem, 1.45vw, 1.5rem); /* row and card titles */
+  --t-h2: clamp(1.3rem, 2.1vw, 2.2rem); /* section titles, names, figures */
+  --t-h1: clamp(1.4rem, 2.4vw, 2.5rem); /* the project page's one heading */
 
   /* --- motion ------------------------------------------------ */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -179,11 +194,22 @@ button {
   line-height: 1.3;
 }
 
+/* The soft line under a bold one — a role under a name, what a figure counts,
+   what pressing a row does. Plain sans, regular weight, dimmed: it is read
+   second and looks it, without being small for the sake of it. */
+.sub {
+  font-size: var(--t-small);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.45;
+  color: var(--ink-70);
+}
+
 .statement {
   font-size: var(--t-lede);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
   text-wrap: balance;
 }
 
@@ -235,35 +261,50 @@ button {
 
 /* ------------------------------------------------------------ loader --- */
 
+/* The field the signature signs itself onto — the avatar's own arrangement,
+   white artwork on burgundy — and the curtain that lifts to reveal the hero. */
 .loader {
   position: fixed;
   inset: 0;
   z-index: 300;
-  background: var(--bone);
+  background: var(--burgundy-deep);
+  color: var(--bone);
   display: grid;
   place-items: center;
 }
 
-/* The shuffling plate: sized small, then flown to full-bleed on reveal. */
-.loader__plate {
+/* The lockup's box, held at the artwork's own proportions so it is the right
+   shape before the vector has been fetched into it. */
+.loader__mark {
   position: relative;
-  width: min(30vw, 340px);
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  background: var(--paper-3);
-  will-change: transform;
+  width: clamp(270px, 44vw, 680px);
+  aspect-ratio: 732.7 / 248.9;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.loader__mark.is-ready,
+.loader__mark.is-in {
+  opacity: 1;
 }
 
-.loader__plate img {
+/* The traced lockup and the raster stand-in occupy the same box. */
+.mark__svg,
+.mark__fallback {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: 0;
 }
-.loader__plate img.is-on {
-  opacity: 1;
+
+/* The signature's own contour, stroked. vector-effect keeps it a true hairline
+   at every size the mark is drawn at, rather than scaling with the artwork. */
+.mark__draw {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
 }
 
 .loader__meta {
@@ -284,19 +325,23 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
+.loader__meta .micro {
+  color: var(--bone-60);
+}
+
 .loader__bar {
   position: fixed;
   left: var(--pad);
   right: var(--pad);
   bottom: calc(var(--pad) * 0.9 + 2.2rem);
   height: 1px;
-  background: var(--line);
+  background: var(--bone-line);
 }
 .loader__bar span {
   display: block;
   height: 100%;
   width: 0%;
-  background: var(--ink);
+  background: var(--bone);
 }
 
 /* ------------------------------------------------------------ header --- */
@@ -315,27 +360,35 @@ button {
   mix-blend-mode: difference;
 }
 /* `difference` against white inverts over any backdrop, so the header stays
-   legible over both the photographic hero and the white page. The one place
-   it misbehaves is the burgundy menu, where differencing white lands on a
-   pale cyan — so while the menu is open the header just goes plain white. */
+   legible over both the photographic hero and the white page. Where it
+   misbehaves is burgundy, on which differencing white lands on a pale cyan —
+   so over the open menu, and while any `data-dark` section sits under it
+   (initHeaderOverDark), the header just goes plain white. */
 
-.is-menu-open .header {
+.is-menu-open .header,
+.is-over-dark .header {
   mix-blend-mode: normal;
   color: #fff;
 }
 
-/* The signature. It is a long, low mark — three times wider than it is tall —
-   so it takes more width than a monogram would to read at all. White artwork,
-   so it inverts with the rest of the header under the difference blend and
-   stays white when the menu forces the header to plain white. */
+/* The wordmark at nav size: the letters and the star. The tagline is left off
+   here — at this scale it would set at three pixels — and the star, which
+   the artwork sizes at an eighth of the letters, is held to a legible floor.
+   Bone, so it inverts with the rest of the header under the difference blend
+   and stays white where the header is forced to plain white. */
 .header__logo {
-  display: flex;
-  align-items: center;
+  --wm: clamp(1.9rem, 2.3vw, 2.7rem);
+  --wm-ink: var(--bone);
+  /* The letters' line box overshoots the glyphs; nudged so the mark centres
+     on the header by its ink, not its box. */
+  margin-top: -0.02em;
 }
-.header__logo img {
-  display: block;
-  width: clamp(84px, 9vw, 120px);
-  height: auto;
+.header__logo .wordmark__col {
+  justify-content: flex-end;
+}
+.header__logo .wordmark__star {
+  width: max(0.125em, 0.5rem);
+  height: max(0.125em, 0.5rem);
 }
 
 
@@ -370,6 +423,74 @@ button {
 }
 .is-menu-open .menu-toggle i {
   transform: rotate(135deg);
+}
+
+/* ------------------------------------------------------------ wordmark --- */
+/* The studio's wordmark: hma, the m dissolving downward, "architect /
+   urbanist" in mono alongside, and the star. Set live from the supplied
+   artwork rather than shipped as a picture, so it takes any colour, sets at
+   any size (--wm is the one dial, the letters' em) and its parts can arrive
+   separately in the hero. The geometry is the face's own metrics: an x-height
+   of 0.49em, an ascender of 0.734em, 0.13em of the line box below the
+   baseline — the side column is exactly x-height tall and stands on the
+   baseline, which is where the artwork puts it. */
+
+.wordmark {
+  display: inline-block;
+  /* Set --wm on the host; declaring it here would shadow that. */
+  font-size: var(--wm, 4rem);
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--wm-ink, var(--ink));
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+.wordmark__word {
+  display: inline-block;
+  font-family: var(--font-logo);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+.wordmark__l {
+  display: inline-block;
+}
+.wordmark__m {
+  background: linear-gradient(to bottom, var(--wm-ink, var(--ink)) 0.58em, transparent 0.88em);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* An inline-block that hides overflow takes its bottom edge as its baseline,
+   which is what stands the column on the letters' baseline. */
+.wordmark__side {
+  display: inline-block;
+  vertical-align: baseline;
+  overflow: hidden;
+  height: 0.49em;
+  margin-left: 0.084em;
+  letter-spacing: 0;
+}
+.wordmark__col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+}
+.wordmark__tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.092em;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+}
+.wordmark__star {
+  display: block;
+  width: 0.125em;
+  height: 0.125em;
+  margin-bottom: 0.02em;
 }
 
 /* -------------------------------------------------------- menu panel --- */
@@ -411,7 +532,7 @@ button {
   transition: color 0.35s var(--ease-out);
 }
 .menu__item a:hover {
-  color: #e7b9c3;
+  color: var(--rose);
 }
 .menu__item a em {
   font-style: normal;
@@ -429,8 +550,8 @@ button {
   justify-content: space-between;
   gap: 1rem 2rem;
   padding-top: var(--gap);
-  border-top: var(--rule) solid rgba(255, 255, 255, 0.22);
-  color: rgba(255, 255, 255, 0.62);
+  border-top: var(--rule) solid var(--bone-line);
+  color: var(--bone-60);
 }
 .menu__foot a:hover {
   color: #fff;
@@ -476,37 +597,98 @@ button {
 
 /* ------------------------------------------------------------ footer --- */
 
+/* Back on paper after the burgundy contact band, so the page ends light. The
+   wordmark leads a brand column — a line on the studio and the ways to reach
+   it as icons — with the site map, the door and the addresses in three
+   columns beside it; then the CTA banner and the base line. */
 .footer {
   position: relative;
-  background: var(--bone);
-  border-top: var(--rule) solid var(--line);
-  padding-top: clamp(2rem, 5vw, 5.5rem);
+  background: var(--paper);
+  color: var(--ink);
+  padding-top: clamp(2.4rem, 5vw, 5.5rem);
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 4vw, 4rem) clamp(2rem, 6vw, 7rem);
+  padding: 0 var(--pad) clamp(2.4rem, 5.5vw, 6rem);
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1.1rem, 1.8vw, 1.7rem);
+}
+.footer__mark {
+  /* The whole lockup, so large enough for its tagline — an eleventh of the
+     letters, by the artwork's proportions — to set at a readable size. */
+  --wm: clamp(4.6rem, 6.4vw, 7.2rem);
+  /* The letters' line box runs past the glyphs above and below; trimmed so the
+     mark sits on the column's grid rather than floating in its own air. */
+  margin: -0.14em 0 -0.1em;
+}
+.footer__about {
+  max-width: 34ch;
+}
+
+/* The ways to reach the studio as a row of ringed icons. */
+.social {
+  display: flex;
+  gap: 0.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.social__btn {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: var(--rule) solid var(--line);
+  color: var(--ink);
+  transition: background 0.35s var(--ease-out), color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out), transform 0.45s var(--ease-out);
+}
+.social__btn svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+.social__btn:hover {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: var(--bone);
+  transform: translateY(-2px);
 }
 
 .footer__cols {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--gap);
-  padding: 0 var(--pad) clamp(2rem, 5.5vw, 6rem);
 }
 .footer__cols h4 {
-  font-size: var(--t-micro);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
   color: var(--ink-45);
-  margin-bottom: 0.9em;
+  font-weight: 400;
+  margin-bottom: 1em;
 }
 .footer__cols li + li {
-  margin-top: 0.35em;
+  margin-top: 0.45em;
 }
 .footer__cols a,
 .footer__cols p {
   font-size: var(--t-small);
-  letter-spacing: 0.02em;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+.footer__cols .sub {
+  margin-top: 0.35em;
+  color: var(--ink-45);
 }
 .footer__cols a {
   position: relative;
+  transition: color 0.35s var(--ease-out);
 }
 .footer__cols a::after {
   content: '';
@@ -520,6 +702,9 @@ button {
   transform-origin: right;
   transition: transform 0.45s var(--ease-out);
 }
+.footer__cols a:hover {
+  color: var(--burgundy);
+}
 .footer__cols a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
@@ -530,13 +715,20 @@ button {
   display: flex;
   align-items: center;
   gap: clamp(0.4rem, 1.4vw, 1.4rem);
-  padding: 0 var(--pad) clamp(0.8rem, 1.6vw, 1.6rem);
+  padding: clamp(0.8rem, 1.6vw, 1.6rem) var(--pad);
+  border-top: var(--rule) solid var(--line);
   color: var(--burgundy);
+  transition: color 0.45s var(--ease-out);
+}
+.seework:hover {
+  color: var(--burgundy-deep);
 }
 .seework__word {
   font-weight: 800;
   font-stretch: 112%;
-  font-size: clamp(1.7rem, 8vw, 8.5rem);
+  /* Still a banner, but no longer the largest thing on the site by a factor
+     of three: the one line that is allowed past the heading scale. */
+  font-size: clamp(1.5rem, 5.4vw, 5.8rem);
   line-height: 0.82;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -545,8 +737,8 @@ button {
 .seework__slot {
   position: relative;
   flex: 1 1 auto;
-  min-width: clamp(2.5rem, 9vw, 10rem);
-  height: clamp(2.1rem, 9.6vw, 10.5rem);
+  min-width: clamp(2.2rem, 6.2vw, 6.8rem);
+  height: clamp(1.9rem, 6.5vw, 7.2rem);
   overflow: hidden;
   background: var(--paper-3);
   align-self: flex-end;
@@ -565,8 +757,7 @@ button {
 }
 .seework__arrow {
   flex: none;
-  width: clamp(2.4rem, 8vw, 8.5rem);
-  color: var(--burgundy);
+  width: clamp(2.1rem, 5.4vw, 5.8rem);
   transition: transform 0.55s var(--ease-out);
 }
 .seework:hover .seework__arrow {
@@ -598,6 +789,8 @@ button {
   padding: 0.7rem 1.1rem;
   border-radius: 999px;
   background: var(--burgundy-deep);
+  /* Its own colour is the closing band's, so a hairline keeps its edge there. */
+  border: var(--rule) solid var(--bone-line);
   color: #fff;
   transition: transform 0.6s var(--ease-out), opacity 0.4s linear;
 }
@@ -695,9 +888,16 @@ button {
 
 /* ---------------------------------------------------------- responsive -- */
 
+@media (max-width: 1024px) {
+  /* The brand column takes the full width, the three columns go beneath. */
+  .footer__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 860px) {
   .footer__cols {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem var(--gap);
   }
   /* Lifted clear of the hero pill and the scroll badge, which occupy the

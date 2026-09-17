@@ -18,6 +18,7 @@ import {
   initScroll,
   initMenu,
   initReveals,
+  initHeaderOverDark,
   initYear,
 } from './chrome.js';
 import { mountCycler } from './media.js';
@@ -29,6 +30,7 @@ function boot() {
   initScroll();
   initMenu();
   initYear();
+  initHeaderOverDark();
 
   const main = document.getElementById('pjMain');
 
