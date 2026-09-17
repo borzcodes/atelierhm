@@ -54,6 +54,7 @@ async function boot() {
   initYear();
   initAnchors();
   initWork();
+  initStats();
   initContact();
   initReveals();
   initProximity('.cap__row');
@@ -76,6 +77,47 @@ async function boot() {
   startHero();
   mountCyclers();
   ScrollTrigger.refresh();
+}
+
+/* -------------------------------------------------------------- stats --- */
+
+/**
+ * The founder's figures. These are the studio's own business figures — set in
+ * the markup, not derived from the demo grid below, since the practice's real
+ * total runs well ahead of the handful of projects this site currently shows.
+ * A `data-prefix` (e.g. "+") rides along through the count-up. Each number
+ * counts up from nought as the strip scrolls into view — on a page where
+ * everything arrives, a figure that was simply there would be the one still
+ * thing.
+ */
+function initStats() {
+  const strip = document.querySelector('.stats');
+  if (!strip) return;
+
+  const nums = [...strip.querySelectorAll('.stats__num')];
+  if (REDUCED || !('IntersectionObserver' in window)) return;
+
+  nums.forEach((el) => (el.textContent = (el.dataset.prefix || '') + '0'));
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      nums.forEach((el, i) => {
+        const to = Number(el.dataset.count) || 0;
+        const prefix = el.dataset.prefix || '';
+        const o = { v: 0 };
+        gsap.to(o, {
+          v: to,
+          duration: 1.4,
+          delay: 0.15 + i * 0.12,
+          ease: 'power2.out',
+          onUpdate: () => (el.textContent = prefix + String(Math.round(o.v))),
+        });
+      });
+    },
+    { threshold: 0.35 }
+  );
+  io.observe(strip);
 }
 
 /* --------------------------------------------------------------- hero --- */
@@ -106,7 +148,7 @@ function mountCyclers() {
   const pillSrcs = PROJECTS.map((p) => projectPlate(p, p.images[0].file));
   mountCycler(document.getElementById('heroPillMedia'), pillSrcs, {
     interval: 1400,
-    alt: 'Recent work',
+    alt: 'Travaux récents',
   });
 
   mountCycler(

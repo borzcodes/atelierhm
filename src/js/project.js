@@ -86,7 +86,7 @@ function template(p) {
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M20 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8"/>
     </svg>
-    All work
+    Tous les projets
   </a>
 
   <section class="pj-hero">
@@ -135,7 +135,7 @@ function template(p) {
   ${splitBlock}
 
   <section class="pj-body">
-    <p class="pj-body__label micro" data-reveal>In detail</p>
+    <p class="pj-body__label micro" data-reveal>En détail</p>
     <div class="prose" data-reveal>
       ${p.body.map((t) => `<p>${t}</p>`).join('')}
     </div>
@@ -156,7 +156,7 @@ function template(p) {
     </div>
     <div class="pj-next__inner">
       <div>
-        <p class="micro" style="margin-bottom:.7rem">Next project — ${next.index}</p>
+        <p class="micro" style="margin-bottom:.7rem">Projet suivant — ${next.index}</p>
         <h2>${next.shortTitle || next.title}</h2>
       </div>
       <svg class="pj-next__arrow" viewBox="0 0 100 40" fill="none" aria-hidden="true">
@@ -170,8 +170,8 @@ function notFound() {
   return `
   <section class="pj-404">
     <p class="micro">404</p>
-    <h1 class="pj-hero__title" style="color:var(--ink)">No such project</h1>
-    <p><a class="micro" href="index.html#work" style="text-decoration:underline">Back to all work</a></p>
+    <h1 class="pj-hero__title" style="color:var(--ink)">Projet introuvable</h1>
+    <p><a class="micro" href="index.html#work" style="text-decoration:underline">Retour à tous les projets</a></p>
   </section>`;
 }
 

@@ -16,7 +16,7 @@ npm run preview  # serve the build
 
 | Page | Route | Notes |
 | --- | --- | --- |
-| Home | `index.html` | Hero sequence, founder, work slider, capability, contact, footer |
+| Home | `index.html` | Hero sequence, founder, work grid, capability, contact, footer |
 | Project | `project.html?p=<slug>` | Lays itself out from the project's image list |
 
 Six projects, all the studio's own, defined in `src/data/projects.js`:
@@ -31,9 +31,8 @@ Six projects, all the studio's own, defined in `src/data/projects.js`:
 | `mediatheque-tetouan` | Médiathèque de Tétouan | 6 (incl. plan and section), design proposal |
 
 Every entry is a design proposal or in design — none is presented as built.
-The categories a project can carry are `CATEGORIES` in the same file; the
-work slider only shows a filter chip for categories that have a project in
-them, so an empty one costs nothing.
+The categories a project can carry are `CATEGORIES` in the same file; each
+shows on its project's tile in the grid.
 
 ## Imagery
 
@@ -95,28 +94,28 @@ full-resolution renders. Ask for them.
   it, at which point the name and tagline arrive, and retires the contour. If
   the fetch never lands the raster in the markup stands in and simply fades up;
   reduced motion skips straight to the finished mark.
-- **The work slider** (`src/js/work.js`). A card deck seen in perspective:
-  the active project stands square to the viewer while the rest fall away to
-  the side, shrinking and turning as they go. Each card is a mounted print —
-  image, category, title, place and year — and the category filter above it
-  rebuilds the deck in place.
+- **The work grid** (`src/js/work.js`). Every project as one tile, three across:
+  the plate full-bleed with a dark foot, and on the foot the city, the title and
+  the category, read top to bottom like the label on a print. The plates are the
+  2x `-lg` files — a tile is ~600px wide on a 1920 display, 1200 device pixels
+  at 1.25 DPR, so the 2160 plate is downscaled rather than stretched. Tiles
+  wipe in one after another as the grid arrives (`[data-clip]` now takes the
+  same `--stagger` as `[data-reveal]`).
 
-  Position is a float rather than an index, and a lerp loop eases it towards
-  a target, so the deck follows a gesture continuously instead of tweening
-  between fixed states.
+  Clicking a tile does not simply navigate. Its image is cloned into a fixed
+  flyer and driven out to fill the screen while the page fades under it, and
+  only then does the location change — so the project page's hero appears to be
+  the same picture, arrived at rather than loaded. Modifier-clicks are left to
+  the browser; reduced motion goes straight to the page.
 
-  **Two fingers on a trackpad move it**, whichever way they travel — the
-  dominant axis wins, so a horizontal swipe and a vertical one both work. The
-  deck only takes the gesture while it still has somewhere to go: at either
-  end the wheel event is left alone, so the page carries on scrolling and
-  nobody gets stuck inside the carousel. Drag, the arrows and the keyboard
-  work too; clicking a card off to the side brings it forward, and clicking
-  the one in front flies it out to fill the screen before the page changes.
-
-  The 3D is CSS perspective rather than WebGL, deliberately: the captions
-  rotate with their cards, and real text stays sharp in a way a texture cannot.
-  `layout()` owns every card's transform, opacity and z-index — nothing else
-  should animate those three properties.
+  There is no category filter: with six projects, two of the categories hold a
+  single one, and a chip that reveals one card is an anticlimax. The category
+  still reads on every tile.
+- **The founder's figures.** Three numbers in a ruled strip under the founder
+  columns — projects, countries, team. The project count is read from the index
+  by `initStats()` in `main.js` so it cannot drift from the grid; the other two
+  are `data-count` attributes in `index.html`. Each number counts up from nought
+  as the strip scrolls into view.
 - **Project page rhythm**, following the supplied reference: a contained
   gallery plate held to a little over half the measure with numbered pagination
   under it; then a full-bleed plate paired with a small margin note set against
@@ -125,7 +124,7 @@ full-resolution renders. Ask for them.
   slightly as it passes. The gallery advances on its own until you touch it,
   then stops for good. Frame ratios come from the project (`--plate-ratio`), so
   the square Sky Ring plates are not letterboxed next to the wide ones.
-- **Capability** — a quiet, type-only register after the dark deck: mono
+- **Capability** — a quiet, type-only register after the grid: mono
   sheet numbers on their own rail, capability titles, descriptions, and
   hairlines that draw themselves in left to right as each row arrives. Nothing
   in it is clickable, so the hover is a nudge rather than the wash the project
@@ -144,15 +143,17 @@ full-resolution renders. Ask for them.
 ## Customising
 
 **Projects.** Everything is in `src/data/projects.js` — copy, facts, category,
-and the ordered `images` list. Add an entry and it appears in the deck, the
-footer cycler and its own detail page automatically. The detail page adapts to
+and the ordered `images` list. Add an entry and it appears in the grid, the
+footer cycler, the founder's project count and its own detail page
+automatically. The detail page adapts to
 the number of plates: the two-up split only appears when there are at least
 five, so a three-plate project never repeats an image.
 
-The deck's proportions come from `measure()` in `src/js/work.js`: card width
-is a fraction of the stage, and the horizontal step, the depth between cards
-and the perspective are all derived from it, so the arrangement holds from a
-phone up to a wide desktop.
+The grid is three tiles across, two below 1024px and one below 760px — `.grid`
+in `src/css/home.css`. Tiles are 5:4 (4:3 on a phone) with the plate
+`object-fit: cover`, so a wide render and the square Sky Ring plate sit in the
+same frame. The tile's first line is the city alone, split off the project's
+`location` at the comma.
 
 Mark an image `diagram: true` to keep it in the project gallery but out of the
 small cycling slots, where line art reads as a blank card.
@@ -207,7 +208,8 @@ browser that already holds the old one — as it did when the studio rebranded.
 photograph supplied for Haytham Mribah, wired to `#founderPortrait` in
 `index.html`. The frame is a fixed 4:5 box with `object-fit: cover`, so a
 differently-shaped replacement needs no manual crop — just swap the `src`.
-The drawn signature above it is a placeholder mark, not a real one.
+The signature beneath the quote is the studio's own — `hma-sign.svg` painted
+through a CSS mask so it takes the page's ink colour.
 
 The hero's `<h1>` is the mark itself, with the studio name inside it as
 `.sr-only` text so the page keeps a readable level-one heading.

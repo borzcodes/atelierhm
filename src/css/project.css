@@ -37,7 +37,7 @@
 .pj-hero__title {
   font-weight: 800;
   font-stretch: 110%;
-  font-size: clamp(1.9rem, 6.2vw, 6.6rem);
+  font-size: clamp(1.3rem, 3.9vw, 4rem);
   line-height: 0.9;
   letter-spacing: -0.042em;
   text-transform: uppercase;
@@ -291,7 +291,7 @@
 .pj-next h2 {
   font-weight: 800;
   font-stretch: 110%;
-  font-size: clamp(1.6rem, 4.8vw, 5rem);
+  font-size: clamp(1.1rem, 3vw, 3.2rem);
   line-height: 0.92;
   letter-spacing: -0.042em;
   text-transform: uppercase;

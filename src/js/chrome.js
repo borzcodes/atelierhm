@@ -75,7 +75,7 @@ export function initMenu() {
     menu.dataset.open = String(open);
     toggle.setAttribute('aria-expanded', String(open));
     document.documentElement.classList.toggle('is-menu-open', open);
-    if (label) label.textContent = open ? 'Close' : 'Menu';
+    if (label) label.textContent = open ? 'Fermer' : 'Menu';
     if (open) {
       stopScroll();
       tl.play();

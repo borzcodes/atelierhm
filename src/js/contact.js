@@ -49,7 +49,7 @@ export function initContact() {
       }
     } catch (err) {
       console.error('[contact] send failed', err);
-      button.textContent = 'Something went wrong — try again';
+      button.textContent = 'Une erreur est survenue — réessayez';
       setTimeout(() => (button.textContent = original), 3200);
     } finally {
       button.disabled = false;
