@@ -15,10 +15,14 @@
     />
     <link rel="stylesheet" href="/src/css/base.css" />
     <link rel="stylesheet" href="/src/css/project.css" />
+    <!-- In the head and render-blocking: the page is built by this script, and a
+         cross-document view transition captures the page at its first render —
+         so the project has to be on the page before that render happens. -->
+    <script type="module" src="/src/js/project.js" blocking="render"></script>
     <noscript>
       <style>
         /* Reveal animations are JS-driven; without it, show everything. */
-        [data-reveal], [data-clip], .line-mask > span, .hero__word > span {
+        [data-reveal], [data-clip], .line-mask > span, .word > span {
           opacity: 1 !important;
           transform: none !important;
           clip-path: none !important;
@@ -163,6 +167,5 @@
 
     <div class="grain" aria-hidden="true"></div>
 
-    <script type="module" src="/src/js/project.js"></script>
   </body>
 </html>

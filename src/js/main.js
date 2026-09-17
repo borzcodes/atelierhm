@@ -22,6 +22,7 @@ import {
   initCookie,
   initYear,
   initAnchors,
+  scrollTo,
   startScroll,
 } from './chrome.js';
 import { runLoader } from './loader.js';
@@ -46,6 +47,15 @@ const HERO_SRCS = HERO_SLIDES.map((s) => ({
   alt: s.alt,
 }));
 
+/* Arriving from inside the site — the way back from a project, mostly — the
+   opening is not played again. The page is built, scrolled to where the link
+   pointed and shown before its first render (the entry script is
+   render-blocking), so the browser's page transition lands on the finished
+   page rather than on the loader. */
+const FROM_INSIDE =
+  document.referrer.startsWith(location.origin) &&
+  new URL(document.referrer).pathname !== location.pathname;
+
 boot();
 
 async function boot() {
@@ -63,22 +73,48 @@ async function boot() {
 
   buildSlides(document.getElementById('heroStage'), HERO_SRCS);
 
-  // Staged up front so the wordmark is ready to come in the instant the
-  // loader hands the screen over.
   const markHost = document.getElementById('heroMark');
-  stageWordmark(markHost);
 
-  try {
-    await runLoader({ shuffle: SHUFFLE, heroSrc: HERO_SRCS[0].src });
-  } catch (err) {
-    console.error('[main] loader failed', err);
-    degrade();
+  if (FROM_INSIDE) {
+    skipOpening();
+    if (location.hash) scrollTo(location.hash, { immediate: true, force: true });
+    returnPlate();
+  } else {
+    // Staged up front so the wordmark is ready to come in the instant the
+    // loader hands the screen over.
+    stageWordmark(markHost);
+    try {
+      await runLoader({ shuffle: SHUFFLE, heroSrc: HERO_SRCS[0].src });
+    } catch (err) {
+      console.error('[main] loader failed', err);
+      skipOpening();
+    }
+    revealWordmark(markHost);
   }
 
-  revealWordmark(markHost);
   startHero();
   mountCyclers();
   ScrollTrigger.refresh();
+}
+
+/**
+ * Coming back from a project, its tile takes the `plate` name so the browser
+ * carries the project's picture back into the grid (see the `plate` rules in
+ * base.css). The name is lifted again once the transition has landed — only
+ * one element may hold it, and the next tile pressed will need it.
+ */
+function returnPlate() {
+  if (!('PageRevealEvent' in window)) return;
+  const slug = new URL(document.referrer).searchParams.get('p');
+  const mount = slug && document.querySelector(`.tile[data-slug="${slug}"] .tile__mount`);
+  if (!mount) return;
+
+  mount.style.viewTransitionName = 'plate';
+  window.addEventListener(
+    'pagereveal',
+    (e) => (e.viewTransition?.finished ?? Promise.resolve()).then(() => (mount.style.viewTransitionName = '')),
+    { once: true }
+  );
 }
 
 /* -------------------------------------------------------------- stats --- */
@@ -162,10 +198,10 @@ function mountCyclers() {
   );
 }
 
-/* ------------------------------------------------------------ fallback --- */
+/* ---------------------------------------------------------- no opening --- */
 
-/** The loader threw: drop the overlay and show the flat page. */
-function degrade() {
+/** Straight to the finished hero — arriving from inside, or the loader threw. */
+function skipOpening() {
   document.getElementById('loader')?.remove();
   gsap.set(['.header', '.hero__tagline', '.hero__scroll'], { opacity: 1 });
   settleWordmark(document.getElementById('heroMark'));

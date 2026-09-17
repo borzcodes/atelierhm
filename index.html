@@ -18,6 +18,10 @@
     />
     <link rel="stylesheet" href="/src/css/base.css" />
     <link rel="stylesheet" href="/src/css/home.css" />
+    <!-- In the head and render-blocking, so a page transition arriving here
+         (the way back from a project) lands on the built page, scrolled to
+         where the link pointed, rather than on the loader. -->
+    <script type="module" src="/src/js/main.js" blocking="render"></script>
     <noscript>
       <style>
         /* Reveal animations are JS-driven; without it, show everything. */
@@ -435,6 +439,5 @@
       </div>
     </aside>
 
-    <script type="module" src="/src/js/main.js"></script>
   </body>
 </html>

@@ -67,6 +67,42 @@
   --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
+/* -------------------------------------------------- page transitions --- */
+/* Cross-document view transitions. A same-origin navigation crossfades, and
+   an element named `plate` on both sides — the tile pressed in the work grid,
+   the picture that opens the project page — travels from one to the other, so
+   a project is arrived at rather than loaded. Browsers without this get the
+   flyer in work.js instead. The pair is clipped and the pictures cover it, so
+   a plate changing shape between the two pages slides rather than squashes. */
+
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+}
+::view-transition-group(plate) {
+  animation-duration: 0.85s;
+  animation-timing-function: var(--ease-io);
+}
+::view-transition-image-pair(plate) {
+  overflow: clip;
+}
+::view-transition-old(plate),
+::view-transition-new(plate) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 /* ------------------------------------------------------------- reset --- */
 
 *,

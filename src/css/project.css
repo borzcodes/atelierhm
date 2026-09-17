@@ -4,62 +4,115 @@
    margin caption paired with a large statement, then splits.
    ============================================================= */
 
-.pj-hero {
-  position: relative;
-  height: 78svh;
-  min-height: 460px;
-  overflow: hidden;
-  background: var(--paper-3);
+/* ------------------------------------------------------------ opening -- */
+/* The picture as the whole backdrop, and over it in the right-hand column
+   everything there is to know: the way back, the number and category, the
+   title, where and when, the lede, and the facts as a ruled list. The picture
+   is the element the view transition carries in from the work grid, and it
+   arrives whole. */
+
+/* How far down the page: a hairline along the very top, filled by scroll. */
+.pj-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 250;
+  height: 2px;
+  pointer-events: none;
 }
-.pj-hero img {
+.pj-progress span {
+  display: block;
+  height: 100%;
+  background: var(--burgundy);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* The opening fills the screen. The picture is the whole backdrop, dimmed on
+   ink the way the home hero's plates are, and the words sit over it in the
+   right-hand column, in bone. */
+.pj-open {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  column-gap: clamp(1.6rem, 4.5vw, 5.5rem);
+  align-items: center;
+  min-height: 100svh;
+  padding: calc(var(--header-h) + clamp(1.4rem, 3vw, 3rem)) var(--pad) clamp(2rem, 5vw, 5rem);
+  background: var(--ink);
+  color: var(--bone);
+  overflow: clip;
+}
+
+/* Oversize top and bottom, so the lag against the scroll never shows an edge. */
+.pj-open__plate {
+  position: absolute;
+  inset: -10% 0;
+  z-index: 0;
+  margin: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+.pj-open__plate img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  will-change: transform;
+  opacity: 0.48;
+  /* The name the work grid's pressed tile hands over — see base.css. */
+  view-transition-name: plate;
+  /* Once landed, a slow push in — the hero's Ken Burns, at a stiller pace. */
+  animation: pj-drift 18s linear forwards;
 }
-.pj-hero__grad {
+@keyframes pj-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.09); }
+}
+/* A little more dark behind the words than over the picture as a whole. */
+.pj-open__plate::after {
+  content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(13, 12, 11, 0.34) 0%,
-    rgba(13, 12, 11, 0.04) 26%,
-    rgba(13, 12, 11, 0.18) 52%,
-    rgba(13, 12, 11, 0.62) 100%
-  );
+  background: linear-gradient(to right, rgba(26, 16, 20, 0) 35%, rgba(26, 16, 20, 0.55) 100%),
+    linear-gradient(to top, rgba(26, 16, 20, 0.5), rgba(26, 16, 20, 0) 40%);
 }
-.pj-hero__inner {
+
+/* The project's number, outlined and enormous, standing behind the column
+   like a watermark on a drawing sheet. It travels faster than the page. */
+.pj-open__index {
   position: absolute;
-  inset: auto 0 0 0;
-  padding: 0 var(--pad) clamp(1.2rem, 3vw, 3rem);
-  color: var(--bone);
-}
-.pj-hero__title {
+  top: calc(var(--header-h) * 0.6);
+  right: calc(var(--pad) - 0.04em);
+  z-index: 1;
   font-weight: 800;
-  font-stretch: 110%;
-  font-size: var(--t-h1);
-  line-height: 0.94;
-  letter-spacing: -0.038em;
-  text-transform: uppercase;
+  font-stretch: 112%;
+  font-size: clamp(8rem, 24vw, 24rem);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.16);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
 }
-.pj-hero__sub {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.6rem;
-  margin-top: clamp(0.6rem, 1.4vw, 1.4rem);
-  color: rgba(255, 255, 255, 0.78);
+
+.pj-open__text {
+  position: relative;
+  z-index: 2;
+  grid-column: 2;
+  padding-top: 0.2rem;
+  will-change: transform, opacity;
 }
 
 .pj-back {
-  position: absolute;
-  top: calc(var(--header-h) + 0.6rem);
-  left: var(--pad);
-  z-index: 5;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: clamp(1.4rem, 2.8vw, 2.8rem);
+  color: var(--bone-60);
+  transition: color 0.35s var(--ease-out);
+}
+.pj-back:hover {
   color: var(--bone);
-  mix-blend-mode: difference;
 }
 .pj-back svg {
   width: 1em;
@@ -69,35 +122,24 @@
   transform: translateX(-0.25rem);
 }
 
-/* --------------------------------------------------------- fact table -- */
-
-.pj-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 var(--gap);
-  padding: clamp(1.6rem, 4vw, 4rem) var(--pad) 0;
+.pj-open__eyebrow {
+  color: var(--rose);
+  margin-bottom: 0.7rem;
 }
-.pj-facts div {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.8rem 0;
-  border-bottom: var(--rule) solid var(--line-soft);
+.pj-open__title {
+  font-weight: 800;
+  font-stretch: 110%;
+  font-size: var(--t-h1);
+  line-height: 0.94;
+  letter-spacing: -0.038em;
+  text-transform: uppercase;
 }
-.pj-facts dt {
-  color: var(--ink-45);
+.pj-open__sub {
+  margin-top: 0.8rem;
+  color: var(--bone-60);
 }
-.pj-facts dd {
-  margin: 0;
-  text-align: right;
-}
-
-/* --------------------------------------------- lede + margin/statement -- */
-
-.pj-lede {
-  padding: clamp(1.6rem, 4vw, 4rem) var(--pad) 0;
-}
-.pj-lede p {
+.pj-open__lede {
+  margin-top: clamp(1.2rem, 2.4vw, 2.4rem);
   font-weight: 600;
   font-size: var(--t-lede);
   line-height: 1.24;
@@ -105,6 +147,38 @@
   max-width: 34ch;
   text-wrap: balance;
 }
+
+/* --------------------------------------------------------- fact table -- */
+/* One ruled row per fact: the label as a mono eyebrow, the value in the soft
+   sans beside it. */
+
+.pj-facts {
+  margin: clamp(1.6rem, 3vw, 3rem) 0 0;
+  border-top: var(--rule) solid var(--bone-line);
+}
+.pj-facts div {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: var(--rule) solid rgba(255, 255, 255, 0.12);
+}
+.pj-facts dt {
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  padding-top: 0.25em;
+  color: var(--bone-60);
+}
+.pj-facts dd {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.45;
+}
+
+/* --------------------------------------------- margin note + statement -- */
 
 /* The signature block from the reference: a full-bleed plate, then a small
    note pinned to the left margin against a large statement set well in from
@@ -118,6 +192,7 @@
   width: 100%;
   height: auto;
   display: block;
+  will-change: transform;
 }
 
 .pj-note {
@@ -158,6 +233,10 @@
 }
 .pj-plate figure {
   margin: 0;
+}
+/* The picture's own clipped box, so its drift never runs over the caption. */
+.pj-plate__mount {
+  display: block;
   overflow: hidden;
   background: var(--paper-3);
 }
@@ -165,6 +244,7 @@
   width: 100%;
   height: auto;
   display: block;
+  will-change: transform;
 }
 .pj-plate figcaption {
   display: flex;
@@ -206,6 +286,25 @@
 .pj-carousel__stage img.is-on {
   opacity: 1;
   transform: none;
+}
+
+/* The statement's words, each in its own mask, so they can rise one by one.
+   The mask is let down past the baseline so descenders are not cut. */
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.word > span {
+  display: inline-block;
+  transform: translateY(110%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .word > span {
+    transform: none;
+  }
 }
 /* Two-up split, per the case-study reference: edge to edge, no gutter, and
    two unequal columns sharing one ratio, so the narrower plate ends higher.
@@ -268,21 +367,24 @@
   padding: clamp(1.8rem, 4.5vw, 4.5rem) var(--pad);
   transition: color 0.5s var(--ease-out);
 }
+/* The next project's picture surfaces as the page ends (project.js scrubs
+   the container up and in), then comes fully forward under the pointer. */
 .pj-next__bg {
   position: absolute;
   inset: 0;
   z-index: 1;
+  will-change: transform, opacity;
 }
 .pj-next__bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
+  opacity: 0.32;
   transform: scale(1.08);
   transition: opacity 0.7s var(--ease-out), transform 1.6s var(--ease-out);
 }
 .pj-next:hover .pj-next__bg img {
-  opacity: 0.9;
+  opacity: 0.92;
   transform: none;
 }
 .pj-next:hover .pj-next__inner {
@@ -319,15 +421,20 @@
 /* -------------------------------------------------------- responsive --- */
 
 @media (max-width: 900px) {
-  .pj-facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* One column: the words sit low over the picture, as on the home hero. */
+  .pj-open {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
+  }
+  .pj-open__text {
+    grid-column: 1;
+  }
+  .pj-open__index {
+    font-size: clamp(6rem, 34vw, 12rem);
   }
 }
 
 @media (max-width: 700px) {
-  .pj-facts {
-    grid-template-columns: minmax(0, 1fr);
-  }
   .pj-note,
   .pj-body {
     grid-template-columns: minmax(0, 1fr);

@@ -51,11 +51,23 @@ function boot() {
 
   main.innerHTML = template(project);
 
+  splitWords();
   initReveals();
   initGallery();
-  parallax();
+  cinematics();
   mountFooter();
   ScrollTrigger.refresh();
+  arrive();
+}
+
+/**
+ * Where the browser carried the picture across from the work grid, the page
+ * is already arriving and needs nothing. Elsewhere the load is a hard cut, so
+ * the page fades up instead of snapping on.
+ */
+function arrive() {
+  if (REDUCED || 'PageRevealEvent' in window) return;
+  gsap.fromTo('#pjMain', { opacity: 0 }, { opacity: 1, duration: 0.6, ease: 'power2.out' });
 }
 
 /* ------------------------------------------------------------ template --- */
@@ -84,32 +96,37 @@ function template(p) {
     : '';
 
   return `
-  <a class="pj-back micro" href="index.html#work">
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M20 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8"/>
-    </svg>
-    Tous les projets
-  </a>
+  <!-- How far down the page the reader is, as a hairline along the top. -->
+  <div class="pj-progress" aria-hidden="true"><span id="pjProgress"></span></div>
 
-  <section class="pj-hero">
-    <img id="pjHero" src="${projectPlate(p, imgs[0].file, 'lg')}" alt="${imgs[0].alt}"
-         fetchpriority="high" decoding="async" />
-    <div class="pj-hero__grad"></div>
-    <div class="pj-hero__inner">
-      <p class="micro" style="margin-bottom:.6rem">${p.index} — ${p.categoryLabel}</p>
-      <h1 class="pj-hero__title">${p.title}</h1>
-      <div class="pj-hero__sub micro" data-reveal>
-        <span>${p.location}</span><span>${p.year}</span><span>${p.status}</span>
-      </div>
+  <!-- The opening: the picture filling the screen, dimmed to a backdrop, and
+       over it on the right everything there is to know about the project,
+       arriving line by line. The picture is the element a view transition
+       carries in from the work grid, so it starts on the page whole — no
+       reveal of its own — then drifts. The project's number stands behind
+       the column as a watermark. -->
+  <section class="pj-open" id="pjOpen">
+    <div class="pj-open__plate" id="pjPlate">
+      <img id="pjHero" src="${projectPlate(p, imgs[0].file, 'lg')}" alt="${imgs[0].alt}"
+           fetchpriority="high" decoding="async" />
     </div>
-  </section>
+    <span class="pj-open__index" id="pjIndex" aria-hidden="true">${p.index}</span>
 
-  <dl class="pj-facts micro" data-stagger>
-    ${p.facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
-  </dl>
-
-  <section class="pj-lede">
-    <p data-reveal>${p.lede}</p>
+    <div class="pj-open__text" id="pjText" data-stagger>
+      <a class="pj-back micro" href="index.html#work">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M20 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        Tous les projets
+      </a>
+      <p class="pj-open__eyebrow micro">${p.index} — ${p.categoryLabel}</p>
+      <h1 class="pj-open__title">${p.title}</h1>
+      <p class="pj-open__sub sub">${p.location} · ${p.year} · ${p.status}</p>
+      <p class="pj-open__lede">${p.lede}</p>
+      <dl class="pj-facts">
+        ${p.facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}
+      </dl>
+    </div>
   </section>
 
   <section class="pj-carousel" id="pjCarousel">
@@ -125,27 +142,29 @@ function template(p) {
     </div>
   </section>
 
-  <figure class="pj-note__plate" data-clip>
+  <figure class="pj-note__plate" data-clip data-drift>
     <img src="${projectPlate(p, notePlate.file, 'lg')}" alt="${notePlate.alt}"
          loading="lazy" decoding="async" />
   </figure>
 
   <section class="pj-note">
     <aside class="pj-note__aside" data-reveal>${p.caption}</aside>
-    <p class="statement" data-reveal>${p.statement}</p>
+    <p class="statement" data-words>${p.statement}</p>
   </section>
   ${splitBlock}
 
   <section class="pj-body">
     <p class="pj-body__label micro" data-reveal>En détail</p>
-    <div class="prose" data-reveal>
+    <div class="prose" data-stagger>
       ${p.body.map((t) => `<p>${t}</p>`).join('')}
     </div>
   </section>
 
   <section class="pj-plate pj-plate--wide">
     <figure data-clip>
-      <img src="${projectPlate(p, closer.file, 'lg')}" alt="${closer.alt}" loading="lazy" decoding="async" />
+      <span class="pj-plate__mount" data-drift>
+        <img src="${projectPlate(p, closer.file, 'lg')}" alt="${closer.alt}" loading="lazy" decoding="async" />
+      </span>
       <figcaption class="micro">
         <span>${p.title} — ${p.location}</span><span>${p.year}</span>
       </figcaption>
@@ -172,46 +191,31 @@ function notFound() {
   return `
   <section class="pj-404">
     <p class="micro">404</p>
-    <h1 class="pj-hero__title" style="color:var(--ink)">Projet introuvable</h1>
+    <h1 class="pj-open__title">Projet introuvable</h1>
     <p><a class="micro" href="index.html#work" style="text-decoration:underline">Retour à tous les projets</a></p>
   </section>`;
 }
 
-/* ------------------------------------------------------------ parallax --- */
+/* -------------------------------------------------------------- words --- */
 
-function parallax() {
-  if (REDUCED) return;
-  const heroImg = document.getElementById('pjHero');
-  if (!heroImg) return;
-
-  gsap.fromTo(
-    heroImg,
-    { yPercent: -4 },
-    {
-      yPercent: 8,
-      ease: 'none',
-      scrollTrigger: { trigger: '.pj-hero', start: 'top top', end: 'bottom top', scrub: true },
-    }
-  );
-
-  // The two split plates travel at different rates, so the pair shears very
-  // slightly as it passes — the step between them reads as deliberate.
-  const split = document.querySelector('.pj-split');
-  if (split) {
-    const drift = { 0: -3.5, 1: 4.5 };
-    split.querySelectorAll('[data-split]').forEach((img) => {
-      const d = drift[img.dataset.split] ?? 0;
-      gsap.fromTo(
-        img,
-        { yPercent: -d },
-        {
-          yPercent: d,
-          ease: 'none',
-          scrollTrigger: { trigger: split, start: 'top bottom', end: 'bottom top', scrub: true },
-        }
-      );
+/**
+ * Wraps each word of a `[data-words]` block in its own masked span, so the
+ * statement can rise one word at a time rather than fade in as a slab.
+ */
+function splitWords() {
+  document.querySelectorAll('[data-words]').forEach((el) => {
+    const words = el.textContent.trim().split(/\s+/);
+    el.textContent = '';
+    words.forEach((w, i) => {
+      const outer = document.createElement('span');
+      outer.className = 'word';
+      const inner = document.createElement('span');
+      inner.textContent = w;
+      outer.appendChild(inner);
+      el.appendChild(outer);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
     });
-  }
+  });
 }
 
 /* ----------------------------------------------------------- gallery --- */
@@ -263,6 +267,107 @@ function pauseAuto() {
   gallery.timer = null;
 }
 
+/* --------------------------------------------------------- cinematics --- */
+
+/**
+ * Everything that moves with the scroll.
+ *
+ * The opening comes apart as it leaves — plate, words and the watermark
+ * numeral each at their own rate. The full-bleed plates settle from a slight
+ * enlargement as they pass and drift against the scroll. The two split plates
+ * travel at different rates, so the pair shears very slightly — the step
+ * between them reads as deliberate. The statement rises a word at a time.
+ * The next project's picture surfaces as the page ends. And the hairline
+ * along the top tracks how far down the reader is.
+ */
+function cinematics() {
+  if (REDUCED) return;
+
+  // The opening, as it scrolls away: the backdrop lags the page (it is set
+  // oversize, so the lag never shows an edge), the words go ahead of it, the
+  // numeral fastest of all.
+  const open = document.getElementById('pjOpen');
+  if (open) {
+    const scrub = { trigger: open, start: 'top top', end: 'bottom top', scrub: true };
+    gsap.to('#pjPlate', { yPercent: 10, ease: 'none', scrollTrigger: scrub });
+    gsap.to('#pjText', { yPercent: -12, opacity: 0.2, ease: 'none', scrollTrigger: scrub });
+    gsap.to('#pjIndex', { yPercent: -45, ease: 'none', scrollTrigger: scrub });
+  }
+
+  // Full-bleed plates: enlarged on arrival, settling as they pass, and
+  // travelling slightly slower than the page.
+  document.querySelectorAll('[data-drift]').forEach((fig) => {
+    const img = fig.querySelector('img');
+    gsap.fromTo(
+      img,
+      { scale: 1.14, yPercent: -5 },
+      {
+        scale: 1,
+        yPercent: 5,
+        ease: 'none',
+        scrollTrigger: { trigger: fig, start: 'top bottom', end: 'bottom top', scrub: true },
+      }
+    );
+  });
+
+  // The split pair.
+  const split = document.querySelector('.pj-split');
+  if (split) {
+    const drift = { 0: -3.5, 1: 4.5 };
+    split.querySelectorAll('[data-split]').forEach((img) => {
+      const d = drift[img.dataset.split] ?? 0;
+      gsap.fromTo(
+        img,
+        { yPercent: -d },
+        {
+          yPercent: d,
+          ease: 'none',
+          scrollTrigger: { trigger: split, start: 'top bottom', end: 'bottom top', scrub: true },
+        }
+      );
+    });
+  }
+
+  // The statement, a word at a time. The words start below their masks in
+  // CSS (translateY(110%)), which GSAP reads as a pixel offset — so it is `y`
+  // that is brought home here, not yPercent.
+  document.querySelectorAll('[data-words]').forEach((el) => {
+    gsap.to(el.querySelectorAll('.word > span'), {
+      y: 0,
+      duration: 1,
+      stagger: 0.028,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+    });
+  });
+
+  // The next project, surfacing as the page ends.
+  const next = document.querySelector('.pj-next');
+  if (next) {
+    gsap.fromTo(
+      '.pj-next__bg',
+      { yPercent: 18, opacity: 0 },
+      {
+        yPercent: 0,
+        opacity: 1,
+        ease: 'none',
+        scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 30%', scrub: true },
+      }
+    );
+  }
+
+  // How far down the page.
+  const progress = document.getElementById('pjProgress');
+  if (progress) {
+    gsap.to(progress, {
+      scaleX: 1,
+      ease: 'none',
+      scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.3 },
+    });
+  }
+}
+
+
 /* -------------------------------------------------------------- footer --- */
 
 function mountFooter() {
@@ -277,5 +382,5 @@ function mountFooter() {
   );
 }
 
-// Runs last: boot() reaches the gallery state declared above.
+// Runs last, so everything above is declared.
 boot();

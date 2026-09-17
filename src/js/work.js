@@ -6,16 +6,21 @@
  * on a print is read. Three across on a desktop, two on a tablet, one on a
  * phone. Tiles wipe in one after another as the grid scrolls into view.
  *
- * Clicking a tile does not just navigate. Its image is cloned into a fixed
- * flyer and driven out to fill the screen while the page fades, and only then
- * does the location change — so the project page's hero appears to be the
- * same picture, arrived at rather than loaded.
+ * Clicking a tile does not just navigate. Where the browser can carry an
+ * element across a page load (cross-document view transitions — see the
+ * `plate` rules in base.css) the pressed tile's picture is named and the
+ * browser slides it into place as the project page's opening picture. Where
+ * it cannot, the picture is cloned into a fixed flyer and driven out to fill
+ * the screen while the page fades, and only then does the location change.
+ * Either way the project is arrived at rather than loaded.
  */
 
 import { gsap } from 'gsap';
 import { PROJECTS, projectPlate } from '../data/projects.js';
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The page-reveal event only exists where navigations can be transitioned.
+const CARRIES = 'PageRevealEvent' in window && CSS.supports('view-transition-name: plate');
 
 export function initWork() {
   const grid = document.getElementById('workGrid');
@@ -63,6 +68,12 @@ function bindOpen(grid) {
     // Modifier clicks and middle clicks mean "new tab" — leave them to the browser.
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     if (REDUCED) return;
+    if (CARRIES) {
+      // Only one element may carry the name; this tile's picture takes it for
+      // the navigation the browser is about to make.
+      card.querySelector('.tile__mount').style.viewTransitionName = 'plate';
+      return;
+    }
     e.preventDefault();
     open(card);
   });
